@@ -4,9 +4,17 @@
         <servlet-name>EjemploServlet</servlet-name>
         <servlet-class>com.eventual.servlets.EjemploServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Inicio</servlet-name>
+        <servlet-class>com.eventual.servlets.Inicio</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>EjemploServlet</servlet-name>
         <url-pattern>/EjemploServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Inicio</servlet-name>
+        <url-pattern>/Inicio</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
