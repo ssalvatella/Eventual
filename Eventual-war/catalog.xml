@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+    <system systemId="file:/C:/Users/Samuel/Documents/GitHub/Eventual/Eventual-war/web/WEB-INF/wsdl/Identificacion.wsdl" uri="src/conf/xml-resources/web-service-references/Identificacion/wsdl/Identificacion.wsdl"/>
+    <system systemId="file:/C:/Users/Samuel/Documents/GitHub/Eventual/Eventual-war/web/WEB-INF/wsdl/Identificacion_schema1.xsd" uri="src/conf/xml-resources/web-service-references/Identificacion/wsdl/Identificacion_schema1.xsd"/>
+    <system systemId="http://localhost:8080/IdentificadorWS/IdentificadorWS?wsdl" uri="src/conf/xml-resources/web-service-references/IdentificadorWS/wsdl/localhost_8080/IdentificadorWS/IdentificadorWS.wsdl"/>
+    <system systemId="http://localhost:8080/IdentificadorWS/IdentificadorWS?xsd=1" uri="src/conf/xml-resources/web-service-references/IdentificadorWS/wsdl/localhost_8080/IdentificadorWS/IdentificadorWS.xsd_1.xsd"/>
+</catalog>

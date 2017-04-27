@@ -10,6 +10,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.ws.WebServiceRef;
 
 /**
  *
@@ -17,6 +18,9 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class Inicio extends HttpServlet {
 
+    @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_8080/IdentificadorWS/IdentificadorWS.wsdl")
+    private IdentificadorWS_Service service;
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -59,6 +63,13 @@ public class Inicio extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        // Recogemos los parámetros del formulario
+        String usuario = request.getParameter("usuario");
+        String contraseña = request.getParameter("contrasenia");
+        // Procesamos la petición en caso de que esten definidos los parámetros
+        if (usuario != null && contraseña != null) {
+            request.setAttribute("validacion", usuarioValido(usuario, contraseña));
+        }
         processRequest(request, response);
     }
 
@@ -71,5 +82,16 @@ public class Inicio extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+    
+    /**
+     * Métodos del Web Service
+     */
+
+    private boolean usuarioValido(java.lang.String usuario, java.lang.String contraseña) {
+        // Note that the injected javax.xml.ws.Service reference as well as port objects are not thread safe.
+        // If the calling of port operations may lead to race condition some synchronization is required.
+        com.eventual.servlets.IdentificadorWS port = service.getIdentificadorWSPort();
+        return port.usuarioValido(usuario, contraseña);
+    }
 
 }

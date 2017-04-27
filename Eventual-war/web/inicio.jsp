@@ -13,22 +13,32 @@
         <title>Eventual | Inicio</title>
         <% out.print(Plantilla.cargarHojasCSS()); %>
     </head>
+    <%  
+        boolean validado = false;
+        if ( request.getAttribute("validacion") != null) {
+             validado = ((Boolean) request.getAttribute("validacion")).booleanValue();
+        } else {
+            validado = true;
+        }
+    %>
     <body class="hold-transition login-page">
         <div class="login-box">
-          <div class="login-logo">
+          <div class="login-logo animated <% out.print(validado ? "bounce" : ""); %>">
             <a href=""><b>Even</b>Tual</a>
           </div>
           <!-- /.login-logo -->
-          <div class="login-box-body">
+          <div class="login-box-body animated <% out.print(validado ? "bounceInLeft" : "shake"); %>">
             <p class="login-box-msg">Identifíquese para iniciar sesión</p>
 
-            <form action="" method="post">
-              <div class="form-group has-feedback">
-                <input type="email" class="form-control" placeholder="Email">
+            <form action="./Inicio" method="post">
+              <div id="form_email" class="form-group has-feedback  <% out.print(validado ? "" : "has-error"); %>">
+                <% out.print(validado ? "" : 
+                        "<label id=\"mensaje_error\" class=\"control-label\" for=\"inputError\"><i class=\"fa fa-times-circle-o\"></i> Email o contraseña incorrectos</label>"); %>
+                <input name="usuario" type="email" class="form-control" placeholder="Email" required>
                 <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
               </div>
-              <div class="form-group has-feedback">
-                <input type="password" class="form-control" placeholder="Password">
+              <div id="form_contraseña" class="form-group has-feedback  <% out.print(validado ? "" : "has-error"); %>">
+                <input name="contrasenia" type="password" class="form-control" placeholder="Password" required>
                 <span class="glyphicon glyphicon-lock form-control-feedback"></span>
               </div>
               <div class="row">
@@ -41,14 +51,13 @@
                 </div>
                 <!-- /.col -->
                 <div class="col-xs-4">
-                  <button type="submit" class="btn btn-primary btn-block btn-flat">Iniciar</button>
+                  <button id="boton_iniciar" type="submit" class="btn btn-primary btn-block btn-flat">Iniciar</button>
                 </div>
                 <!-- /.col -->
               </div>
             </form>
-            <!-- /.social-auth-links -->
 
-            <a href="#">He olvidado mi contraseña</a><br>
+            <a href="">He olvidado mi contraseña</a><br>
             <a href="" class="text-center">Registrarse</a>
 
           </div>
@@ -64,6 +73,28 @@
             radioClass: 'iradio_square-blue',
             increaseArea: '20%' // optional
           });
+          
+          $("input").keypress(function(event) {
+            if (event.which === 13) {
+                event.preventDefault();
+                $("form").submit();
+            }
+          <%
+           
+            if (!validado) {
+                out.print(" else { \n"
+                        + "\t\t\t $('#form_email').removeClass(\"has-error\"); \n"
+                        + "\t\t\t $('#form_contraseña').removeClass(\"has-error\"); \n"
+                        + "\t\t\t $('#mensaje_error').remove(); \n"
+                + "\t\t }");
+            }
+           %>
+          });
+           $('form').submit(function(ev) {
+                ev.preventDefault(); 
+                $('#boton_iniciar').html('<div class="overlay"><i class="fa fa-refresh fa-spin\"></i></div>');
+                this.submit();
+           });
         });
         </script>
     </body>
