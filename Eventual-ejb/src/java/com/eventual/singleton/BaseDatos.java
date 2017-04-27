@@ -14,6 +14,7 @@ import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.PreDestroy;
 
 /**
  *
@@ -44,6 +45,17 @@ public class BaseDatos implements BaseDatosLocal {
             Logger.getLogger(BaseDatos.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    @PreDestroy
+    public void finalizar() {
+        try {
+            desconectar();
+        } catch (SQLException ex) {
+            Logger.getLogger(BaseDatos.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            this.conectado = false;
+        }
+    }
 
     @Override
     public Connection getConnection() {
@@ -60,6 +72,14 @@ public class BaseDatos implements BaseDatosLocal {
         return this.conectado;
     }
     
+    /**
+     * conectar()
+     * 
+     * Realiza la conexión con la base de datos MySQL con los
+     * datos definidos en las constantes de la conexión. En caso
+     * de error lanza una SQLException.
+     * @throws SQLException 
+     */
     private void conectar() throws SQLException {
         
         MysqlDataSource datosConexion = new MysqlDataSource();
@@ -69,6 +89,18 @@ public class BaseDatos implements BaseDatosLocal {
         // Conectamos
         this.conexion = datosConexion.getConnection();
         this.statement = this.conexion.createStatement();
+    }
+    
+    /**
+     * desconectar()
+     * 
+     * Cierra la conexión con la base de datos y el statement
+     * abierto.
+     * @throws SQLException 
+     */
+    private void desconectar() throws SQLException {
+        this.statement.close();
+        this.conexion.close();
     }
 
 }
