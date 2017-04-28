@@ -5,6 +5,8 @@
  */
 package com.eventual.webservices;
 
+import com.eventual.stateless.modelo.Usuario;
+import javax.ejb.EJB;
 import javax.jws.WebService;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -17,14 +19,19 @@ import javax.ejb.Stateless;
 @WebService(serviceName = "IdentificadorWS")
 @Stateless()
 public class IdentificadorWS {
+    
+    @EJB
+    private Usuario usuario;
 
     /**
-     * Web service operation
+     * usuarioValido()
+     * 
+     * Devuelve 'true' si el email y contraseña corresponden a un usuario
+     * válido y 'false' en caso contrario.
      */
     @WebMethod(operationName = "usuarioValido")
-    public boolean usuarioValido(@WebParam(name = "usuario") final String usuario, 
+    public boolean usuarioValido(@WebParam(name = "usuario") final String email, 
             @WebParam(name = "contrase\u00f1a") final String contraseña) {
-        //TODO write your implementation code here:
-        return false;
+        return this.usuario.valido(email, contraseña);
     }
 }

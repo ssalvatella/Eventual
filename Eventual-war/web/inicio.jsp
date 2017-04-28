@@ -33,7 +33,8 @@
             <form action="./Inicio" method="post">
               <div id="form_email" class="form-group has-feedback  <% out.print(validado ? "" : "has-error"); %>">
                 <% out.print(validado ? "" : 
-                        "<label id=\"mensaje_error\" class=\"control-label\" for=\"inputError\"><i class=\"fa fa-times-circle-o\"></i> Email o contraseña incorrectos</label>"); %>
+                    "<label id=\"mensaje_error\" class=\"control-label\" for=\"inputError\"><i class=\"fa fa-times-circle-o\"></i> Email o contraseña incorrectos</label>"); 
+                %>
                 <input name="usuario" type="email" class="form-control" placeholder="Email" required>
                 <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
               </div>

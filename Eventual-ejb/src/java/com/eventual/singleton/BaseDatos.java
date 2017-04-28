@@ -34,6 +34,7 @@ public class BaseDatos implements BaseDatosLocal {
      */
     private final String USUARIO_BD = "root";
     private final String HOST_BD = "localhost";
+    private final String BD_NOMBRE = "eventual";
     
     @PostConstruct
     public void iniciar() {
@@ -85,6 +86,7 @@ public class BaseDatos implements BaseDatosLocal {
         MysqlDataSource datosConexion = new MysqlDataSource();
         datosConexion.setUser(USUARIO_BD);
         datosConexion.setServerName(HOST_BD);
+        datosConexion.setDatabaseName(BD_NOMBRE);
         
         // Conectamos
         this.conexion = datosConexion.getConnection();
