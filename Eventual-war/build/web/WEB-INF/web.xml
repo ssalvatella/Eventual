@@ -8,6 +8,10 @@
         <servlet-name>Inicio</servlet-name>
         <servlet-class>com.eventual.servlets.Inicio</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Registrarse</servlet-name>
+        <servlet-class>com.eventual.servlets.Registrarse</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>EjemploServlet</servlet-name>
         <url-pattern>/EjemploServlet</url-pattern>
@@ -15,6 +19,10 @@
     <servlet-mapping>
         <servlet-name>Inicio</servlet-name>
         <url-pattern>/Inicio</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Registrarse</servlet-name>
+        <url-pattern>/Registrarse</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

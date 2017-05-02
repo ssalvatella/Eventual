@@ -27,7 +27,7 @@ public class Plantilla {
         return respuesta;
     }
     
-    private final static String[] JAVASCRIPTS =
+    private final static String[] javascripts =
     {"https://code.jquery.com/jquery-3.2.1.slim.min.js",
     "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js",
     "./assets/plugins/admin-lte/js/app.min.js", 
@@ -35,11 +35,10 @@ public class Plantilla {
     
     public static String cargarJavaScripts() {
         String respuesta = "";
-        for (String js : JAVASCRIPTS) {
+        for (String js : javascripts) {
             respuesta += "<script src=\"" + js + "\"> </script>\n \t\t";
         }
         return respuesta;
     }
-    
-    
+        
 }

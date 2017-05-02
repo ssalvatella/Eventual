@@ -39,7 +39,7 @@
                 <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
               </div>
               <div id="form_contraseña" class="form-group has-feedback  <% out.print(validado ? "" : "has-error"); %>">
-                <input name="contrasenia" type="password" class="form-control" placeholder="Password" required>
+                <input name="contrasenia" type="password" class="form-control" placeholder="Contraseña" required>
                 <span class="glyphicon glyphicon-lock form-control-feedback"></span>
               </div>
               <div class="row">
@@ -59,7 +59,7 @@
             </form>
 
             <a href="">He olvidado mi contraseña</a><br>
-            <a href="" class="text-center">Registrarse</a>
+            <a href="./Registrarse" class="text-center">Registrarse</a>
 
           </div>
           <!-- /.login-box-body -->

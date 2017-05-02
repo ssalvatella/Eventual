@@ -2,6 +2,8 @@
 <catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
     <system systemId="file:/C:/Users/Samuel/Documents/GitHub/Eventual/Eventual-war/web/WEB-INF/wsdl/Identificacion.wsdl" uri="src/conf/xml-resources/web-service-references/Identificacion/wsdl/Identificacion.wsdl"/>
     <system systemId="file:/C:/Users/Samuel/Documents/GitHub/Eventual/Eventual-war/web/WEB-INF/wsdl/Identificacion_schema1.xsd" uri="src/conf/xml-resources/web-service-references/Identificacion/wsdl/Identificacion_schema1.xsd"/>
+    <system systemId="http://localhost:8080/RegistroWS/RegistroWS?wsdl" uri="src/conf/xml-resources/web-service-references/RegistroWS/wsdl/localhost_8080/RegistroWS/RegistroWS.wsdl"/>
+    <system systemId="http://localhost:8080/RegistroWS/RegistroWS?xsd=1" uri="src/conf/xml-resources/web-service-references/RegistroWS/wsdl/localhost_8080/RegistroWS/RegistroWS.xsd_1.xsd"/>
     <system systemId="http://localhost:8080/IdentificadorWS/IdentificadorWS?wsdl" uri="wsdl/localhost_8080/IdentificadorWS/IdentificadorWS.wsdl"/>
     <system systemId="http://localhost:8080/IdentificadorWS/IdentificadorWS?xsd=1" uri="wsdl/localhost_8080/IdentificadorWS/IdentificadorWS.xsd_1.xsd"/>
 </catalog>

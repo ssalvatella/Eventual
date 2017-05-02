@@ -5,22 +5,25 @@
  */
 package com.eventual.servlets;
 
+import com.eventual.singleton.BaseDatos;
+import com.eventual.stateless.modelo.Usuario;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.ws.WebServiceRef;
-
 /**
  *
  * @author Samuel
  */
 public class Inicio extends HttpServlet {
 
-    @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_8080/IdentificadorWS/IdentificadorWS.wsdl")
-    private IdentificadorWS_Service service;
-    
+    @EJB
+    private Usuario usuario;
+   
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -64,11 +67,16 @@ public class Inicio extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         // Recogemos los parámetros del formulario
-        String usuario = request.getParameter("usuario");
+        String email = request.getParameter("usuario");
         String contraseña = request.getParameter("contrasenia");
         // Procesamos la petición en caso de que esten definidos los parámetros
-        if (usuario != null && contraseña != null) {
-            request.setAttribute("validacion", usuarioValido(usuario, contraseña));
+        if (email != null && contraseña != null) {
+            try {
+                 request.setAttribute("validacion", this.usuario.valido(email, contraseña));
+            } catch (Exception e) {
+                Logger.getLogger(BaseDatos.class.getName()).log(Level.SEVERE, null, e);
+            }
+           
         }
         processRequest(request, response);
     }
@@ -82,16 +90,7 @@ public class Inicio extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+
     
-    /**
-     * Métodos del Web Service
-     */
-
-    private boolean usuarioValido(java.lang.String usuario, java.lang.String contraseña) {
-        // Note that the injected javax.xml.ws.Service reference as well as port objects are not thread safe.
-        // If the calling of port operations may lead to race condition some synchronization is required.
-        com.eventual.servlets.IdentificadorWS port = service.getIdentificadorWSPort();
-        return port.usuarioValido(usuario, contraseña);
-    }
-
 }
