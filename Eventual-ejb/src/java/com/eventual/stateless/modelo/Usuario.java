@@ -31,6 +31,7 @@ public class Usuario {
         ADMINISTRADOR, SOCIAL, ORGANIZACIÓN
     }
     
+    
     @EJB
     private BaseDatosLocal bd;
 
@@ -105,13 +106,20 @@ public class Usuario {
             String consulta = "INSERT INTO usuario (email_usuario, contraseña_usuario, tipo_usuario) VALUES ('" + 
                     email + "', '" + hashString + "', '" + TIPO.SOCIAL.name() + "');";
             Statement stm = bd.getStatement();
-            int id_usuario = stm.executeUpdate(consulta, Statement.RETURN_GENERATED_KEYS);
-            consulta = "INSERT INTO perfil_social (usuario_perfil, nombre_perfil) VALUES (" + id_usuario + ", '" + nombre +"');";
-            return stm.execute(consulta);
+            stm.executeUpdate(consulta);
+            String consulta_id = "SELECT * FROM usuario WHERE email_usuario = '" + email + "';";
+            ResultSet rs = stm.executeQuery(consulta_id);
+            if (rs.next()) {
+                int id_usuario = rs.getInt("id_usuario");
+                consulta = "INSERT INTO perfil_social (usuario_perfil, nombre_perfil) VALUES (" + id_usuario + ", '" + nombre +"');";
+                return stm.execute(consulta);
+            } else {
+                return false;
+            }
         } catch (NoSuchAlgorithmException | SQLException ex) {
             Logger.getLogger(Usuario.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         } 
    }
-    
+   
 }

@@ -17,7 +17,9 @@ public class Plantilla {
         "https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css", 
         "https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css",
         "./assets/plugins/iCheck/square/blue.css", 
-        "https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css"};
+        "https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css",
+        "./assets/plugins/tooltipster-master/dist/css/tooltipster.bundle.min.css",
+        "./assets/plugins/tooltipster-master/dist/css/plugins/tooltipster/sideTip/themes/tooltipster-sideTip-shadow.min.css"};
     
     public static String cargarHojasCSS() {
         String respuesta = "";
@@ -28,10 +30,11 @@ public class Plantilla {
     }
     
     private final static String[] javascripts =
-    {"https://code.jquery.com/jquery-3.2.1.slim.min.js",
+    {"https://code.jquery.com/jquery-3.2.1.min.js",
     "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js",
     "./assets/plugins/admin-lte/js/app.min.js", 
-    "./assets/plugins/iCheck/icheck.min.js"};
+    "./assets/plugins/iCheck/icheck.min.js", 
+    "./assets/plugins/tooltipster-master/dist/js/tooltipster.bundle.min.js"};
     
     public static String cargarJavaScripts() {
         String respuesta = "";

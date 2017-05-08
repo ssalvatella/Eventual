@@ -32,7 +32,7 @@
     <body class="hold-transition login-page">
         <div class="login-box">
           <div class="login-logo animated bounce">
-            <a href="">Registro</a>
+            <a href=""><b>Even</b>Tual</a>
           </div>
           <!-- /.login-logo -->
           <div id="bloque_formulario" class="login-box-body animated <% out.print(hayError ? "snake" : "bounceInRight"); %> ">
@@ -48,29 +48,28 @@
                     <li style="<% out.print(errorContraseña2 ? "" : "display: none;"); %>" id="error_contraseña2">Confirma tu contraseña escribiendola dos veces.</li>
                 </ul>
             </div>
-            <form action="./Registrarse" method="post">
+            <form action="./Registrarse" method="post" autocomplete="off">
               <!-- NOMBRE -->
               <div id="form_nombre" class="form-group has-feedback">
                 <!-- <label id="error_nombre" style="display:none;" class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> Este nombre no es válido</label> -->
-                <input id="input_nombre" name="nombre" type="text" class="form-control" placeholder="Nombre completo" required>
+                <input id="input_nombre" name="nombre" type="text" class="form-control" placeholder="Nombre completo" data-tooltip-content="#tooltip_content" required>
                 <span class="glyphicon glyphicon-user form-control-feedback"></span>
               </div>
               <!-- EMAIL -->
               <div id="form_email" class="form-group has-feedback">
                 <!-- <label id="error_email" style="display:none;" class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> La dirección de correo debe de ser válida</label> -->
-                <input id="input_email" name="email" type="email" class="form-control" placeholder="Dirección email" required>
+                <input id="input_email" name="email" type="email" class="form-control" placeholder="Dirección email" data-tooltip-content="#tooltip_content" required>
                 <span  class="glyphicon glyphicon-envelope form-control-feedback"></span>
               </div>
               <!-- CONTRASEÑA -->
               <div id="form_contraseña" class="form-group has-feedback">
-                <input id="input_contraseña" name="contrasenia" type="password" class="form-control" placeholder="Contraseña" required>
+                <input id="input_contraseña" name="contrasenia" type="password" class="form-control" placeholder="Contraseña" data-tooltip-content="#tooltip_content" required>
                 <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-                <span style="display: none;" id="fuerza_contraseña" class="help-block">Help block with success</span>
+                
               </div>
-
               <!-- REPETIR CONTRASEÑA -->
               <div id="form_contraseña2" class="form-group has-feedback">
-                <input id="input_contraseña2" name="contrasenia_2" type="password" class="form-control" placeholder="Confirme la contraseña" required>
+                <input id="input_contraseña2" name="contrasenia_2" type="password" class="form-control" placeholder="Confirme la contraseña" data-tooltip-content="#tooltip_content" required>
                 <span class="glyphicon glyphicon-log-in form-control-feedback"></span>
               </div>
               <div class="row">
@@ -89,6 +88,13 @@
           <!-- /.login-box-body -->
         </div>
         <!-- /.login-box -->
+        
+        
+        <div class="tooltip_templates" style="display: none">
+            <span id="tooltip_content">
+                 <span  id="fuerza_contraseña" class="help-block"></span>
+            </span>
+        </div>
 
         <% out.print(Plantilla.cargarJavaScripts()); %>
         <script type="text/javascript" src="./assets/plugins/bootstrap-strength-meter/password-score.js"></script>
@@ -96,6 +102,39 @@
         <script type="text/javascript" src="./assets/plugins/bootstrap-strength-meter/bootstrap-strength-meter.js"></script>
         <script>
         $(function () {
+            
+            $('#input_email, #input_nombre, #input_contraseña,#input_contraseña2').tooltipster({
+                theme: 'tooltipster-shadow',
+                contentCloning: true,
+                trigger: 'custom',
+                side: 'right'
+            });
+            
+            function verificarEmail(email) {
+                $('#input_email').tooltipster('content', $('<div class="overlay"><i class="fa fa-refresh fa-spin"></i></div>'));
+                $('#input_email').tooltipster('open');
+                $.ajax({
+                    type: "POST",
+                    url: "./Registrarse",
+                    data: {
+                        'peticion' : 'verificaEmail',
+                        'email' : email
+                    },
+                    success: function(respuesta) {
+                        if (respuesta !== 'true') {
+                            $('#input_email').tooltipster('content', $('<label class="has-feedback has-success"> <i class="fa fa-check"></i> Email válido </label>'));
+                            $('#input_email').tooltipster('close');
+                        } else {
+                            $('#form_email').removeClass('has-success');
+                            $('#form_email').addClass('has-error');
+                            if (!$('#error_email').is(":visible")) {
+                                $('#error_email').show();
+                            }
+                            $('#input_email').tooltipster('content', $('<label class="has-feedback has-error"><i class="fa fa-times-circle-o"></i> Este email ya está registrado</label>'));
+                        }
+                    }
+                });
+            }
            
             function nombreValido(texto) {
                 var regex = /^[a-zA-Z ]{2,30}$/;
@@ -113,30 +152,40 @@
             }
            
             function compruebaContrasenia() {
-                if ($('#input_contraseña').val() != "") {
-                    if ($('#input_contraseña').val() != $('#input_contraseña2').val()) {
+                if ($('#input_contraseña').val() !== "") {
+                    if ($('#input_contraseña').val() !== $('#input_contraseña2').val() && $('#input_contraseña2').val() !== "") {
                         $('#form_contraseña2').removeClass('has-success');
                         $('#form_contraseña2').addClass('has-error');
-                    } else {
+                        $('#input_contraseña2').tooltipster('content', $('<label class="has-feedback has-error"><i class="fa fa-times-circle-o"></i> Repite la misma contraseña</label>'));
+                        $('#input_contraseña2').tooltipster('open');
+                    } else if($('#input_contraseña2').val() !== "") {
                         $('#form_contraseña2').removeClass('has-error');
                         $('#form_contraseña2').addClass('has-success');
+                        $('#input_contraseña2').tooltipster('close');
                         $('#error_contraseña2').hide();
                     }
                 }
+
                 var nivel = $('#fuerza_contraseña').html();
+                $('#input_contraseña').tooltipster('content', ' ');
                 if (nivel === "Débil") {
                     $('#form_contraseña').removeClass('has-success');
                     $('#form_contraseña').removeClass('has-error');
                     $('#form_contraseña').addClass('has-warning');
+                    $('#input_contraseña').tooltipster('content', $('#fuerza_contraseña'));
                     $('#error_contraseña').hide();
+                    $('#input_contraseña').tooltipster('open');                    
                 } else if (nivel === "Muy débil" || nivel === "Ridícula") {
                     $('#form_contraseña').removeClass('has-success');
                     $('#form_contraseña').removeClass('has-warning');
-                    $('#form_contraseña').addClass('has-error');   
+                    $('#form_contraseña').addClass('has-error');
+                    $('#input_contraseña').tooltipster('content', $('#fuerza_contraseña'));
+                    $('#input_contraseña').tooltipster('open');
                 } else {
                     $('#form_contraseña').removeClass('has-error');
                     $('#form_contraseña').removeClass('has-warning');
                     $('#form_contraseña').addClass('has-success');
+                    $('#input_contraseña').tooltipster('content', $('#fuerza_contraseña'));
                     $('#error_contraseña').hide();
                 }
             }
@@ -154,14 +203,17 @@
           });
 
   
-          $('#input_nombre').keypress(function(event) {
+          $('#input_nombre').bind('input', function(event) {
               if (nombreValido($('#input_nombre').val())) {
                   $('#form_nombre').removeClass('has-error');
                   $('#form_nombre').addClass('has-success');
                   if ($('#error_nombre').is(":visible")) {
                       $('#error_nombre').hide();
                   }
+                  $('#input_nombre').tooltipster('close');
               } else {
+                  $('#input_nombre').tooltipster('open');
+                  $('#input_nombre').tooltipster('content', $('<label class="has-feedback has-error"><i class="fa fa-times-circle-o"></i> Introduce un nombre válido</label>'));
                   $('#form_nombre').removeClass('has-success');
                   $('#form_nombre').addClass('has-error');
                   if (!$('#error_nombre').is(":visible")) {
@@ -170,14 +222,17 @@
               }
           });
           
-          $('#input_email').keypress(function(event) {
+          $('#input_email').bind('input', function() { 
               if (emailValido($('#input_email').val())) {
+                  verificarEmail($('#input_email').val());
                   $('#form_email').removeClass('has-error');
                   $('#form_email').addClass('has-success');
                   if ($('#error_email').is(":visible")) {
                       $('#error_email').hide();
                   }
               } else {
+                  $('#input_email').tooltipster('open');
+                  $('#input_email').tooltipster('content', $('<label class="has-error"><i class="fa fa-times-circle-o"></i> Email no válido</label>'));
                   $('#form_email').removeClass('has-success');
                   $('#form_email').addClass('has-error');
                   if (!$('#error_email').is(":visible")) {
@@ -186,11 +241,12 @@
               }
           });
           
+          
           $('#input_contraseña').keypress(function(evento) {
               $('#fuerza_contraseña').show();
           });
           
-          $('#input_contraseña, #input_contraseña2').keyup(compruebaContrasenia);
+          $('#input_contraseña, #input_contraseña2').bind('input', compruebaContrasenia);
           
         $('#boton_registrar').click(function(ev) {
             ev.preventDefault(); 
@@ -204,6 +260,7 @@
                $('#bloque_formulario').removeClass('snake');
                $('#bloque_formulario').addClass('animated snake');
                $('#boton_registrar').html('Registrarse');
+               $('#input_email').tooltipster('close');
             }
         });
            
