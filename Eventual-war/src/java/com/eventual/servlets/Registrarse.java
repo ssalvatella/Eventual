@@ -5,7 +5,7 @@
  */
 package com.eventual.servlets;
 
-import com.eventual.stateless.modelo.Usuario;
+import com.eventual.stateless.modelo.UsuarioRemote;
 import java.io.IOException;
 import java.util.regex.Pattern;
 import javax.ejb.EJB;
@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 public class Registrarse extends HttpServlet {
 
     @EJB
-    private Usuario usuario;
+    private UsuarioRemote usuario;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>

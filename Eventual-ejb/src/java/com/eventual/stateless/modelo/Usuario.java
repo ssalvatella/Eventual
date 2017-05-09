@@ -25,7 +25,7 @@ import javax.xml.bind.DatatypeConverter;
  */
 @Stateless
 @DependsOn(value="BaseDatosLocal")
-public class Usuario {
+public class Usuario implements UsuarioRemote {
     
     public static enum TIPO {
         ADMINISTRADOR, SOCIAL, ORGANIZACIÓN
@@ -34,6 +34,36 @@ public class Usuario {
     
     @EJB
     private BaseDatosLocal bd;
+    
+    private int id;
+    private String email;
+    private TIPO tipo;
+    private String fechaRegistro;
+    private String ultimaModificacion;
+
+    public Usuario() {
+        
+    }
+    
+    /**
+     * Usuario()
+     * 
+     * Constructor que se utilizará como "contenedor" de los campos
+     * del usuario.
+     * 
+     * @param email
+     * @param tipo de usuario
+     * @param fechaRegistro
+     * @param ultimaModificacion 
+     */
+    public Usuario(int id, String email, TIPO tipo, 
+            String fechaRegistro, String ultimaModificacion) {
+        this.id = id;
+        this.email = email;
+        this.tipo = tipo;
+        this.fechaRegistro = fechaRegistro;
+        this.ultimaModificacion = ultimaModificacion;
+    }
 
     /**
      * valido()
@@ -55,7 +85,6 @@ public class Usuario {
                 MessageDigest digest = MessageDigest.getInstance("SHA-256");
                 byte[] hashBytes = digest.digest(contraseña.getBytes(StandardCharsets.UTF_8));
                 String hashString = DatatypeConverter.printHexBinary(hashBytes);
-                
                 return hashString.equals(rs.getString("contraseña_usuario")); 
             } else { // Si el usuario no existe...
                 return false;
@@ -121,5 +150,55 @@ public class Usuario {
             return false;
         } 
    }
+   
+/**
+ * devuelveUsuario()
+ * 
+ * Devuelve el usuario con el email pasado por parámetro.
+ * @param email
+ * @return 
+ */
+   public Usuario devuelveUsuario(String email) {
+       try {
+            String consulta = "SELECT * FROM usuario WHERE email_usuario = '" + email + "';";
+            Statement stm = bd.getStatement();
+            ResultSet rs = stm.executeQuery(consulta);
+            if (rs.next()) {
+                int idUsuario = rs.getInt("id_usuario");
+                String emailUsuario = rs.getString("email_usuario");
+                TIPO tipoUsuario = TIPO.valueOf(rs.getString("tipo_usuario"));
+                String registroUsuario = rs.getString("registro_usuario");
+                String ultimaModificacion = rs.getString("ultima_modificacion_usuario");
+                return new Usuario(idUsuario, emailUsuario, tipoUsuario, registroUsuario, ultimaModificacion);
+            } else {
+                return null;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Usuario.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        } 
+   }
+
+    public int getId() {
+        return id;
+    }
+    
+    public String getEmail() {
+        return email;
+    }
+
+    public TIPO getTipo() {
+        return tipo;
+    }
+
+    public String getFechaRegistro() {
+        return fechaRegistro;
+    }
+
+    public String getUltimaModificacion() {
+        return ultimaModificacion;
+    }
+   
+   
    
 }

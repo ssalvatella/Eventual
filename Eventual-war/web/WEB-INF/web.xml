@@ -12,6 +12,10 @@
         <servlet-name>Registrarse</servlet-name>
         <servlet-class>com.eventual.servlets.Registrarse</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Social</servlet-name>
+        <servlet-class>com.eventual.servlets.Social</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>EjemploServlet</servlet-name>
         <url-pattern>/EjemploServlet</url-pattern>
@@ -23,6 +27,10 @@
     <servlet-mapping>
         <servlet-name>Registrarse</servlet-name>
         <url-pattern>/Registrarse</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Social</servlet-name>
+        <url-pattern>/Social</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

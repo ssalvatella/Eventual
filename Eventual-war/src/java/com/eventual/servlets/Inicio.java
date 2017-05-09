@@ -5,11 +5,10 @@
  */
 package com.eventual.servlets;
 
-import com.eventual.singleton.BaseDatos;
+import com.eventual.stateful.SesionSocialRemote;
 import com.eventual.stateless.modelo.Usuario;
+import com.eventual.stateless.modelo.UsuarioRemote;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -20,9 +19,13 @@ import javax.servlet.http.HttpServletResponse;
  * @author Samuel
  */
 public class Inicio extends HttpServlet {
+    
 
     @EJB
-    private Usuario usuario;
+    private UsuarioRemote usuario;
+    
+    @EJB
+    private SesionSocialRemote sesionSocial;
    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -72,13 +75,24 @@ public class Inicio extends HttpServlet {
         // Procesamos la petición en caso de que esten definidos los parámetros
         if (email != null && contraseña != null) {
             try {
-                 request.setAttribute("validacion", this.usuario.valido(email, contraseña));
+                boolean usuarioValido = this.usuario.valido(email, contraseña);
+                if (!usuarioValido) {
+                    request.setAttribute("validacion", usuarioValido);
+                    processRequest(request, response);                   
+                } else {
+                    Usuario conectado = this.usuario.devuelveUsuario(email);
+                    if (conectado != null) {
+                        this.sesionSocial.conectarUsuario(conectado);
+                        response.sendRedirect("./Social");
+                    } else {
+                        processRequest(request, response);
+                    }
+                }
             } catch (Exception e) {
-                Logger.getLogger(BaseDatos.class.getName()).log(Level.SEVERE, null, e);
+                
             }
-           
         }
-        processRequest(request, response);
+
     }
 
     /**
