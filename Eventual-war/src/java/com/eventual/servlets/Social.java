@@ -39,6 +39,7 @@ public class Social extends HttpServlet {
         // Comprobamos el nivel del usuario y que este correctamente conectado
         if (sesionSocial.usuarioConectado() && sesionSocial.esSocial()) {
             request.setAttribute("perfil", this.sesionSocial.getPerfil());
+            request.setAttribute("usuario", this.sesionSocial.getUsuario());
             response.setContentType("text/html;charset=UTF-8");
             request.getRequestDispatcher("social/social.jsp").forward(request, response);
         } else { // En caso contrario redirigimos al inicio
