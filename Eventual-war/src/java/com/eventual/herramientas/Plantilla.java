@@ -13,7 +13,8 @@ public class Plantilla {
     
     private final static String[] HOJAS_CSS = 
         {"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css", 
-        "./assets/plugins/admin-lte/css/AdminLTE.min.css",
+        "./assets/plugins/admin-lte/css/AdminLTE.min.css", 
+        "./assets/plugins/admin-lte/css/skins/_all-skins.min.css",
         "https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css", 
         "https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css",
         "./assets/plugins/iCheck/square/blue.css", 
@@ -29,7 +30,7 @@ public class Plantilla {
         return respuesta;
     }
     
-    private final static String[] javascripts =
+    private final static String[] JAVASCRIPTS =
     {"https://code.jquery.com/jquery-3.2.1.min.js",
     "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js",
     "./assets/plugins/admin-lte/js/app.min.js", 
@@ -38,7 +39,7 @@ public class Plantilla {
     
     public static String cargarJavaScripts() {
         String respuesta = "";
-        for (String js : javascripts) {
+        for (String js : JAVASCRIPTS) {
             respuesta += "<script src=\"" + js + "\"> </script>\n \t\t";
         }
         return respuesta;

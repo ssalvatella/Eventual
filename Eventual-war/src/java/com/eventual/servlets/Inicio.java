@@ -14,6 +14,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 /**
  *
  * @author Samuel
@@ -83,6 +84,10 @@ public class Inicio extends HttpServlet {
                     Usuario conectado = this.usuario.devuelveUsuario(email);
                     if (conectado != null) {
                         this.sesionSocial.conectarUsuario(conectado);
+                        // Guardamos en la sesión el EJB
+                        HttpSession sesion = request.getSession();
+                        sesion.setAttribute("sesionSocial", this.sesionSocial);
+                        // Vamos al servlet "Social" para empezar la sesión
                         response.sendRedirect("./Social");
                     } else {
                         processRequest(request, response);

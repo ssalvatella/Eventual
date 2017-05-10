@@ -7,11 +7,11 @@ package com.eventual.servlets;
 
 import com.eventual.stateful.SesionSocialRemote;
 import java.io.IOException;
-import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -19,7 +19,6 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class Social extends HttpServlet {
     
-    @EJB
     private SesionSocialRemote sesionSocial;
     
     /**
@@ -33,11 +32,17 @@ public class Social extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
+        // Obtenemos el EJB de nuestra sesión
+        HttpSession sesion = request.getSession();
+        this.sesionSocial = (SesionSocialRemote) sesion.getAttribute("sesionSocial");
+
+        // Comprobamos el nivel del usuario y que este correctamente conectado
         if (sesionSocial.usuarioConectado() && sesionSocial.esSocial()) {
             request.setAttribute("perfil", this.sesionSocial.getPerfil());
-            request.getRequestDispatcher("/social.jsp").forward(request, response);
-        } else {
+            response.setContentType("text/html;charset=UTF-8");
+            request.getRequestDispatcher("social/social.jsp").forward(request, response);
+        } else { // En caso contrario redirigimos al inicio
+            sesion.invalidate(); // Destruímos la sesión
             response.sendRedirect("./Inicio");
         }
     }
