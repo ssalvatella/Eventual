@@ -6,6 +6,7 @@
 package com.eventual.stateless.modelo;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.ejb.Remote;
 
 /**
@@ -14,17 +15,21 @@ import javax.ejb.Remote;
  */
 @Remote
 public interface PerfilSocialRemote extends Serializable {
+
+    /**
+    * devuelve()
+    * 
+    * Devuelve el perfil con el id indicado por parámetro.
+    * En caso de no encontrarlo devuelve null.
+    * @param idUsuario
+    * @return 
+    */
+    public PerfilSocial devuelve(int idUsuario);
     
-        /**
-     * devuelvePerfil()
-     * 
-     * Devuelve el perfil con el id indicado por parámetro.
-     * En caso de no encontrarlo devuelve null.
-     * @param idUsuario
-     * @return 
-     */
-    public PerfilSocial devuelvePerfil(int idUsuario);
+    public List<PerfilSocial> buscar(String campo);
 
     public String getNombre();
+    
+    public int getId();
     
 }

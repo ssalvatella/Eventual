@@ -33,7 +33,7 @@ public class SesionSocial implements SesionSocialRemote {
     @Override
     public void conectarUsuario(Usuario usuario) {
         this.usuario = usuario;
-        this.perfil = ps.devuelvePerfil(usuario.getId());
+        this.perfil = ps.devuelve(usuario.getId());
         if (perfil != null)
             this.conectado = true;        
     }

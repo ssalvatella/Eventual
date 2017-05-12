@@ -16,6 +16,10 @@
         <servlet-name>Social</servlet-name>
         <servlet-class>com.eventual.servlets.Social</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Buscador</servlet-name>
+        <servlet-class>com.eventual.servlets.Buscador</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>EjemploServlet</servlet-name>
         <url-pattern>/EjemploServlet</url-pattern>
@@ -31,6 +35,10 @@
     <servlet-mapping>
         <servlet-name>Social</servlet-name>
         <url-pattern>/Social</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Buscador</servlet-name>
+        <url-pattern>/Buscador</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

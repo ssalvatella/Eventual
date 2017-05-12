@@ -13,7 +13,7 @@ public class Plantilla {
     
     private final static String[] HOJAS_CSS = 
         {"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css", 
-        "./assets/plugins/admin-lte/css/AdminLTE.min.css", 
+        "./assets/plugins/admin-lte/css/AdminLTE.min.css",
         "./assets/plugins/admin-lte/css/skins/_all-skins.min.css",
         "https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css", 
         "https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css",
@@ -31,7 +31,8 @@ public class Plantilla {
     }
     
     private final static String[] JAVASCRIPTS =
-    {"https://code.jquery.com/jquery-3.2.1.min.js",
+    {"https://code.jquery.com/jquery-3.2.1.min.js", 
+    "https://code.jquery.com/ui/1.12.0/jquery-ui.min.js",
     "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js",
     "./assets/plugins/admin-lte/js/app.min.js", 
     "./assets/plugins/iCheck/icheck.min.js", 

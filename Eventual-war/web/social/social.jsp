@@ -16,11 +16,14 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Eventual | Inicio</title>
         <% out.print(Plantilla.cargarHojasCSS()); %>
-        <link href="./assets/plugins/bootstrap3-wysiwyg-master/dist/bootstrap3-wysihtml5.min.css" rel="stylesheet"> 
+        <link href="./assets/plugins/bootstrap3-wysiwyg-master/dist/bootstrap3-wysihtml5.min.css" rel="stylesheet">
+        <link href="./assets/plugins/awesomplete-gh-pages/awesomplete.css" rel="stylesheet">
     </head>
     <%
         PerfilSocial perfil = (PerfilSocial) request.getAttribute("perfil");
         Usuario usuario = (Usuario) request.getAttribute("usuario");
+        
+        // Obtenemos la fecha de registro en un formato "amigable"
         LocalDateTime datetime = LocalDateTime.parse(usuario.getFechaRegistro(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S"));
         String fechaRegistro = datetime.format(DateTimeFormatter.ofPattern("d 'de' MMM"));
     %>
@@ -49,7 +52,7 @@
                         <div class="box box-danger">
                             <div class="box-header with-border">
                                 <div class="box-body">
-                                    <textarea style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;" id="texto_post" placeholder="¿Qué estas pensando?"></textarea>
+                                    <textarea style="width: 100%; height: 100px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;" id="texto_post" placeholder="¿Qué estas pensando?"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -104,9 +107,9 @@
                             <div class="box-header with-border">
                               <h3 class="box-title">Chat</h3>
                               <div class="box-tools pull-right">
-                                <span data-toggle="tooltip" title="" class="badge bg-red" data-original-title="3 New Messages">3</span>
+                                <span data-toggle="tooltip" title="" class="badge bg-red" data-original-title="3 nuevos mensajes">3</span>
                                 <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-                                <button class="btn btn-box-tool" data-toggle="tooltip" title="" data-widget="chat-pane-toggle" data-original-title="Contacts"><i class="fa fa-comments"></i></button>
+                                <button class="btn btn-box-tool" data-toggle="tooltip" title="" data-widget="chat-pane-toggle" data-original-title="Contactos"><i class="fa fa-comments"></i></button>
                                 <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
                               </div>
                             </div><!-- /.box-header -->
@@ -178,6 +181,8 @@
         </div>
         <% out.print(Plantilla.cargarJavaScripts()); %>
         <script src="./assets/plugins/bootstrap3-wysiwyg-master/dist/bootstrap3-wysihtml5.all.min.js"> </script>
+        <script src="./assets/plugins/awesomplete-gh-pages/awesomplete.min.js" async></script>
+        <script src="./assets/js/cabecera.js" async> </script>
         <script type="text/javascript">
             $('#texto_post').wysihtml5();
         </script>
