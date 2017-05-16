@@ -155,7 +155,7 @@
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <img src="./assets/plugins/admin-lte/img/avatar5.png" class="user-image" alt="<% out.print(perfil.getNombre()); %>">
-              <span class="hidden-xs"><% out.print(perfil.getNombre()); %></span>
+              <span id="NOMBRE" class="hidden-xs"><% out.print(perfil.getNombre()); %></span>
             </a>
             <ul class="dropdown-menu">
               <!-- User image -->

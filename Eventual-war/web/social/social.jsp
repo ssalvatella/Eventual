@@ -104,6 +104,7 @@
                     <div class="col-md-4">
                         <!-- CHAT -->
                         <div class="box box-danger direct-chat direct-chat-danger">
+                            <div id="cargando" class="overlay"><i class="fa fa-refresh fa-spin"></i></div>
                             <div class="box-header with-border">
                               <h3 class="box-title">Chat</h3>
                               <div class="box-tools pull-right">
@@ -124,7 +125,7 @@
                                   </div><!-- /.direct-chat-info -->
                                   <img class="direct-chat-img" src="./assets/plugins/admin-lte/img/avatar5.png" alt="message user image"><!-- /.direct-chat-img -->
                                   <div class="direct-chat-text">
-                                    Is this template really for free? That's unbelievable!
+                                    Prueba de mensaje.
                                   </div><!-- /.direct-chat-text -->
                                 </div><!-- /.direct-chat-msg -->
 
@@ -136,14 +137,14 @@
                                   </div><!-- /.direct-chat-info -->
                                   <img class="direct-chat-img" src="./assets/plugins/admin-lte/img/avatar5.png" alt="message user image"><!-- /.direct-chat-img -->
                                   <div class="direct-chat-text">
-                                    You better believe it!
+                                    Esto es una respuesta de prueba.
                                   </div><!-- /.direct-chat-text -->
                                 </div><!-- /.direct-chat-msg -->
                               </div><!--/.direct-chat-messages-->
 
                               <!-- Contacts are loaded here -->
                               <div class="direct-chat-contacts">
-                                <ul class="contacts-list">
+                                <ul id="lista_amigos" class="contacts-list">
                                   <li>
                                     <a href="#">
                                       <img class="contacts-list-img" src="./assets/plugins/admin-lte/img/avatar5.png" alt="Contact Avatar">
@@ -183,6 +184,7 @@
         <script src="./assets/plugins/bootstrap3-wysiwyg-master/dist/bootstrap3-wysihtml5.all.min.js"> </script>
         <script src="./assets/plugins/awesomplete-gh-pages/awesomplete.min.js" async></script>
         <script src="./assets/js/cabecera.js" async> </script>
+        <script src="./assets/js/chat.js" async> </script>
         <script type="text/javascript">
             $('#texto_post').wysihtml5();
         </script>

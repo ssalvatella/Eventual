@@ -12,6 +12,8 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.DependsOn;
@@ -178,6 +180,23 @@ public class Usuario implements UsuarioRemote {
             return null;
         } 
    }
+   
+    @Override
+    public List<Integer> devuelveIdsAmigos(int idUsuario) {
+        try {
+            List<Integer> amigos = new ArrayList<>();
+            String consulta = "SELECT id_amigo FROM amigo WHERE id_usuario = " + idUsuario + ";";
+            Statement stm = bd.getStatement();
+            ResultSet rs = stm.executeQuery(consulta);
+            while (rs.next()) {
+                amigos.add(rs.getInt("id_amigo"));
+            }
+            return amigos;
+        } catch (SQLException ex) {
+            Logger.getLogger(Usuario.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        } 
+    }
 
     public int getId() {
         return id;

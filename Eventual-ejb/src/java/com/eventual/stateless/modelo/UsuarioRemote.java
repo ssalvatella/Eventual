@@ -5,6 +5,7 @@
  */
 package com.eventual.stateless.modelo;
 
+import java.util.List;
 import javax.ejb.Remote;
 
 
@@ -58,6 +59,8 @@ public interface UsuarioRemote {
  * @return 
  */
    public Usuario devuelveUsuario(String email);
+   
+   public List<Integer> devuelveIdsAmigos(int idUsuario) ;
 
     public int getId();
     
