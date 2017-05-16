@@ -7,5 +7,5 @@
   <div class="pull-right hidden-xs">
     <b>Versión</b> prueba
   </div>
-  <strong>Copyright &copy; 2016-2017 <a href="">EvenTual</a>.</strong> Sistemas Web.
+  <strong>Copyright &copy; 2016-2017 <a href="">EvenTual</a>.</strong> Sistemas y Tecnologías Web.
 </footer>

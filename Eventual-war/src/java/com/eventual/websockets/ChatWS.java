@@ -11,7 +11,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.IntStream;
@@ -88,6 +87,13 @@ public class ChatWS {
         
     }
     
+    /**
+     * notificarConexion()
+     * 
+     * Recorre los usuarios que esten conectados y les notifica
+     * de una nueva conexión en caso de que sea amigo.
+     * @param usuario 
+     */
     private void notificarConexion(UsuarioConectado usuario) {
         this.chat.getConectados().values().forEach((u) -> {
             try {
@@ -105,6 +111,12 @@ public class ChatWS {
         });
     }
     
+    /**
+     * notificarDesconexion()
+     * 
+     * Recorre los usuarios y notifica la desconexión del id especificado.
+     * @param eliminado 
+     */
     private void notificarDesconexion(int eliminado) {
         this.chat.getConectados().values().forEach((u) -> {
             try {

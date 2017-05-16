@@ -76,10 +76,25 @@ function mostrarAmigos(amigos) {
 
 function conectarAmigo(amigo) {
     $('#lista_amigos').append('<li value="' + amigo.id +'"><img class="contacts-list-img" src="./assets/plugins/admin-lte/img/avatar5.png" alt="Avatar de contacto"><div class="contacts-list-info"><span class="contacts-list-name">' + amigo.nombre + '</span></div></li>');
+    $("li[value='" + amigo.id + "']").click(function() {
+        seleccionarContacto(this.id);
+    });
+    new Noty({
+        timeout: 2000,
+        layout: 'bottomRight',
+        theme: 'metroui',
+        type: 'information',
+        progressBar: true,
+        text: amigo.nombre + ' en línea.'
+    }).show();
 }
 
 function desconectarAmigo(id) {
     $("li[value='" + id + "']").remove();
+}
+
+function seleccionarContacto(id) {
+    $('#cuerpo_mensajes').empty();
 }
     
 conectar();
