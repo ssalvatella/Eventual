@@ -28,4 +28,6 @@ public interface ChatLocal {
     
     public Map<Integer, UsuarioConectado> getConectados();
     
+    public void registrarMensaje(int emisor, int destintario, String texto);
+    
 }

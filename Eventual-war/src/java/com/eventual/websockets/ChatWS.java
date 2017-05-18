@@ -40,7 +40,7 @@ public class ChatWS {
      * MENSAJES
      */
     private enum TipoMensaje {
-        CONEXION, CONECTADOS
+        CONEXION, CONECTADOS, MENSAJE
     }
 
     @OnMessage
@@ -72,7 +72,17 @@ public class ChatWS {
                 
                 // Añadimos el usuario a la lista de conectados
                 chat.añadirConectado(usuario);
-
+            break;
+            case MENSAJE:
+                // Leemos los datos del mensaje
+                int emisor = json.get("emisor").getAsInt();
+                int destinatario = json.get("destinatario").getAsInt();
+                String texto = json.get("mensaje").getAsString();
+                
+                // Notificamos el mensaje al destintario
+                notificarMensaje(emisor, destinatario, texto);
+                // Registramos el mensaje en la BD
+                this.chat.registrarMensaje(emisor, destinatario, texto);
             break;
         }
         return respuesta.toString();
@@ -131,6 +141,24 @@ public class ChatWS {
                 Logger.getLogger(ChatWS.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
+    }
+    
+    private void notificarMensaje(int emisor, int destintario, String texto) {
+        
+        UsuarioConectado usuario = this.chat.getConectados().get(destintario);
+        if (usuario != null) { try {
+            // Conectado
+            JsonObject mensaje = new JsonObject();
+            mensaje.addProperty("tipo", "MENSAJE");
+            mensaje.addProperty("emisor", emisor);
+            mensaje.addProperty("destintario", destintario);
+            mensaje.addProperty("texto", texto);
+            usuario.getSesion().getBasicRemote().sendText(mensaje.toString());
+            } catch (IOException ex) {
+                Logger.getLogger(ChatWS.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
     }
     
 }

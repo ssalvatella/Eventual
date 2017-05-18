@@ -5,6 +5,7 @@
  */
 package com.eventual.singleton;
 
+import com.eventual.stateless.modelo.MensajeRemote;
 import com.eventual.stateless.modelo.UsuarioRemote;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,7 +26,10 @@ public class Chat implements ChatLocal {
     @EJB
     private UsuarioRemote usr;
     
-     private Map<Integer, UsuarioConectado> conectados = new HashMap<>();
+    @EJB
+    private MensajeRemote mensajes;
+    
+    private Map<Integer, UsuarioConectado> conectados = new HashMap<>();
      
 
     @Override
@@ -69,6 +73,13 @@ public class Chat implements ChatLocal {
     public Map<Integer, UsuarioConectado> getConectados() {
         return conectados;
     }
+
+    @Override
+    public void registrarMensaje(int emisor, int destintario, String texto) {
+        this.mensajes.añadir(emisor, destintario, texto);
+    }
+    
+    
     
     
 }

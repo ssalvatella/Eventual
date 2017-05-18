@@ -20,6 +20,10 @@
         <servlet-name>Buscador</servlet-name>
         <servlet-class>com.eventual.servlets.Buscador</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Mensajes</servlet-name>
+        <servlet-class>com.eventual.servlets.Mensajes</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>EjemploServlet</servlet-name>
         <url-pattern>/EjemploServlet</url-pattern>
@@ -39,6 +43,10 @@
     <servlet-mapping>
         <servlet-name>Buscador</servlet-name>
         <url-pattern>/Buscador</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Mensajes</servlet-name>
+        <url-pattern>/Mensajes</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
