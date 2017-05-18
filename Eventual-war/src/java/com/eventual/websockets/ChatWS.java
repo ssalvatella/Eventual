@@ -40,7 +40,7 @@ public class ChatWS {
      * MENSAJES
      */
     private enum TipoMensaje {
-        CONEXION, CONECTADOS, MENSAJE
+        CONEXION, CONECTADOS, MENSAJE, ADMINISTRADOR
     }
 
     @OnMessage
@@ -83,6 +83,9 @@ public class ChatWS {
                 notificarMensaje(emisor, destinatario, texto);
                 // Registramos el mensaje en la BD
                 this.chat.registrarMensaje(emisor, destinatario, texto);
+            break;
+            case ADMINISTRADOR:
+                respuesta.addProperty("conectados", this.chat.getConectados().size());
             break;
         }
         return respuesta.toString();

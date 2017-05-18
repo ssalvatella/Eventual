@@ -5,6 +5,7 @@
  */
 package com.eventual.servlets;
 
+import com.eventual.stateful.SesionAdministradorRemote;
 import com.eventual.stateful.SesionSocialRemote;
 import com.eventual.stateless.modelo.Usuario;
 import com.eventual.stateless.modelo.UsuarioRemote;
@@ -27,6 +28,9 @@ public class Inicio extends HttpServlet {
     
     @EJB
     private SesionSocialRemote sesionSocial;
+    
+    @EJB
+    private SesionAdministradorRemote sesionAdministrador;
    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -76,6 +80,7 @@ public class Inicio extends HttpServlet {
         // Procesamos la petición en caso de que esten definidos los parámetros
         if (email != null && contraseña != null) {
             try {
+                HttpSession sesion = request.getSession();
                 boolean usuarioValido = this.usuario.valido(email, contraseña);
                 if (!usuarioValido) {
                     request.setAttribute("validacion", usuarioValido);
@@ -83,12 +88,23 @@ public class Inicio extends HttpServlet {
                 } else {
                     Usuario conectado = this.usuario.devuelveUsuario(email);
                     if (conectado != null) {
-                        this.sesionSocial.conectarUsuario(conectado);
-                        // Guardamos en la sesión el EJB
-                        HttpSession sesion = request.getSession();
-                        sesion.setAttribute("sesionSocial", this.sesionSocial);
-                        // Vamos al servlet "Social" para empezar la sesión
-                        response.sendRedirect("./Social");
+                        switch (conectado.getTipo()) {
+                            case SOCIAL:
+                                this.sesionSocial.conectarUsuario(conectado);
+                                // Guardamos en la sesión el EJB
+                                sesion.setAttribute("sesionSocial", this.sesionSocial);
+                                // Vamos al servlet "Social" para empezar la sesión
+                                response.sendRedirect("./Social");   
+                            break;
+                            case ADMINISTRADOR:
+                                this.sesionAdministrador.conectar(conectado);
+                                // Guardamos en la sesión el EJB de administrador
+                                sesion.setAttribute("sesionAdministrador", this.sesionAdministrador);
+                                // Vamos al servlet "Administrador" para empezar la sesión
+                                response.sendRedirect("./Administrador"); 
+                            break;
+                        }
+
                     } else {
                         processRequest(request, response);
                     }
