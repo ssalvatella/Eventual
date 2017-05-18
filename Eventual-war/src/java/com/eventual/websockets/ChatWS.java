@@ -39,7 +39,7 @@ public class ChatWS {
     /**
      * MENSAJES
      */
-    private enum TipoMensaje {
+    public enum TipoMensaje {
         CONEXION, CONECTADOS, MENSAJE, ADMINISTRADOR
     }
 

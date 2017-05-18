@@ -61,8 +61,49 @@
                     <!-- /.box-body-->
                   </div>
                   <!-- /.box -->
-
                 </div>
+                <div class="col-xs-6">
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="info-box bg-aqua">
+                          <span class="info-box-icon"><i class="fa fa-bookmark-o"></i></span>
+
+                          <div class="info-box-content">
+                            <span class="info-box-text">Posts publicados</span>
+                            <span class="info-box-number">115</span>
+
+                            <div class="progress">
+                              <div class="progress-bar" style="width: 70%"></div>
+                            </div>
+                                <span class="progress-description">
+                                  En el último día
+                                </span>
+                          </div>
+                          <!-- /.info-box-content -->
+                        </div>
+                        <!-- /.info-box -->
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="info-box bg-red">
+                          <span class="info-box-icon"><i class="fa fa-comments-o"></i></span>
+
+                          <div class="info-box-content">
+                            <span class="info-box-text">Mensajes de chat</span>
+                            <span class="info-box-number">41,410</span>
+
+                            <div class="progress">
+                              <div class="progress-bar" style="width: 70%"></div>
+                            </div>
+                                <span class="progress-description">
+                                  En las últimas dos horas
+                                </span>
+                          </div>
+                          <!-- /.info-box-content -->
+                        </div>
+                        <!-- /.info-box -->
+                    </div>
+                </div>
+                  
+                
                 <!-- /.col -->
               </div>
               <!-- /.row -->

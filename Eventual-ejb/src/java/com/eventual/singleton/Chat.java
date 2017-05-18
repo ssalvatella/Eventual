@@ -7,13 +7,13 @@ package com.eventual.singleton;
 
 import com.eventual.stateless.modelo.MensajeRemote;
 import com.eventual.stateless.modelo.UsuarioRemote;
-import java.util.HashMap;
-import java.util.Map;
-import javax.ejb.Singleton;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.EJB;
+import javax.ejb.Singleton;
 import javax.websocket.Session;
 
 /**
@@ -22,6 +22,9 @@ import javax.websocket.Session;
  */
 @Singleton
 public class Chat implements ChatLocal {
+    
+    @EJB
+    private AdministracionLocal admin;
     
     @EJB
     private UsuarioRemote usr;
@@ -34,7 +37,8 @@ public class Chat implements ChatLocal {
 
     @Override
     public void añadirConectado(UsuarioConectado usuario) {
-          conectados.put(usuario.getIdUsuario(), usuario);
+        conectados.put(usuario.getIdUsuario(), usuario);
+        admin.notificarNumeroUsuarios(); // Notificamos a los admins
     }
 
     @Override
@@ -63,9 +67,11 @@ public class Chat implements ChatLocal {
         for (UsuarioConectado u : conectados.values()) {
             if (u.getSesion().getId().equals(sesion.getId())) {
                 conectados.remove(u.getIdUsuario());
+                admin.notificarNumeroUsuarios(); // Notificamos a los admins
                 return u.getIdUsuario();
             }
         }
+
         return -1;
     }
 

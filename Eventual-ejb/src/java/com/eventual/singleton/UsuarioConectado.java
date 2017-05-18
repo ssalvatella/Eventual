@@ -15,13 +15,19 @@ import javax.websocket.Session;
         
         private final int idUsuario;
         private final String nombre;
-        private final int[] amigos;
+        private int[] amigos;
         private final Session sesion;
         
         public UsuarioConectado(int idUsuario, String nombre, int[] amigos, Session sesion) {
             this.idUsuario = idUsuario;
             this.nombre = nombre;
             this.amigos = amigos;
+            this.sesion = sesion;
+        }
+        
+        public UsuarioConectado(int idUsuario, String nombre, Session sesion) {
+            this.idUsuario = idUsuario;
+            this.nombre = nombre;
             this.sesion = sesion;
         }
 

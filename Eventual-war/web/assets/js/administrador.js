@@ -1,6 +1,10 @@
 var ws = null;
 
-var grafico, data =[0], totalPoints, realtime, updateInterval;
+var grafico, data =[];
+
+var ultimo_dato_usuarios;
+
+var mensaje_presentacion = '{ mensaje: {tipo: "CONEXION", idUsuario: ' + $('#ID_USUARIO').text() + ', nombre: "' + $('#NOMBRE').text() + '"} }';
 
 var opciones = {
       grid: {
@@ -29,7 +33,7 @@ grafico = $.plot("#interactive", [data], opciones);
 conectar();
 function conectar() {
     
-    var URL = "ws://localhost:8080/Eventual-war/chat";
+    var URL = "ws://localhost:8080/Eventual-war/administradorWS";
     
     if ('WebSocket' in window) {
         ws = new WebSocket(URL);
@@ -42,11 +46,14 @@ function conectar() {
     
     ws.onopen = function () {
         console.log("Conexión realizada con éxito.");
-        setInterval(actualizarDatos, 2000);
+        enviar(mensaje_presentacion);
+        actualizarDatos();
+        setInterval(actualizarGrafico, 2000);
     };
     
     ws.onmessage = function (evento) {
         var mensaje = evento.data;
+        console.log(mensaje);
         procesarMensaje(JSON.parse(mensaje));
     };
     
@@ -67,10 +74,22 @@ function enviar(mensaje) {
     }
 }
 
-function procesarMensaje(recibido) {
-    data.push([data.length + 2, recibido.conectados]);
+function actualizarGrafico() {
+    data.push([data.length + 2, ultimo_dato_usuarios]);
     var datos = [{label: " Conectados", data: data}];
     grafico = $.plot("#interactive", datos, opciones);
+}
+
+function procesarMensaje(recibido) {
+    console.log(recibido.tipo);
+    switch (recibido.tipo) {
+        case "CONECTADOS":
+            ultimo_dato_usuarios = recibido.conectados;
+            break;
+        case "ACTUALIZACION_MENSAJES":
+            
+        break;
+    }
 }
 
 function actualizarDatos() {
