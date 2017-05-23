@@ -23,6 +23,8 @@
         PerfilAdministrador perfil = (PerfilAdministrador) request.getAttribute("perfil");
         Usuario usuario = (Usuario) request.getAttribute("usuario");
         
+        int numero_mensajes = Integer.parseInt(request.getAttribute("numero_mensajes") + "");
+        
         // Obtenemos la fecha de registro en un formato "amigable"
         LocalDateTime datetime = LocalDateTime.parse(usuario.getFechaRegistro(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S"));
         String fechaRegistro = datetime.format(DateTimeFormatter.ofPattern("d 'de' MMM"));
@@ -88,7 +90,7 @@
 
                           <div class="info-box-content">
                             <span class="info-box-text">Mensajes de chat</span>
-                            <span class="info-box-number">41,410</span>
+                            <span class="info-box-number" id="numero_mensajes"><% out.print(numero_mensajes + ""); %></span>
 
                             <div class="progress">
                               <div class="progress-bar" style="width: 70%"></div>
@@ -101,6 +103,44 @@
                         </div>
                         <!-- /.info-box -->
                     </div>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="info-box bg-green">
+                          <span class="info-box-icon"><i class="ion ion-person-add"></i></span>
+
+                          <div class="info-box-content">
+                            <span class="info-box-text">Usuarios nuevos</span>
+                            <span class="info-box-number">41,410</span>
+
+                            <div class="progress">
+                              <div class="progress-bar" style="width: 70%"></div>
+                            </div>
+                                <span class="progress-description">
+                                  En la última semana
+                                </span>
+                          </div>
+                          <!-- /.info-box-content -->
+                        </div>
+                        <!-- /.info-box -->
+                      </div>
+                      <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="info-box bg-yellow">
+                          <span class="info-box-icon"><i class="fa fa-calendar"></i></span>
+
+                          <div class="info-box-content">
+                            <span class="info-box-text">Eventos</span>
+                            <span class="info-box-number">41,410</span>
+
+                            <div class="progress">
+                              <div class="progress-bar" style="width: 70%"></div>
+                            </div>
+                                <span class="progress-description">
+                                  En la última semana
+                                </span>
+                          </div>
+                          <!-- /.info-box-content -->
+                        </div>
+                        <!-- /.info-box -->
+                      </div>
                 </div>
                   
                 

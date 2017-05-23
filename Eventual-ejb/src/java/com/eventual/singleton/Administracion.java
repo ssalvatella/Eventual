@@ -67,4 +67,19 @@ public class Administracion implements AdministracionLocal {
         return -1;
     }
 
+    @Override
+    public void notificarNumeroMensajes() {
+        JsonObject notificacion = new JsonObject();
+        administradores.values().forEach((u) -> {
+            try {
+                notificacion.addProperty("tipo", "NUMERO_MENSAJES");
+                u.getSesion().getBasicRemote().sendText(notificacion.toString());
+            } catch (IOException ex) {
+                Logger.getLogger(Administracion.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+    }
+    
+    
+
 }

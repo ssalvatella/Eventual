@@ -86,8 +86,8 @@ function procesarMensaje(recibido) {
         case "CONECTADOS":
             ultimo_dato_usuarios = recibido.conectados;
             break;
-        case "ACTUALIZACION_MENSAJES":
-            
+        case "NUMERO_MENSAJES":
+            $('#numero_mensajes').text(parseInt($('#numero_mensajes').text()) + 1);
         break;
     }
 }

@@ -6,7 +6,9 @@
 package com.eventual.servlets;
 
 import com.eventual.stateful.SesionAdministradorRemote;
+import com.eventual.stateless.modelo.MensajeRemote;
 import java.io.IOException;
+import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -20,6 +22,9 @@ import javax.servlet.http.HttpSession;
 public class Administrador extends HttpServlet {
     
     private SesionAdministradorRemote sesionAdministrador;
+    
+    @EJB
+    private MensajeRemote mensajes;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,8 +45,9 @@ public class Administrador extends HttpServlet {
         if (sesionAdministrador.conectado()) {
             request.setAttribute("perfil", this.sesionAdministrador.getPerfil());
             request.setAttribute("usuario", this.sesionAdministrador.getUsuario());
+            request.setAttribute("numero_mensajes", this.mensajes.cuentaUltimosMensajes());
             response.setContentType("text/html;charset=UTF-8");
-            request.getRequestDispatcher("administrador/administrador.jsp").forward(request, response);
+            request.getRequestDispatcher("./administrador/administrador.jsp").forward(request, response);
         } else { // En caso contrario redirigimos al inicio
             sesion.invalidate(); // Destruímos la sesión
             response.sendRedirect("./Inicio");

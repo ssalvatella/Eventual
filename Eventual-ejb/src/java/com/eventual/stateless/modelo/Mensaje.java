@@ -5,6 +5,7 @@
  */
 package com.eventual.stateless.modelo;
 
+import com.eventual.singleton.AdministracionLocal;
 import com.eventual.singleton.BaseDatosLocal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -24,6 +25,9 @@ import javax.ejb.Stateless;
 @Stateless
 @DependsOn(value="BaseDatosLocal")
 public class Mensaje implements MensajeRemote {
+    
+    @EJB
+    private AdministracionLocal admin;
     
     private int emisor;
     private int destinatario;
@@ -73,10 +77,29 @@ public class Mensaje implements MensajeRemote {
                     emisor + ", " + destinatario + ", '" + texto + "');";
             Statement stm = bd.getStatement();
             stm.execute(consulta);
+            admin.notificarNumeroMensajes();
         } catch (SQLException ex) {
             Logger.getLogger(Mensaje.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+ 
+    @Override
+    public int cuentaUltimosMensajes() {
+        try {
+            String consulta = "SELECT COUNT(id_mensaje) as numero_mensajes FROM mensaje "
+                    + "WHERE (TIMESTAMPDIFF(MINUTE, fecha_mensaje,  NOW())) <= 120;";
+            Statement stm = bd.getStatement();
+            ResultSet rs = stm.executeQuery(consulta);
+            if (rs.next()) {
+                return rs.getInt("numero_mensajes");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Usuario.class.getName()).log(Level.SEVERE, null, ex);
+            return -1;
+        } 
+        return -1;
+    }   
 
 
     public int getEmisor() {
@@ -99,7 +122,4 @@ public class Mensaje implements MensajeRemote {
         return bd;
     }
 
-
-    
-    
 }

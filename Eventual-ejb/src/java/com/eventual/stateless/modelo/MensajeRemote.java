@@ -20,4 +20,6 @@ public interface MensajeRemote extends Serializable {
     
     public void añadir(int emisor, int destintario, String texto);
     
+    public int cuentaUltimosMensajes();
+    
 }
