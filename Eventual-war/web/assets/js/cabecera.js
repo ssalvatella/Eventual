@@ -2,6 +2,10 @@ $(document).ready(function() {
     
     var autocompletado = new Awesomplete(document.getElementById("buscador"));
     
+    $('#buscador').on('awesomplete-selectcomplete', function () {
+        $('#ir_perfil').submit();
+    });
+    
     function buscar() {
 
         var busqueda = $('#buscador').val();

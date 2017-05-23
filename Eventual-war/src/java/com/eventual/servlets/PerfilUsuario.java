@@ -5,6 +5,7 @@
  */
 package com.eventual.servlets;
 
+import com.eventual.stateful.SesionSocialRemote;
 import com.eventual.stateless.modelo.PerfilOrganizacion;
 import com.eventual.stateless.modelo.PerfilOrganizacionRemote;
 import com.eventual.stateless.modelo.PerfilSocial;
@@ -17,12 +18,15 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author Pablo
  */
 public class PerfilUsuario extends HttpServlet {
+    
+    private SesionSocialRemote sesionSocial;
     
     @EJB
     private PerfilSocialRemote social;
@@ -44,9 +48,46 @@ public class PerfilUsuario extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        // Devolvemos como respuesta el .JSP para cargar la pantalla del perfil del usuario
-        request.getRequestDispatcher("/perfilUsuario.jsp").forward(request, response);
+            
+        boolean idIndicado = request.getParameter("perfil") != null;
+
+        if(idIndicado){
+            try{
+                
+                // Obtenemos el EJB de nuestra sesión
+                HttpSession sesion = request.getSession();
+                this.sesionSocial = (SesionSocialRemote) sesion.getAttribute("sesionSocial");
+                request.setAttribute("perfil", this.sesionSocial.getPerfil());
+                request.setAttribute("usuario", this.sesionSocial.getUsuario());
+                
+                int id = Integer.parseInt(request.getParameter("perfil"));
+                Usuario usr = this.usuario.devuelveUsuario(id);
+                switch (usr.getTipo()) {
+                    case SOCIAL:
+                       PerfilSocial perfilUsuario = this.social.devuelve(id);
+                       if(perfilUsuario != null){
+                            request.setAttribute("datos", perfilUsuario);
+                            response.setContentType("text/html;charset=UTF-8");
+                            // Devolvemos como respuesta el .JSP para cargar la pantalla del perfil del usuario
+                            request.getRequestDispatcher("/social/perfil_usuario.jsp").forward(request, response);
+                       }
+                    break;
+                    case ORGANIZACIÓN:
+                       PerfilOrganizacion perfilOrganizacion = this.organizacion.devuelve(id);
+                       if(perfilOrganizacion != null){
+                           request.setAttribute("datos", perfilOrganizacion);
+                           response.setContentType("text/html;charset=UTF-8");
+                           // Devolvemos como respuesta el .JSP para cargar la pantalla del perfil del usuario
+                           request.getRequestDispatcher("../organizacion/perfilOrganizacion.jsp").forward(request, response);
+                       }
+                    break;
+                }
+            }
+            catch (IOException | NumberFormatException | ServletException e){
+            }
+        } else{
+            response.sendRedirect("./Inicio");
+        }
     }
 
 
@@ -76,38 +117,7 @@ public class PerfilUsuario extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-            
-        boolean idIndicado = request.getParameter("perfil") != null;
-
-        if(idIndicado){
-            try{
-                int id = Integer.parseInt(request.getParameter("perfil"));
-                Usuario usr = this.usuario.devuelveUsuario(id);
-                switch (usr.getTipo()) {
-                    case SOCIAL:
-                       PerfilSocial perfilUsuario = this.social.devuelve(id);
-                       if(perfilUsuario != null){
-                           request.setAttribute("datos", perfilUsuario);
-                           redirigir(request, response, "./social/perfilUsuario.jsp");
-                       }
-                    break;
-                    case ORGANIZACIÓN:
-                       PerfilOrganizacion perfilOrganizacion = this.organizacion.devuelve(id);
-                       if(perfilOrganizacion != null){
-                           request.setAttribute("datos", perfilOrganizacion);
-                           redirigir(request, response, "./organizacion/perfilOrganizacion.jsp");
-                       }
-                    break;
-                    default: 
-                        response.sendRedirect("./Inicio");
-                    break;
-                }
-            }
-            catch (IOException | NumberFormatException | ServletException e){
-            }
-        } else{
-            response.sendRedirect("./Inicio");
-        }
+        processRequest(request, response);
     }
 
     /**
@@ -119,13 +129,6 @@ public class PerfilUsuario extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
-    
-    private void redirigir(HttpServletRequest request, HttpServletResponse response, String destino) throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        // Devolvemos como respuesta el .JSP para cargar la pantalla del perfil del usuario
-        request.getRequestDispatcher(destino).forward(request, response);        
-    }
     
 }
 

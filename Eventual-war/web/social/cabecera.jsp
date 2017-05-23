@@ -26,9 +26,9 @@
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
             <!-- BUSCADOR -->
-            <form class="navbar-form navbar-left" role="search">
+            <form id="ir_perfil" method="get" action="./PerfilUsuario" class="navbar-form navbar-left" role="search">
                 <div class="form-group">
-                  <input id="buscador" type="text" class="form-control"  id="navbar-search-input" placeholder="Buscar..."> 
+                  <input name="perfil" id="buscador" type="text" class="form-control"  id="navbar-search-input" placeholder="Buscar..."> 
                 </div>
             </form>
             <!-- FIN BUSCADOR -->
