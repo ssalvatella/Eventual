@@ -28,6 +28,8 @@ import javax.xml.bind.DatatypeConverter;
 @Stateless
 @DependsOn(value="BaseDatosLocal")
 public class Usuario implements UsuarioRemote {
+
+
     
     public static enum TIPO {
         ADMINISTRADOR, SOCIAL, ORGANIZACIÓN
@@ -160,9 +162,32 @@ public class Usuario implements UsuarioRemote {
  * @param email
  * @return 
  */
-   public Usuario devuelveUsuario(String email) {
+    @Override
+    public Usuario devuelveUsuario(String email) {
+        try {
+             String consulta = "SELECT * FROM usuario WHERE email_usuario = '" + email + "';";
+             Statement stm = bd.getStatement();
+             ResultSet rs = stm.executeQuery(consulta);
+             if (rs.next()) {
+                 int idUsuario = rs.getInt("id_usuario");
+                 String emailUsuario = rs.getString("email_usuario");
+                 TIPO tipoUsuario = TIPO.valueOf(rs.getString("tipo_usuario"));
+                 String registroUsuario = rs.getString("registro_usuario");
+                 String ultimaModificacion = rs.getString("ultima_modificacion_usuario");
+                 return new Usuario(idUsuario, emailUsuario, tipoUsuario, registroUsuario, ultimaModificacion);
+             } else {
+                 return null;
+             }
+         } catch (SQLException ex) {
+             Logger.getLogger(Usuario.class.getName()).log(Level.SEVERE, null, ex);
+             return null;
+         } 
+    }
+   
+    @Override
+    public Usuario devuelveUsuario(int id) {
        try {
-            String consulta = "SELECT * FROM usuario WHERE email_usuario = '" + email + "';";
+            String consulta = "SELECT * FROM usuario WHERE id_usuario = '" + id + "';";
             Statement stm = bd.getStatement();
             ResultSet rs = stm.executeQuery(consulta);
             if (rs.next()) {
@@ -179,7 +204,7 @@ public class Usuario implements UsuarioRemote {
             Logger.getLogger(Usuario.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         } 
-   }
+    }
    
     @Override
     public List<Integer> devuelveIdsAmigos(int idUsuario) {

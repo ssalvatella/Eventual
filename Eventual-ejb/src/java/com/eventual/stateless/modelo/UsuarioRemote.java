@@ -51,14 +51,23 @@ public interface UsuarioRemote {
     */
    public boolean registrar(final String email, final String contraseña, final String nombre);
    
-/**
- * devuelveUsuario()
- * 
- * Devuelve el usuario con el email pasado por parámetro.
- * @param email
- * @return 
- */
+    /**
+     * devuelveUsuario()
+     * 
+     * Devuelve el usuario con el email pasado por parámetro.
+     * @param email
+     * @return 
+     */
    public Usuario devuelveUsuario(String email);
+   
+   /**
+    * devuelveUsuario()
+    * 
+    * Devuelve el usuario con el id pasado por parámetro.
+    * @param id
+    * @return 
+    */
+   public Usuario devuelveUsuario(int id);
    
    public List<Integer> devuelveIdsAmigos(int idUsuario) ;
 
