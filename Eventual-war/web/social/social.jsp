@@ -52,7 +52,17 @@
                         <div class="box box-danger">
                             <div class="box-header with-border">
                                 <div class="box-body">
-                                    <textarea style="width: 100%; height: 100px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;" id="texto_post" placeholder="¿Qué estas pensando?"></textarea>
+                                    <form method="post" action="./Social" id="publicador_posts" style="padding-top: 15px"></form>
+                                    <textarea name="contenido" style="width: 100%; height: 100px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;" id="texto_post" placeholder="¿Qué estas pensando?"></textarea>
+                                        <input style="display: none" name="usuario" value="<% out.write(perfil.getId() + ""); %>"/>
+                                        <div class="form-group margin-bottom-none">
+                                          <div class="col-sm-9">
+                                          </div>
+                                          <div class="col-sm-3">
+                                            <button style="margin-top: 15px; margin-left: 140px" id="boton_publicar" type="" class="btn btn-danger pull-right btn-block btn-sm">Publicar</button>
+                                          </div>
+                                        </div>
+                                      </form>
                                 </div>
                             </div>
                         </div>
@@ -118,6 +128,26 @@
         <script src="./assets/js/chat.js" async> </script>
         <script type="text/javascript">
             $('#texto_post').wysihtml5();
+        </script>
+        <script>
+            
+            $(document).on('click','#boton_publicar',function(){
+                $.ajax({
+                    type: "POST",
+                    url: "./Social",
+                    data: {
+                        'usuario' : $('#ID_USUARIO').text(),
+                        'contenido' : $('#texto_post').val()
+                    },
+                    success: function() {
+                          window.location.href = "./Social";
+                    },
+                    error: function(xhr, ajaxOptions, thrownError) {
+                         alert(xhr.responseText);
+                    }
+                });
+             });
+            
         </script>
     </body>
 </html>

@@ -6,7 +6,9 @@
 package com.eventual.servlets;
 
 import com.eventual.stateful.SesionSocialRemote;
+import com.eventual.stateless.modelo.PostRemote;
 import java.io.IOException;
+import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -18,6 +20,9 @@ import javax.servlet.http.HttpSession;
  * @author Samuel
  */
 public class Social extends HttpServlet {
+    
+    @EJB
+    private PostRemote posts;
     
     private SesionSocialRemote sesionSocial;
     
@@ -74,7 +79,19 @@ public class Social extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        boolean idIndicado = request.getParameter("usuario") != null;
+        boolean contenidoIndicado = request.getParameter("contenido") != null;
+        
+        // Registrar un post del usuario
+        if (idIndicado && contenidoIndicado) {
+            int id = Integer.parseInt(request.getParameter("usuario"));
+            String contenido = request.getParameter("contenido");
+            this.posts.registrarPost(id, contenido);
+        }                   
         processRequest(request, response);
+        
+
     }
 
     /**
