@@ -26,7 +26,7 @@ public interface PerfilSocialRemote extends Serializable {
     */
     public PerfilSocial devuelve(int idUsuario);
     
-    public List<PerfilSocial> buscar(String campo);
+    public List<Perfil> buscar(String campo);
 
     public String getNombre();
     

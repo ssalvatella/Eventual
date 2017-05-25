@@ -18,6 +18,7 @@ $(document).ready(function() {
                    'campo' : busqueda
                },
                success: function(respuesta) {
+                   console.log(respuesta);
                    var list = respuesta.map(function(i) {
                        if($('#ID_USUARIO').text() != i.idUsuario) {
                            return { label: i.nombre, value: i.idUsuario };

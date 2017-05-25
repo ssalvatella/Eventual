@@ -26,10 +26,7 @@ public interface PerfilOrganizacionRemote extends Serializable {
     */
     public PerfilOrganizacion devuelve(int idOrg);
     
-    public List<PerfilOrganizacion> buscar(String campo);
+    public List<Perfil> buscar(String campo);
 
-    public String getNombreOrg();
-    
-    public int getIdOrg();
     
 }

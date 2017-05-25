@@ -14,8 +14,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
-import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
+import javax.ejb.Stateless;
 
 /**
  *
@@ -23,20 +23,16 @@ import javax.ejb.LocalBean;
  */
 @Stateless
 @LocalBean
-public class PerfilSocial implements PerfilSocialRemote {
+public class PerfilSocial extends Perfil implements PerfilSocialRemote {
     
     @EJB
     private BaseDatosLocal bd;
-
-    private int idUsuario;
-    private String nombre;
 
     public PerfilSocial() {
     }
     
     public PerfilSocial(int idUsuario, String nombre) {
-        this.idUsuario = idUsuario;
-        this.nombre = nombre;
+        super(idUsuario, nombre);
     }
     
     /**
@@ -65,21 +61,15 @@ public class PerfilSocial implements PerfilSocialRemote {
         }
     }
 
-    public int getId() {
-        return this.idUsuario;
-    }
-    public String getNombre() {
-        return this.nombre;
-    }
 
     @Override
-    public List<PerfilSocial> buscar(String campo) {
+    public List<Perfil> buscar(String campo) {
         try {
             String consulta = "SELECT * FROM perfil_social "
                     + "WHERE nombre_perfil LIKE '%" + campo + "%';";
             Statement stm = bd.getStatement();
             ResultSet rs = stm.executeQuery(consulta);
-            List<PerfilSocial> resultados = new ArrayList<>();
+            List<Perfil> resultados = new ArrayList<>();
             while (rs.next()) {
                 int id_usuario = rs.getInt("usuario_perfil");
                 String nombre = rs.getString("nombre_perfil");

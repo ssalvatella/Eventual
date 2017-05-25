@@ -5,8 +5,10 @@
  */
 package com.eventual.servlets;
 
-import com.eventual.stateless.modelo.PerfilSocial;
+import com.eventual.stateless.modelo.Perfil;
+import com.eventual.stateless.modelo.PerfilOrganizacionRemote;
 import com.eventual.stateless.modelo.PerfilSocialRemote;
+import com.google.gson.Gson;
 import java.io.IOException;
 import java.util.List;
 import javax.ejb.EJB;
@@ -14,7 +16,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import com.google.gson.Gson;
 
 /**
  *
@@ -24,6 +25,9 @@ public class Buscador extends HttpServlet {
 
     @EJB
     private PerfilSocialRemote ps;
+    
+    @EJB
+    private PerfilOrganizacionRemote po;
 
     /**
      * Handles the HTTP <code>POST</code> method.
@@ -42,13 +46,16 @@ public class Buscador extends HttpServlet {
         if (peticion != null && campo != null) {
             
             // Obtenemos los resultados de la búsqueda
-            List<PerfilSocial> resultados = this.ps.buscar(campo);
-            if (resultados.isEmpty()) return; // Si no hay salimos
-            
+            List<Perfil> usuarios = this.ps.buscar(campo);
+            List<Perfil> organizaciones = this.po.buscar(campo);
+            if (usuarios.isEmpty() && organizaciones.isEmpty()) return; // Si no hay salimos
+            usuarios.addAll(organizaciones);
             response.setContentType("application/json");
             // Deberemos enviar la respuesta en un JSON
             Gson gson = new Gson();
-            response.getWriter().write(gson.toJson(resultados));
+            
+            response.getWriter().write(gson.toJson(usuarios));
+
         }
     }
 

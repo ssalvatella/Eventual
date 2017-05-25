@@ -23,20 +23,16 @@ import javax.ejb.Stateless;
  */
 @Stateless
 @LocalBean
-public class PerfilOrganizacion implements PerfilOrganizacionRemote {
+public class PerfilOrganizacion extends Perfil implements PerfilOrganizacionRemote {
     
     @EJB
     private BaseDatosLocal bd;
-
-    private int idOrg;
-    private String nombreOrg;
 
     public PerfilOrganizacion() {
     }
     
     public PerfilOrganizacion(int idOrg, String nombreOrg) {
-        this.idOrg = idOrg;
-        this.nombreOrg = nombreOrg;
+        super(idOrg, nombreOrg);
     }
     
     /**
@@ -53,11 +49,11 @@ public class PerfilOrganizacion implements PerfilOrganizacionRemote {
         //CAMBIAR CONSULTA Y CREAR TABLA EN LA BD DE ORGANIZACIONES
         
         try {
-            String consulta = "SELECT * FROM perfil_social WHERE usuario_perfil = '" + idOrg + "';";
+            String consulta = "SELECT * FROM perfil_organizacion WHERE id_organizacion = '" + idOrg + "';";
             Statement stm = bd.getStatement();
             ResultSet rs = stm.executeQuery(consulta);
             if (rs.next()) {
-                String nombreOrg = rs.getString("nombre_org");
+                String nombreOrg = rs.getString("nombre_organizacion");
                 return new PerfilOrganizacion(idOrg, nombreOrg);
             } else {
                 return null;
@@ -69,16 +65,16 @@ public class PerfilOrganizacion implements PerfilOrganizacionRemote {
     }
 
     @Override
-    public List<PerfilOrganizacion> buscar(String campo) {
+    public List<Perfil> buscar(String campo) {
         try {
-            String consulta = "SELECT * FROM perfil_social "
-                    + "WHERE nombre_perfil LIKE '%" + campo + "%';";
+            String consulta = "SELECT * FROM perfil_organizacion "
+                    + "WHERE nombre_organizacion LIKE '%" + campo + "%';";
             Statement stm = bd.getStatement();
             ResultSet rs = stm.executeQuery(consulta);
-            List<PerfilOrganizacion> resultados = new ArrayList<>();
+            List<Perfil> resultados = new ArrayList<>();
             while (rs.next()) {
-                int id_usuario = rs.getInt("usuario_perfil");
-                String nombre = rs.getString("nombre_perfil");
+                int id_usuario = rs.getInt("id_organizacion");
+                String nombre = rs.getString("nombre_organizacion");
                 resultados.add(new PerfilOrganizacion(id_usuario, nombre));
             }
             return resultados;
@@ -87,14 +83,5 @@ public class PerfilOrganizacion implements PerfilOrganizacionRemote {
             return null;
         }        
     }
- 
-    @Override
-    public int getIdOrg() {
-        return this.idOrg;
-    }
-    @Override
-    public String getNombreOrg() {
-        return this.nombreOrg;
-    }   
-    
+
 }

@@ -49,6 +49,7 @@
                 
                 <div class="row">
                     <div class="col-md-8">
+                        <!-- CUADRO DE CREACIÓN DE POSTS -->
                         <div class="box box-danger">
                             <div class="box-header with-border">
                                 <div class="box-body">

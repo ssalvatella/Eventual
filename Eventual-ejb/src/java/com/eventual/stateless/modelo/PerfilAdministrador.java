@@ -19,10 +19,8 @@ import javax.ejb.Stateless;
  * @author Samuel
  */
 @Stateless
-public class PerfilAdministrador implements PerfilAdministradorRemote {
+public class PerfilAdministrador extends Perfil implements PerfilAdministradorRemote {
     
-    private int id;
-    private String nombre;
     
     @EJB
     private BaseDatosLocal bd;
@@ -31,8 +29,7 @@ public class PerfilAdministrador implements PerfilAdministradorRemote {
     }
     
     public PerfilAdministrador(int id, String nombre) {
-        this.id = id;
-        this.nombre = nombre;
+        super(id, nombre);
     }
 
     @Override
@@ -52,16 +49,7 @@ public class PerfilAdministrador implements PerfilAdministradorRemote {
             return null;
         }
     }
-
-    public int getId() {
-        return id;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
     
-    
-
+   
     
 }
