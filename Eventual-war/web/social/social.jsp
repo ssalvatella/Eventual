@@ -95,7 +95,7 @@
                               <!-- /.box-tools -->
                             </div>
                             <!-- /.box-header -->
-                            <div class="box-body">
+                            <div class="box-body" id="cuadro_posts">
                                 
                                 <%
                                     for (Post p : posts) {
@@ -112,7 +112,7 @@
                                         String comentarios = (p.getNumero_comentarios() == 0)? "Comentar":"Comentarios(" + p.getNumero_comentarios() + ")";
                                         String megustas = (p.getNumero_me_gustas() == 0)? "":"(" + p.getNumero_me_gustas() + ")";
                                         out.print("<ul class=\"list-inline\">"
-                                                + "<li><a href=\"#\" class=\"link-black text-sm\"><i class=\"fa fa-share margin-r-5\"></i> Share</a></li><li><a href=\"#\" class=\"link-black text-sm\"><i class=\"fa fa-thumbs-o-up margin-r-5\"></i> Me gusta"+ megustas +"</a></li><li class=\"pull-right\"><a href=\"#\" class=\"link-black text-sm\"><i class=\"fa fa-comments-o margin-r-5\"></i> " + comentarios + " </a></li>"
+                                                + "<li><a href=\"#\" class=\"link-black text-sm\"><i class=\"fa fa-share margin-r-5\"></i> Compartir</a></li><li><a href=\"#\" class=\"link-black text-sm\"><i class=\"fa fa-thumbs-o-up margin-r-5\"></i> Me gusta"+ megustas +"</a></li><li class=\"pull-right\"><a href=\"#\" class=\"link-black text-sm\"><i class=\"fa fa-comments-o margin-r-5\"></i> " + comentarios + " </a></li>"
                                                 + "</ul>");
                                         out.print(bloqueEscribirComentario);
                                         out.print("</div>");
@@ -122,7 +122,7 @@
                             <!-- /.box-body -->
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-4" >
                       <%@ include file="chat.jsp" %>     
                     </div>
                 </div>

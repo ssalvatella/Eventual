@@ -4,9 +4,9 @@
  * and open the template in the editor.
  */
 package com.eventual.singleton;
+import com.eventual.stateless.modelo.Post;
 import com.google.gson.JsonArray;
 import java.util.Map;
-
 import javax.ejb.Local;
 import javax.websocket.Session;
 
@@ -29,5 +29,7 @@ public interface ChatLocal {
     public Map<Integer, UsuarioConectado> getConectados();
     
     public void registrarMensaje(int emisor, int destintario, String texto);
+    
+    public void notificarPost(Post p);
     
 }

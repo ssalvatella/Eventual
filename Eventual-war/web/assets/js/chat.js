@@ -79,6 +79,9 @@ function procesarMensaje(recibido) {
         case "MENSAJE":
             recibirMensaje(recibido);
             break;
+        case "POST":
+            añadirPost(recibido.POST);
+            break;
     }    
 }
 
@@ -208,6 +211,12 @@ function formateaFecha(fecha) {
   var minutos = fecha.getMinutes();
 
   return day + ' ' + monthNames[monthIndex] + ' ' + hora + ':' + minutos;
+}
+
+function añadirPost(post) {
+    
+    $('#cuadro_posts').prepend('<div class="post animated fadeInDown"><div class="user-block"><img class="img-circle img-bordered-sm" src="./assets/plugins/admin-lte/img/avatar5.png" alt="user image"><span class="username"><a href="#">' + post.nombreUsuario + '</a><i class="fa fa-times"></i></a></span><span class="description">'+ post.fecha +'</span></div>' + post.contenido + '<ul class="list-inline"><li><a href="#" class="link-black text-sm"><i class="fa fa-share margin-r-5"></i> Compartir</a></li><li><a href="#" class="link-black text-sm"><i class="fa fa-thumbs-o-up margin-r-5"></i> Me gusta</a></li><li class="pull-right"><a href="#" class="link-black text-sm"><i class="fa fa-comments-o margin-r-5"></i> Comentar</a></li></ul><input class="form-control input-sm" type="text" placeholder="Comentar"></div>');
+    
 }
     
 conectar();

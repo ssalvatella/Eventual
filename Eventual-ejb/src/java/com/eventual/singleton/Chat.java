@@ -6,12 +6,18 @@
 package com.eventual.singleton;
 
 import com.eventual.stateless.modelo.MensajeRemote;
+import com.eventual.stateless.modelo.Post;
 import com.eventual.stateless.modelo.UsuarioRemote;
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.stream.IntStream;
 import javax.ejb.EJB;
 import javax.ejb.Singleton;
 import javax.websocket.Session;
@@ -74,6 +80,8 @@ public class Chat implements ChatLocal {
 
         return -1;
     }
+    
+    
 
     @Override
     public Map<Integer, UsuarioConectado> getConectados() {
@@ -84,8 +92,23 @@ public class Chat implements ChatLocal {
     public void registrarMensaje(int emisor, int destintario, String texto) {
         this.mensajes.añadir(emisor, destintario, texto);
     }
-    
-    
-    
+
+    @Override
+    public void notificarPost(Post p) {
+        Gson gson = new Gson();
+        JsonObject elemento = new JsonObject();
+        elemento.addProperty("tipo", "POST");
+        elemento.add("POST", gson.toJsonTree(p));
+        this.conectados.values().stream().filter((u) -> 
+                // Si es de un amigo
+                (IntStream.of(u.getAmigos()).anyMatch(x -> x == p.getIdUsuario()))).forEachOrdered((u) -> {
+            try {
+                u.getSesion().getBasicRemote().sendText(elemento.toString());
+            } catch (IOException ex) {
+                Logger.getLogger(Chat.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }); 
+    }
+
     
 }
