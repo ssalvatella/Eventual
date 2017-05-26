@@ -6,8 +6,10 @@
 package com.eventual.servlets;
 
 import com.eventual.stateful.SesionSocialRemote;
+import com.eventual.stateless.modelo.Post;
 import com.eventual.stateless.modelo.PostRemote;
 import java.io.IOException;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -45,6 +47,8 @@ public class Social extends HttpServlet {
         if (sesionSocial.usuarioConectado() && sesionSocial.esSocial()) {
             request.setAttribute("perfil", this.sesionSocial.getPerfil());
             request.setAttribute("usuario", this.sesionSocial.getUsuario());
+            List<Post> posts = this.posts.devuelve(this.sesionSocial.getUsuario().getId(), 10, 0);
+            request.setAttribute("posts", posts);
             response.setContentType("text/html;charset=UTF-8");
             request.getRequestDispatcher("social/social.jsp").forward(request, response);
         } else { // En caso contrario redirigimos al inicio

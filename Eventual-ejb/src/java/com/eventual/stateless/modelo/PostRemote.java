@@ -6,13 +6,28 @@
 package com.eventual.stateless.modelo;
 
 import java.io.Serializable;
+import java.util.List;
+import javax.ejb.Remote;
 
 /**
  *
  * @author Samuel
  */
+@Remote
 public interface PostRemote extends Serializable {
     
     public void registrarPost(int idUsuario, String contenido);
+    
+    /**
+     * devuelve
+     * 
+     * Dado un id, una cantidad y un salto devuelve el 
+     * bloque de posts correspondiente a ese usuario.
+     * @param id
+     * @param cantidad
+     * @param salto
+     * @return 
+     */
+    public List<Post> devuelve(int id, int cantidad, int salto);
     
 }
