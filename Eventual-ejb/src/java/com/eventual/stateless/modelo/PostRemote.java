@@ -30,4 +30,6 @@ public interface PostRemote extends Serializable {
      */
     public List<Post> devuelve(int id, int cantidad, int salto);
     
+    public int cuentaUltimosPosts();
+    
 }

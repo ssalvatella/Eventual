@@ -24,6 +24,7 @@
         Usuario usuario = (Usuario) request.getAttribute("usuario");
         
         int numero_mensajes = Integer.parseInt(request.getAttribute("numero_mensajes") + "");
+        int numero_posts = Integer.parseInt(request.getAttribute("numero_posts") + "");
         
         // Obtenemos la fecha de registro en un formato "amigable"
         LocalDateTime datetime = LocalDateTime.parse(usuario.getFechaRegistro(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S"));
@@ -71,7 +72,7 @@
 
                           <div class="info-box-content">
                             <span class="info-box-text">Posts publicados</span>
-                            <span class="info-box-number">115</span>
+                            <span class="info-box-number" id="numero_posts"><% out.print(numero_posts + ""); %></span>
 
                             <div class="progress">
                               <div class="progress-bar" style="width: 70%"></div>

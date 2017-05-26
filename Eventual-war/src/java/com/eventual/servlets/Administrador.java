@@ -7,6 +7,7 @@ package com.eventual.servlets;
 
 import com.eventual.stateful.SesionAdministradorRemote;
 import com.eventual.stateless.modelo.MensajeRemote;
+import com.eventual.stateless.modelo.PostRemote;
 import java.io.IOException;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -25,6 +26,9 @@ public class Administrador extends HttpServlet {
     
     @EJB
     private MensajeRemote mensajes;
+    
+    @EJB
+    private PostRemote posts;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -46,6 +50,7 @@ public class Administrador extends HttpServlet {
             request.setAttribute("perfil", this.sesionAdministrador.getPerfil());
             request.setAttribute("usuario", this.sesionAdministrador.getUsuario());
             request.setAttribute("numero_mensajes", this.mensajes.cuentaUltimosMensajes());
+            request.setAttribute("numero_posts", this.posts.cuentaUltimosPosts());
             response.setContentType("text/html;charset=UTF-8");
             request.getRequestDispatcher("./administrador/administrador.jsp").forward(request, response);
         } else { // En caso contrario redirigimos al inicio

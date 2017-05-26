@@ -89,6 +89,9 @@ function procesarMensaje(recibido) {
         case "NUMERO_MENSAJES":
             $('#numero_mensajes').text(parseInt($('#numero_mensajes').text()) + 1);
         break;
+        case "NUMERO_POSTS":
+            $('#numero_posts').text(parseInt($('#numero_posts').text()) + 1);
+        break;
     }
 }
 

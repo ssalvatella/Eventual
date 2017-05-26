@@ -27,5 +27,7 @@ public interface AdministracionLocal {
     public int eliminarConectado(Session sesion);
     
     public void notificarNumeroMensajes();
+    
+    public void notificarNumeroPosts();
 
 }

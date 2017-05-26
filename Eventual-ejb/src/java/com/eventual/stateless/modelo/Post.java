@@ -5,6 +5,7 @@
  */
 package com.eventual.stateless.modelo;
 
+import com.eventual.singleton.AdministracionLocal;
 import com.eventual.singleton.BaseDatosLocal;
 import com.ocpsoft.pretty.time.PrettyTime;
 import java.sql.ResultSet;
@@ -31,6 +32,9 @@ public class Post implements PostRemote {
     
     @EJB
     private UsuarioRemote usuarios;
+    
+    @EJB
+    private AdministracionLocal admin;
     
     private int idPost;
     private int idUsuario;
@@ -74,6 +78,7 @@ public class Post implements PostRemote {
             Statement stm = bd.getStatement();
             stm.execute(consulta);
             // Notificar a admins...
+            this.admin.notificarNumeroPosts();
         } catch (SQLException ex) {
             Logger.getLogger(Mensaje.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -153,6 +158,23 @@ public class Post implements PostRemote {
         
         return resultados;
     }
+    
+    @Override
+    public int cuentaUltimosPosts() {
+        try {
+            String consulta = "SELECT COUNT(id_post) as numero_posts FROM post "
+                    + "WHERE (TIMESTAMPDIFF(DAY, fecha_post,  NOW())) <= 1;";
+            Statement stm = bd.getStatement();
+            ResultSet rs = stm.executeQuery(consulta);
+            if (rs.next()) {
+                return rs.getInt("numero_posts");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Usuario.class.getName()).log(Level.SEVERE, null, ex);
+            return -1;
+        } 
+        return -1;
+    }    
 
     public int getIdPost() {
         return idPost;
@@ -193,6 +215,8 @@ public class Post implements PostRemote {
     public List<Compartido> getCompartido() {
         return compartido;
     }
+
+
     
     
     
