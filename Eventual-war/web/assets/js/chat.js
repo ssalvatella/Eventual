@@ -91,6 +91,7 @@ function mostrarAmigos(amigos) {
     for (var i = 0; i < amigos.length; i++) {
         $('#lista_amigos').append('<li name="'+ amigos[i].nombre +'" style="cursor:pointer;" value="' + amigos[i].id +'"><img class="contacts-list-img" src="./assets/plugins/admin-lte/img/avatar5.png" alt="Avatar de contacto"><div class="contacts-list-info"><span class="contacts-list-name">' + amigos[i].nombre + '</span></div></li>');
         $("li[value='" + amigos[i].id + "']").click(function() {
+            $('#boton_contactos').click();
             abrirChat(this.value, this.getAttribute("name"));
         });
     }
@@ -100,6 +101,7 @@ function mostrarAmigos(amigos) {
 function conectarAmigo(amigo) {
     $('#lista_amigos').append('<li name="'+ amigo.nombre +'" style="cursor:pointer;" value="' + amigo.id +'"><img class="contacts-list-img" src="./assets/plugins/admin-lte/img/avatar5.png" alt="Avatar de contacto"><div class="contacts-list-info"><span class="contacts-list-name">' + amigo.nombre + '</span></div></li>');
     $("li[value='" + amigo.id + "']").click(function() {
+        $('#boton_contactos').click();
         abrirChat(this.value, amigo.nombre);
     });
     new Noty({
@@ -118,7 +120,6 @@ function desconectarAmigo(id) {
 
 function abrirChat(id, nombre) {
     $('#cuerpo_mensajes').empty();
-    $('#boton_contactos').click();
     $('#contador_mensajes').hide();  
     destinatarioActual = id;
     nombreDestinatarioActual = nombre;
@@ -143,9 +144,9 @@ function mostrarMensajes(mensajes, nombre) {
     for (var i = 0; i < mensajes.length; i++) {
         // Ese mensaje lo he envíado yo!
         if (mensajes[i].emisor == $('#ID_USUARIO').text()) {
-            $('#cuerpo_mensajes').append('<div class="direct-chat-msg right"><div class="direct-chat-info clearfix"><span class="direct-chat-name pull-right">'+ $('#NOMBRE').text() +'</span><span class="direct-chat-timestamp pull-left">'+ formateaFecha(new Date(mensajes[i].fecha)) +'</span></div><img class="direct-chat-img" src="./assets/plugins/admin-lte/img/avatar5.png" alt="message user image"><div class="direct-chat-text">'+ mensajes[i].texto +'</div></div>');
+            $('#cuerpo_mensajes').append('<div class="direct-chat-msg right"><div class="direct-chat-info clearfix"><span class="direct-chat-name pull-right">'+ $('#NOMBRE').text() +'</span><span class="direct-chat-timestamp pull-left">'+ mensajes[i].fecha +'</span></div><img class="direct-chat-img" src="./assets/plugins/admin-lte/img/avatar5.png" alt="message user image"><div class="direct-chat-text">'+ mensajes[i].texto +'</div></div>');
         } else { // Este mensaje me lo enviaron
-            $('#cuerpo_mensajes').append('<div class="direct-chat-msg"><div class="direct-chat-info clearfix"><span class="direct-chat-name pull-left">'+ nombre +'</span><span class="direct-chat-timestamp pull-right">'+ formateaFecha(new Date(mensajes[i].fecha)) +'</span></div><img class="direct-chat-img" src="./assets/plugins/admin-lte/img/avatar5.png" alt="message user image"><div class="direct-chat-text">'+ mensajes[i].texto +'</div></div>');
+            $('#cuerpo_mensajes').append('<div class="direct-chat-msg"><div class="direct-chat-info clearfix"><span class="direct-chat-name pull-left">'+ nombre +'</span><span class="direct-chat-timestamp pull-right">'+ mensajes[i].fecha +'</span></div><img class="direct-chat-img" src="./assets/plugins/admin-lte/img/avatar5.png" alt="message user image"><div class="direct-chat-text">'+ mensajes[i].texto +'</div></div>');
         }
     }
 }
@@ -184,7 +185,13 @@ function recibirMensaje(mensaje) {
             theme: 'metroui',
             type: 'success',
             progressBar: true,
-            text: nombreDelEmisor + ' dice: ' + mensaje.texto
+            text: nombreDelEmisor + ' dice: ' + mensaje.texto,
+            buttons: [
+                Noty.button('Ver', 'btn btn-info', function () {
+                    abrirChat(mensaje.emisor, nombreDelEmisor);
+                }, {id: 'button1', 'data-status': 'ok'}),
+
+            ]
         }).show();
         audio_notificacion.play();
     }

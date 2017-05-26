@@ -7,11 +7,17 @@ package com.eventual.stateless.modelo;
 
 import com.eventual.singleton.AdministracionLocal;
 import com.eventual.singleton.BaseDatosLocal;
+import com.ocpsoft.pretty.time.PrettyTime;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.DependsOn;
@@ -33,6 +39,8 @@ public class Mensaje implements MensajeRemote {
     private int destinatario;
     private String texto;
     private String fecha;
+    
+    private final PrettyTime pt = new PrettyTime(new Locale("es"));
 
     public Mensaje() {
     }
@@ -41,7 +49,16 @@ public class Mensaje implements MensajeRemote {
         this.emisor = emisor;
         this.destinatario = destinatario;
         this.texto = texto;
-        this.fecha = fecha;
+
+        
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
+        try {
+            Date f = df.parse(fecha);
+            this.fecha = pt.format(f);
+        } catch (ParseException ex) {
+            Logger.getLogger(Mensaje.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
     
     @EJB
