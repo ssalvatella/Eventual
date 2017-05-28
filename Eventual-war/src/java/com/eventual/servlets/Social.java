@@ -87,15 +87,31 @@ public class Social extends HttpServlet {
         boolean idIndicado = request.getParameter("usuario") != null;
         boolean contenidoIndicado = request.getParameter("contenido") != null;
         
-        // Registrar un post del usuario
-        if (idIndicado && contenidoIndicado) {
+        boolean tipoIndicado = request.getParameter("tipo") != null;
+        
+        if (tipoIndicado) {
+            
+            String tipo = request.getParameter("tipo");
             int id = Integer.parseInt(request.getParameter("usuario"));
-            String contenido = request.getParameter("contenido");
-            this.posts.registrarPost(id, contenido);
-        }                   
+            int post = Integer.parseInt(request.getParameter("post"));
+            
+            if (tipo.equals("poner_megusta")) {
+                this.posts.añadirMeGusta(id, post);
+            } else if (tipo.equals("quitar_megusta")) {
+                this.posts.quitarMeGusta(id, post);
+            }
+            
+        } else {
+            // Registrar un post del usuario
+            if (idIndicado && contenidoIndicado) {
+                int id = Integer.parseInt(request.getParameter("usuario"));
+                String contenido = request.getParameter("contenido");
+                this.posts.registrarPost(id, contenido);
+            } 
+        }
+                  
         processRequest(request, response);
         
-
     }
 
     /**

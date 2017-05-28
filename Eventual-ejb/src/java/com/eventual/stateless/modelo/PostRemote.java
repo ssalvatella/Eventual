@@ -32,4 +32,8 @@ public interface PostRemote extends Serializable {
     
     public int cuentaUltimosPosts();
     
+    public void añadirMeGusta(int usuario, int post);
+    
+    public void quitarMeGusta(int usuario, int post);
+    
 }

@@ -46,6 +46,8 @@ public class Post implements PostRemote {
     private String fecha;
     private String contenido;
     
+    private boolean meGustaPulsado;
+    
     // ESTADÍSTICAS
     
     private int numero_comentarios;
@@ -69,7 +71,7 @@ public class Post implements PostRemote {
         this.contenido = contenido;
     }
 
-    public Post(int idPost, int idUsuario, String nombreUsuario, String fecha, String contenido, int numero_comentarios, int numero_me_gustas) {
+    public Post(int idPost, int idUsuario, String nombreUsuario, String fecha, String contenido, int numero_comentarios, int numero_me_gustas, boolean meGustaPulsado) {
         this.nombreUsuario = nombreUsuario;
         this.idPost = idPost;
         this.idUsuario = idUsuario;
@@ -77,6 +79,7 @@ public class Post implements PostRemote {
         this.contenido = contenido;
         this.numero_comentarios = numero_comentarios;
         this.numero_me_gustas = numero_me_gustas;
+        this.meGustaPulsado = meGustaPulsado;
     }
     
     @EJB
@@ -104,7 +107,8 @@ public class Post implements PostRemote {
             // Construimos la consulta que obtendrá todo
             String consulta = "SELECT  id_post, usuario_post, nombre_organizacion , nombre_perfil, contenido_post, fecha_post, "
                     + "COUNT(id_comentario) as numero_comentarios, "
-                    + "COUNT(id_me_gusta) as numero_me_gustas FROM post ";
+                    + "COUNT(id_me_gusta) as numero_me_gustas, "
+                    + "COUNT(CASE WHEN me_gusta.usuario_me_gusta = "+ id +" THEN 1 END) as meGustaPulsado FROM post ";
             
             // Joins para obtener datos de los emisores
             consulta += "LEFT JOIN perfil_social ON (post.usuario_post = perfil_social.usuario_perfil) ";
@@ -134,9 +138,11 @@ public class Post implements PostRemote {
                 
                 int numeroComentarios = rs.getInt("numero_comentarios");
                 int numeroMeGustas = rs.getInt("numero_me_gustas");
+                int mgp = rs.getInt("meGustaPulsado");
+                boolean meGustaPulsado = (mgp > 0);
                 String nombre = (nombreOrg == null) ? nombreUsuario : nombreOrg;
                 return new Post(idPost, idUsuario, nombre, 
-                        fechaPublicacion, contenido, numeroComentarios, numeroMeGustas);
+                        fechaPublicacion, contenido, numeroComentarios, numeroMeGustas, meGustaPulsado);
             }
         } catch (SQLException ex) {
             Logger.getLogger(Post.class.getName()).log(Level.SEVERE, null, ex);
@@ -160,7 +166,8 @@ public class Post implements PostRemote {
         // Construimos la consulta que obtendrá todo
         String consulta = "SELECT  id_post, usuario_post, nombre_organizacion , nombre_perfil, contenido_post, fecha_post, "
                 + "COUNT(id_comentario) as numero_comentarios, "
-                + "COUNT(id_me_gusta) as numero_me_gustas FROM post ";
+                + "COUNT(id_me_gusta) as numero_me_gustas, "
+                + "COUNT(CASE WHEN me_gusta.usuario_me_gusta = "+ id +" THEN 1 END) as meGustaPulsado FROM post ";
         
         // Joins para obtener datos de los emisores
         consulta += "LEFT JOIN perfil_social ON (post.usuario_post = perfil_social.usuario_perfil) ";
@@ -208,9 +215,11 @@ public class Post implements PostRemote {
                 
                 int numeroComentarios = rs.getInt("numero_comentarios");
                 int numeroMeGustas = rs.getInt("numero_me_gustas");
+                int mgp = rs.getInt("meGustaPulsado");
+                boolean meGustaPulsado = (mgp > 0);
                 String nombre = (nombreOrg == null) ? nombreUsuario : nombreOrg;
                 resultados.add(new Post(idPost, idUsuario, nombre, 
-                        fechaPublicacion, contenido, numeroComentarios, numeroMeGustas));
+                        fechaPublicacion, contenido, numeroComentarios, numeroMeGustas, meGustaPulsado));
             }
         } catch (SQLException ex) {
             Logger.getLogger(Post.class.getName()).log(Level.SEVERE, null, ex);
@@ -238,6 +247,31 @@ public class Post implements PostRemote {
         return -1;
     }    
 
+    @Override
+    public void añadirMeGusta(int usuario, int post) {
+        try { 
+            String consulta = "INSERT INTO me_gusta (post_me_gusta, usuario_me_gusta) VALUES (" +
+                    post + ", " + usuario + ");";
+            Statement stm = bd.getStatement();
+            stm.execute(consulta);
+            // Notificar
+        } catch (SQLException ex) {
+            Logger.getLogger(Mensaje.class.getName()).log(Level.SEVERE, null, ex);
+        }        
+    }
+
+    @Override
+    public void quitarMeGusta(int usuario, int post) {
+        try { 
+            String consulta = "DELETE FROM me_gusta WHERE (post_me_gusta=" + post + " AND usuario_me_gusta=" + usuario +") ;";
+            Statement stm = bd.getStatement();
+            stm.execute(consulta);
+            // Notificar
+        } catch (SQLException ex) {
+            Logger.getLogger(Mensaje.class.getName()).log(Level.SEVERE, null, ex);
+        }  
+    }
+    
     public int getIdPost() {
         return idPost;
     }
@@ -278,9 +312,9 @@ public class Post implements PostRemote {
         return compartido;
     }
 
-
-    
-    
+    public boolean isMeGustaPulsado() {
+        return meGustaPulsado;
+    }
     
     private class MeGusta {
         

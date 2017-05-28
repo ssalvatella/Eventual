@@ -99,7 +99,7 @@
                                 
                                 <%
                                     for (Post p : posts) {
-                                        out.print("<div class=\"post\"> ");
+                                        out.print("<div class=\"post\" id=\"" + p.getIdPost() + "\"> ");
                                         out.print("<div class=\"user-block\">");
                                         out.print("<img class=\"img-circle img-bordered-sm\" src=\"./assets/plugins/admin-lte/img/avatar5.png\" alt=\"User Image\">");
                                         out.print("<span class=\"username\">");
@@ -109,10 +109,11 @@
                                         out.print("<span class=\"description\">" + p.getFecha() + "</span>");
                                         out.print("</div>");
                                         out.print(p.getContenido());
-                                        String comentarios = (p.getNumero_comentarios() == 0)? "Comentar":"Comentarios(" + p.getNumero_comentarios() + ")";
-                                        String megustas = (p.getNumero_me_gustas() == 0)? "":"(" + p.getNumero_me_gustas() + ")";
+                                        String comentarios = (p.getNumero_comentarios() == 0)? "Comentar":"Comentarios (" + p.getNumero_comentarios() + ")";
+                                        String megustas = (p.getNumero_me_gustas() == 0)? "":" (" + p.getNumero_me_gustas() + ")";
+                                        String meGustaPulsado = (p.isMeGustaPulsado()) ? "text-green" : "";
                                         out.print("<ul class=\"list-inline\">"
-                                                + "<li><a href=\"#\" class=\"link-black text-sm\"><i class=\"fa fa-share margin-r-5\"></i> Compartir</a></li><li><a href=\"#\" class=\"link-black text-sm\"><i class=\"fa fa-thumbs-o-up margin-r-5\"></i> Me gusta"+ megustas +"</a></li><li class=\"pull-right\"><a href=\"#\" class=\"link-black text-sm\"><i class=\"fa fa-comments-o margin-r-5\"></i> " + comentarios + " </a></li>"
+                                                + "<li><a href=\"#\" class=\"link-black text-sm\"><i class=\"fa fa-share margin-r-5\"></i> Compartir</a></li><li><span style=\"cursor:pointer\" class=\"link-black text-sm meGusta "+ meGustaPulsado +"\" value=\"" + p.getNumero_me_gustas() + "\"><i class=\"fa fa-thumbs-o-up margin-r-5\"></i> Me gusta"+ megustas +"</span></li><li class=\"pull-right\"><a href=\"#\" class=\"link-black text-sm\"><i class=\"fa fa-comments-o margin-r-5\"></i> " + comentarios + " </a></li>"
                                                 + "</ul>");
                                         out.print(bloqueEscribirComentario);
                                         out.print("</div>");

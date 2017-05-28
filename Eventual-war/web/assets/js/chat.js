@@ -4,7 +4,6 @@ var ws = null;
 
 var destinatarioActual;
 var nombreDestinatarioActual;
-var audio_notificacion = new Audio('../assets/sonidos/mensaje_notificacion.mp3');
 
 var mensaje_presentacion = '{ mensaje: {tipo: "CONEXION", idUsuario: ' + $('#ID_USUARIO').text() + ', nombre: "' + $('#NOMBRE').text() + '"} }';
 
@@ -222,8 +221,8 @@ function formateaFecha(fecha) {
 
 function añadirPost(post) {
     
-    $('#cuadro_posts').prepend('<div class="post animated fadeInDown"><div class="user-block"><img class="img-circle img-bordered-sm" src="./assets/plugins/admin-lte/img/avatar5.png" alt="user image"><span class="username"><a href="#">' + post.nombreUsuario + '</a><i class="fa fa-times"></i></a></span><span class="description">'+ post.fecha +'</span></div>' + post.contenido + '<ul class="list-inline"><li><a href="#" class="link-black text-sm"><i class="fa fa-share margin-r-5"></i> Compartir</a></li><li><a href="#" class="link-black text-sm"><i class="fa fa-thumbs-o-up margin-r-5"></i> Me gusta</a></li><li class="pull-right"><a href="#" class="link-black text-sm"><i class="fa fa-comments-o margin-r-5"></i> Comentar</a></li></ul><input class="form-control input-sm" type="text" placeholder="Comentar"></div>');
-    
+    $('#cuadro_posts').prepend('<div class="post animated fadeInDown" id="' + post.idPost + '"><div class="user-block"><img class="img-circle img-bordered-sm" src="./assets/plugins/admin-lte/img/avatar5.png" alt="user image"><span class="username"><a href="#">' + post.nombreUsuario + '</a></a></span><span class="description">'+ post.fecha +'</span></div>' + post.contenido + '<ul class="list-inline"><li><a href="#" class="link-black text-sm"><i class="fa fa-share margin-r-5"></i> Compartir</a></li><li><span style="cursor: pointer" value="0" class="link-black text-sm meGusta"><i class="fa fa-thumbs-o-up margin-r-5"></i> Me gusta</span></li><li class="pull-right"><a href="#" class="link-black text-sm"><i class="fa fa-comments-o margin-r-5"></i> Comentar</a></li></ul><input class="form-control input-sm" type="text" placeholder="Comentar"></div>');
+    redifinirEscuchaMeGustas();
 }
     
 conectar();
