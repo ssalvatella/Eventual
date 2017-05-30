@@ -110,5 +110,39 @@ public class Chat implements ChatLocal {
         }); 
     }
 
+    @Override
+    public void notificarMeGusta(int idPost) {
+        
+        Gson gson = new Gson();
+        JsonObject elemento = new JsonObject();
+        elemento.addProperty("tipo", "NUEVO_ME_GUSTA");
+        elemento.addProperty("POST", idPost);
+        this.conectados.values().forEach((u) -> {
+            try {
+                u.getSesion().getBasicRemote().sendText(elemento.toString());
+            } catch (IOException ex) {
+                Logger.getLogger(Chat.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+        
+    }
+
+    @Override
+    public void notificarEliminacionMeGusta(int idPost) {
+        Gson gson = new Gson();
+        JsonObject elemento = new JsonObject();
+        elemento.addProperty("tipo", "QUITAR_ME_GUSTA");
+        elemento.addProperty("POST", idPost);
+        this.conectados.values().forEach((u) -> {
+            try {
+                u.getSesion().getBasicRemote().sendText(elemento.toString());
+            } catch (IOException ex) {
+                Logger.getLogger(Chat.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+    }
+    
+    
+
     
 }

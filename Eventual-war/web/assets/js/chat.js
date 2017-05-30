@@ -81,6 +81,12 @@ function procesarMensaje(recibido) {
         case "POST":
             añadirPost(recibido.POST);
             break;
+        case "NUEVO_ME_GUSTA":
+            añadirMeGusta(recibido.POST);
+            break;
+        case "QUITAR_ME_GUSTA":
+            quitarMeGusta(recibido.POST);
+            break;
     }    
 }
 
@@ -192,7 +198,6 @@ function recibirMensaje(mensaje) {
 
             ]
         }).show();
-        audio_notificacion.play();
     }
     
 }
@@ -224,5 +229,4 @@ function añadirPost(post) {
     $('#cuadro_posts').prepend('<div class="post animated fadeInDown" id="' + post.idPost + '"><div class="user-block"><img class="img-circle img-bordered-sm" src="./assets/plugins/admin-lte/img/avatar5.png" alt="user image"><span class="username"><a href="#">' + post.nombreUsuario + '</a></a></span><span class="description">'+ post.fecha +'</span></div>' + post.contenido + '<ul class="list-inline"><li><a href="#" class="link-black text-sm"><i class="fa fa-share margin-r-5"></i> Compartir</a></li><li><span style="cursor: pointer" value="0" class="link-black text-sm meGusta"><i class="fa fa-thumbs-o-up margin-r-5"></i> Me gusta</span></li><li class="pull-right"><a href="#" class="link-black text-sm"><i class="fa fa-comments-o margin-r-5"></i> Comentar</a></li></ul><input class="form-control input-sm" type="text" placeholder="Comentar"></div>');
     redifinirEscuchaMeGustas();
 }
-    
 conectar();

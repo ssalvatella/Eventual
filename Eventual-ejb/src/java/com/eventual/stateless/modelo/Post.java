@@ -255,6 +255,7 @@ public class Post implements PostRemote {
             Statement stm = bd.getStatement();
             stm.execute(consulta);
             // Notificar
+            this.chat.notificarMeGusta(post);
         } catch (SQLException ex) {
             Logger.getLogger(Mensaje.class.getName()).log(Level.SEVERE, null, ex);
         }        
@@ -267,6 +268,7 @@ public class Post implements PostRemote {
             Statement stm = bd.getStatement();
             stm.execute(consulta);
             // Notificar
+            this.chat.notificarEliminacionMeGusta(post);
         } catch (SQLException ex) {
             Logger.getLogger(Mensaje.class.getName()).log(Level.SEVERE, null, ex);
         }  

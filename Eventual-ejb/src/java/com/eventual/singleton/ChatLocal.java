@@ -32,4 +32,8 @@ public interface ChatLocal {
     
     public void notificarPost(Post p);
     
+    public void notificarMeGusta(int idPost);
+    
+    public void notificarEliminacionMeGusta(int idPost);
+    
 }

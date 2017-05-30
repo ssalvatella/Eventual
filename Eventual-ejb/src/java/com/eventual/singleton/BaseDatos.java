@@ -6,15 +6,18 @@
 package com.eventual.singleton;
 
 import java.sql.Connection;
-import java.sql.Statement;
-import javax.annotation.PostConstruct;
-import javax.ejb.Singleton;
-import javax.ejb.Startup;
-import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.ejb.Singleton;
+import javax.ejb.Startup;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
 
 /**
  *
@@ -23,6 +26,8 @@ import javax.annotation.PreDestroy;
 @Startup
 @Singleton
 public class BaseDatos implements BaseDatosLocal {
+    
+    private final String JNDI_POOL = "jdbc/eventual";
     
     private Connection conexion;
     private Statement statement;
@@ -44,6 +49,8 @@ public class BaseDatos implements BaseDatosLocal {
             this.conectado = true;
         } catch (SQLException ex) {
             this.conectado = false;
+            Logger.getLogger(BaseDatos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NamingException ex) {
             Logger.getLogger(BaseDatos.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -82,16 +89,13 @@ public class BaseDatos implements BaseDatosLocal {
      * de error lanza una SQLException.
      * @throws SQLException 
      */
-    private void conectar() throws SQLException {
-        
-        MysqlDataSource datosConexion = new MysqlDataSource();
-        datosConexion.setUser(USUARIO_BD);
-        datosConexion.setPassword(CONTRASEÑA);
-        datosConexion.setServerName(HOST_BD);
-        datosConexion.setDatabaseName(BD_NOMBRE);
+    private void conectar() throws SQLException, NamingException {
+
+        Context contexto = new InitialContext();
+        DataSource fuenteDatos = (DataSource) contexto.lookup(JNDI_POOL);
         
         // Conectamos
-        this.conexion = datosConexion.getConnection();
+        this.conexion = fuenteDatos.getConnection();
         this.statement = this.conexion.createStatement();
     }
     

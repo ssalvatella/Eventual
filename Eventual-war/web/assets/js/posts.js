@@ -86,8 +86,7 @@ function quitarMeGusta(idPost) {
      } else {
         post.find('.meGusta').html(' <i class="fa fa-thumbs-o-up margin-r-5"></i> Me gusta');         
      }
-
-     console.log(megustas);
+    post.find('.meGusta').addClass('animated rubberBand');
 }
 
 function añadirMeGusta(idPost) {
@@ -100,5 +99,5 @@ function añadirMeGusta(idPost) {
      } else {
         post.find('.meGusta').html(' <i class="fa fa-thumbs-o-up margin-r-5"></i> Me gusta');         
      }
-
+    post.find('.meGusta').addClass('animated rubberBand');
 }
