@@ -83,7 +83,8 @@
               </div>
             </form>
             <a href="./" class="text-center">Volver al Inicio</a>
-
+            <br />
+            <a href="./RegistrarseOrganizacion" class="text-center">Registrarse como organización</a>
           </div>
           <!-- /.login-box-body -->
         </div>

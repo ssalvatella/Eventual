@@ -45,7 +45,7 @@ $(document).on('click','#boton_publicar',function(){
           'usuario': idUsuario,
           'post': idPost
         };
-        quitarMeGusta(idPost);
+
         $(this).removeClass('text-green');
      } else { // Si no, publicar me gusta
          
@@ -54,7 +54,7 @@ $(document).on('click','#boton_publicar',function(){
            'usuario': idUsuario,
            'post': idPost
          };
-        añadirMeGusta(idPost);
+
         $(this).addClass('text-green');
      }
      

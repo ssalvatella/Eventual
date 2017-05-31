@@ -32,6 +32,10 @@
         <servlet-name>PerfilUsuario</servlet-name>
         <servlet-class>com.eventual.servlets.PerfilUsuario</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>RegistrarseOrganizacion</servlet-name>
+        <servlet-class>com.eventual.servlets.RegistrarseOrganizacion</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>EjemploServlet</servlet-name>
         <url-pattern>/EjemploServlet</url-pattern>
@@ -63,6 +67,10 @@
     <servlet-mapping>
         <servlet-name>PerfilUsuario</servlet-name>
         <url-pattern>/PerfilUsuario</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RegistrarseOrganizacion</servlet-name>
+        <url-pattern>/RegistrarseOrganizacion</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

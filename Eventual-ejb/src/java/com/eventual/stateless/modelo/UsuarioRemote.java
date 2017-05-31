@@ -51,6 +51,8 @@ public interface UsuarioRemote {
     */
    public boolean registrar(final String email, final String contraseña, final String nombre);
    
+   public boolean registrarOrganizacion(final String email, final String contraseña, final String nombre, final String dirrecion, final String ciudad);
+   
     /**
      * devuelveUsuario()
      * 

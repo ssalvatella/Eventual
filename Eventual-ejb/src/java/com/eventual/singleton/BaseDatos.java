@@ -32,6 +32,8 @@ public class BaseDatos implements BaseDatosLocal {
     private Connection conexion;
     private Statement statement;
     
+    private DataSource fuenteDatos;
+    
     private boolean conectado = false;
     
     /**
@@ -68,7 +70,12 @@ public class BaseDatos implements BaseDatosLocal {
 
     @Override
     public Connection getConnection() {
-        return this.conexion;
+        try {
+            return this.fuenteDatos.getConnection();
+        } catch (SQLException ex) {
+            Logger.getLogger(BaseDatos.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
     }
 
     @Override
@@ -92,10 +99,10 @@ public class BaseDatos implements BaseDatosLocal {
     private void conectar() throws SQLException, NamingException {
 
         Context contexto = new InitialContext();
-        DataSource fuenteDatos = (DataSource) contexto.lookup(JNDI_POOL);
+        this.fuenteDatos = (DataSource) contexto.lookup(JNDI_POOL);
         
         // Conectamos
-        this.conexion = fuenteDatos.getConnection();
+        this.conexion = this.fuenteDatos.getConnection();
         this.statement = this.conexion.createStatement();
     }
     

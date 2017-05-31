@@ -30,7 +30,6 @@ import javax.xml.bind.DatatypeConverter;
 public class Usuario implements UsuarioRemote {
 
 
-    
     public static enum TIPO {
         ADMINISTRADOR, SOCIAL, ORGANIZACIÓN
     }
@@ -220,6 +219,32 @@ public class Usuario implements UsuarioRemote {
         } catch (SQLException ex) {
             Logger.getLogger(Usuario.class.getName()).log(Level.SEVERE, null, ex);
             return null;
+        } 
+    }
+    
+    @Override
+    public boolean registrarOrganizacion(String email, String contraseña, String nombre, String direccion, String ciudad) {
+       try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hashBytes = digest.digest(contraseña.getBytes(StandardCharsets.UTF_8));
+            String hashString = DatatypeConverter.printHexBinary(hashBytes);
+            String consulta = "INSERT INTO usuario (email_usuario, contraseña_usuario, tipo_usuario) VALUES ('" + 
+                    email + "', '" + hashString + "', '" + TIPO.ORGANIZACIÓN.name() + "');";
+            Statement stm = bd.getStatement();
+            stm.executeUpdate(consulta);
+            String consulta_id = "SELECT * FROM usuario WHERE email_usuario = '" + email + "';";
+            ResultSet rs = stm.executeQuery(consulta_id);
+            if (rs.next()) {
+                int id_usuario = rs.getInt("id_usuario");
+                consulta = "INSERT INTO perfil_organizacion (id_organizacion, nombre_organizacion, ciudad_organizacion, direccion_organizacion) "
+                        + "VALUES (" + id_usuario + ", '" + nombre +"', '"+ ciudad + "', '" + direccion+ "');";
+                return stm.execute(consulta);
+            } else {
+                return false;
+            }
+        } catch (NoSuchAlgorithmException | SQLException ex) {
+            Logger.getLogger(Usuario.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
         } 
     }
 
