@@ -1,3 +1,10 @@
+
+function salir() {
+    
+    window.location.replace('./');
+    
+}
+
 $(document).ready(function() {
     
     var autocompletado = new Awesomplete(document.getElementById("buscador"));
