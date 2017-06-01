@@ -7,6 +7,7 @@ package com.eventual.servlets;
 
 import com.eventual.stateful.SesionAdministradorRemote;
 import com.eventual.stateful.SesionSocialRemote;
+import com.eventual.stateless.modelo.PerfilSocialRemote;
 import com.eventual.stateless.modelo.Usuario;
 import com.eventual.stateless.modelo.UsuarioRemote;
 import com.eventual.webservices.cliente.IdentificadorWebService_Service;
@@ -35,6 +36,9 @@ public class Inicio extends HttpServlet {
     
     @EJB
     private SesionAdministradorRemote sesionAdministrador;
+    
+    @EJB
+    private PerfilSocialRemote ps;
    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -100,8 +104,13 @@ public class Inicio extends HttpServlet {
                                 this.sesionSocial.conectarUsuario(conectado);
                                 // Guardamos en la sesión el EJB
                                 sesion.setAttribute("sesionSocial", this.sesionSocial);
-                                // Vamos al servlet "Social" para empezar la sesión
-                                response.sendRedirect("./Social");   
+                                // Si el perfil no esta completo cargamos la vista para hacerlo
+                                if (this.ps.completitudPerfil(conectado.getId()) != 1) {
+                                    response.sendRedirect("./CompletarPerfilSocial");     
+                                } else {
+                                    // Vamos al servlet "Social" para empezar la sesión
+                                    response.sendRedirect("./Social");                                      
+                                }
                             break;
                             case ADMINISTRADOR:
                                 this.sesionAdministrador.setToken(token);

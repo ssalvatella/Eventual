@@ -32,4 +32,9 @@ public interface PerfilSocialRemote extends Serializable {
     
     public int getId();
     
+    public double completitudPerfil(int id);
+    
+    public void actualizar(int id, String nacimiento, String ciudad, String estudios, 
+            String profesion, String descripcion);
+    
 }
