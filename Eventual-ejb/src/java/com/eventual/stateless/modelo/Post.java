@@ -273,6 +273,62 @@ public class Post implements PostRemote {
             Logger.getLogger(Mensaje.class.getName()).log(Level.SEVERE, null, ex);
         }  
     }
+
+    @Override
+    public List<Post> devuelvePostsUsuario(int id, int usuario) {
+        List<Post> resultados = new ArrayList<>();
+        
+        // Construimos la consulta que obtendrá todo
+        String consulta = "SELECT  id_post, usuario_post, nombre_organizacion , nombre_perfil, contenido_post, fecha_post, "
+                + "COUNT(id_comentario) as numero_comentarios, "
+                + "COUNT(id_me_gusta) as numero_me_gustas, "
+                + "COUNT(CASE WHEN me_gusta.usuario_me_gusta = "+ id +" THEN 1 END) as meGustaPulsado FROM post ";
+        
+        // Joins para obtener datos de los emisores
+        consulta += "LEFT JOIN perfil_social ON (post.usuario_post = perfil_social.usuario_perfil) ";
+        consulta += "LEFT JOIN perfil_organizacion ON (post.usuario_post = perfil_organizacion.id_organizacion) ";
+        consulta += "LEFT JOIN me_gusta ON (post.id_post = me_gusta.post_me_gusta) ";
+        consulta += "LEFT JOIN comentario ON (post.id_post = comentario.post_comentario) ";
+        
+        consulta += "WHERE post.usuario_post = " + usuario;
+        
+        // Group by y Order By
+        consulta += " GROUP BY id_post ASC ";
+        consulta += "ORDER BY fecha_post DESC ";
+
+        consulta += "; ";
+        // Ejecutamos la consulta
+        try {
+            Statement stm = bd.getStatement();
+            ResultSet rs = stm.executeQuery(consulta);
+            while (rs.next()) {
+                int idPost = rs.getInt("id_post");
+                int idUsuario = rs.getInt("usuario_post");
+                String nombreOrg = rs.getString("nombre_organizacion");
+                String nombreUsuario = rs.getString("nombre_perfil");
+                String contenido = rs.getString("contenido_post");
+                
+                String fechaPublicacion = rs.getString("fecha_post");
+                DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
+                Date fecha = df.parse(fechaPublicacion);
+                fechaPublicacion = pt.format(fecha);
+                
+                int numeroComentarios = rs.getInt("numero_comentarios");
+                int numeroMeGustas = rs.getInt("numero_me_gustas");
+                int mgp = rs.getInt("meGustaPulsado");
+                boolean meGustaPulsado = (mgp > 0);
+                String nombre = (nombreOrg == null) ? nombreUsuario : nombreOrg;
+                resultados.add(new Post(idPost, idUsuario, nombre, 
+                        fechaPublicacion, contenido, numeroComentarios, numeroMeGustas, meGustaPulsado));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Post.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(Post.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return resultados;
+    }
     
     public int getIdPost() {
         return idPost;
@@ -317,6 +373,7 @@ public class Post implements PostRemote {
     public boolean isMeGustaPulsado() {
         return meGustaPulsado;
     }
+
     
     private class MeGusta {
         

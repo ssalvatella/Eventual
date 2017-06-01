@@ -36,4 +36,6 @@ public interface PostRemote extends Serializable {
     
     public void quitarMeGusta(int usuario, int post);
     
+    public List<Post> devuelvePostsUsuario(int id, int usuario);
+    
 }

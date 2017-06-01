@@ -10,6 +10,7 @@ import com.eventual.stateless.modelo.PerfilOrganizacion;
 import com.eventual.stateless.modelo.PerfilOrganizacionRemote;
 import com.eventual.stateless.modelo.PerfilSocial;
 import com.eventual.stateless.modelo.PerfilSocialRemote;
+import com.eventual.stateless.modelo.PostRemote;
 import com.eventual.stateless.modelo.Usuario;
 import com.eventual.stateless.modelo.UsuarioRemote;
 import java.io.IOException;
@@ -37,6 +38,9 @@ public class PerfilUsuario extends HttpServlet {
     @EJB
     private UsuarioRemote usuario;
     
+    @EJB
+    private PostRemote posts;
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -59,8 +63,9 @@ public class PerfilUsuario extends HttpServlet {
                 this.sesionSocial = (SesionSocialRemote) sesion.getAttribute("sesionSocial");
                 request.setAttribute("perfil", this.sesionSocial.getPerfil());
                 request.setAttribute("usuario", this.sesionSocial.getUsuario());
-                
                 int id = Integer.parseInt(request.getParameter("perfil"));
+                request.setAttribute("posts", this.posts.devuelvePostsUsuario(this.sesionSocial.getPerfil().getId(), id));
+
                 Usuario usr = this.usuario.devuelveUsuario(id);
                 switch (usr.getTipo()) {
                     case SOCIAL:
@@ -78,7 +83,7 @@ public class PerfilUsuario extends HttpServlet {
                            request.setAttribute("datos", perfilOrganizacion);
                            response.setContentType("text/html;charset=UTF-8");
                            // Devolvemos como respuesta el .JSP para cargar la pantalla del perfil del usuario
-                           request.getRequestDispatcher("../organizacion/perfilOrganizacion.jsp").forward(request, response);
+                           request.getRequestDispatcher("/social/perfil_organizacion.jsp").forward(request, response);
                        }
                     break;
                 }

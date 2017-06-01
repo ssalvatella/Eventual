@@ -25,6 +25,12 @@ import javax.ejb.Stateless;
 @LocalBean
 public class PerfilOrganizacion extends Perfil implements PerfilOrganizacionRemote {
     
+    private String ciudad;
+    private String direccion;
+    private String contacto;
+    private String descripcion;
+    private String categoria;
+    
     @EJB
     private BaseDatosLocal bd;
 
