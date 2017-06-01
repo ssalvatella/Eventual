@@ -29,6 +29,8 @@ public class SesionSocial implements SesionSocialRemote {
     private Usuario usuario;
     private PerfilSocial perfil;
     private boolean conectado;
+    
+    private String token;
 
     @Override
     public void conectarUsuario(Usuario usuario) {
@@ -56,6 +58,16 @@ public class SesionSocial implements SesionSocialRemote {
     @Override
     public PerfilSocial getPerfil() {
         return this.perfil;
+    }
+
+    @Override
+    public void setToken(String token) {
+        this.token = token;
+    }
+    
+    @Override
+    public String getToken() {
+        return this.token;
     }
 
     

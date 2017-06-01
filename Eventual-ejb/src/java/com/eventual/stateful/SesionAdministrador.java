@@ -29,6 +29,8 @@ public class SesionAdministrador implements SesionAdministradorRemote {
     private Usuario usuario;
     private PerfilAdministrador perfil;
     private boolean conectado = false;
+    
+    private String token;
 
     @Override
     public void conectar(Usuario usuario) {
@@ -50,6 +52,11 @@ public class SesionAdministrador implements SesionAdministradorRemote {
 
     public PerfilAdministrador getPerfil() {
         return perfil;
+    }
+    
+    @Override
+    public void setToken(String token) {
+        this.token = token;
     }
     
 }

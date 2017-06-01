@@ -25,4 +25,6 @@ public interface SesionAdministradorRemote extends Serializable {
 
     public PerfilAdministrador getPerfil();
     
+    public void setToken(final String token);
+    
 }

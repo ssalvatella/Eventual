@@ -5,6 +5,7 @@
  */
 package com.eventual.servlets;
 
+import com.eventual.singleton.GestorIdentificacionesLocal;
 import com.eventual.stateful.SesionSocialRemote;
 import com.eventual.stateless.modelo.Post;
 import com.eventual.stateless.modelo.PostRemote;
@@ -26,6 +27,9 @@ public class Social extends HttpServlet {
     @EJB
     private PostRemote posts;
     
+    @EJB
+    private GestorIdentificacionesLocal gestorTokens;
+    
     private SesionSocialRemote sesionSocial;
     
     /**
@@ -44,7 +48,9 @@ public class Social extends HttpServlet {
         this.sesionSocial = (SesionSocialRemote) sesion.getAttribute("sesionSocial");
 
         // Comprobamos el nivel del usuario y que este correctamente conectado
-        if (sesionSocial.usuarioConectado() && sesionSocial.esSocial()) {
+        if (sesionSocial.usuarioConectado() && 
+                sesionSocial.esSocial() && 
+                this.gestorTokens.validarToken(this.sesionSocial.getToken())) {
             request.setAttribute("perfil", this.sesionSocial.getPerfil());
             request.setAttribute("usuario", this.sesionSocial.getUsuario());
             List<Post> posts = this.posts.devuelve(this.sesionSocial.getUsuario().getId(), 10, 0);

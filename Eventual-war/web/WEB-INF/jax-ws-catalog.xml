@@ -6,4 +6,8 @@
     <system systemId="http://localhost:8080/RegistroWS/RegistroWS?xsd=1" uri="src/conf/xml-resources/web-service-references/RegistroWS/wsdl/localhost_8080/RegistroWS/RegistroWS.xsd_1.xsd"/>
     <system systemId="http://localhost:8080/IdentificadorWS/IdentificadorWS?wsdl" uri="wsdl/localhost_8080/IdentificadorWS/IdentificadorWS.wsdl"/>
     <system systemId="http://localhost:8080/IdentificadorWS/IdentificadorWS?xsd=1" uri="wsdl/localhost_8080/IdentificadorWS/IdentificadorWS.xsd_1.xsd"/>
+    <system systemId="http://localhost:8080/IdentificadorWebService/IdentificadorWebService?wsdl" uri="wsdl/localhost_8080/IdentificadorWebService/IdentificadorWebService.wsdl"/>
+    <system systemId="http://localhost:8080/IdentificadorWebService/IdentificadorWebService?xsd=1" uri="wsdl/localhost_8080/IdentificadorWebService/IdentificadorWebService.xsd_1.xsd"/>
+    <system systemId="http://localhost:8080/Eventual-war/IdentificadorWebService?wsdl" uri="wsdl/localhost_8080/Eventual-war/IdentificadorWebService.wsdl"/>
+    <system systemId="http://localhost:8080/Eventual-war/IdentificadorWebService?xsd=1" uri="wsdl/localhost_8080/Eventual-war/IdentificadorWebService.xsd_1.xsd"/>
 </catalog>

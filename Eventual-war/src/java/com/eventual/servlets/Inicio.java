@@ -9,6 +9,7 @@ import com.eventual.stateful.SesionAdministradorRemote;
 import com.eventual.stateful.SesionSocialRemote;
 import com.eventual.stateless.modelo.Usuario;
 import com.eventual.stateless.modelo.UsuarioRemote;
+import com.eventual.webservices.cliente.IdentificadorWebService_Service;
 import java.io.IOException;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -16,12 +17,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.xml.ws.WebServiceRef;
 /**
  *
  * @author Samuel
  */
 public class Inicio extends HttpServlet {
-    
+
+    @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_8080/Eventual-war/IdentificadorWebService.wsdl")
+    private IdentificadorWebService_Service service;
 
     @EJB
     private UsuarioRemote usuario;
@@ -43,6 +47,8 @@ public class Inicio extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession sesion = request.getSession();
+        sesion.invalidate(); // Destruímos la sesión
         response.setContentType("text/html;charset=UTF-8");
         // Devolvemos como respuesta el .JSP para cargar la pantalla de inicio
         request.getRequestDispatcher("/inicio.jsp").forward(request, response);
@@ -81,15 +87,16 @@ public class Inicio extends HttpServlet {
         if (email != null && contraseña != null) {
             try {
                 HttpSession sesion = request.getSession();
-                boolean usuarioValido = this.usuario.valido(email, contraseña);
-                if (!usuarioValido) {
-                    request.setAttribute("validacion", usuarioValido);
+                String token = validar(email, contraseña);
+                if (token == null) {
+                    request.setAttribute("validacion", false);
                     processRequest(request, response);                   
                 } else {
                     Usuario conectado = this.usuario.devuelveUsuario(email);
                     if (conectado != null) {
                         switch (conectado.getTipo()) {
                             case SOCIAL:
+                                this.sesionSocial.setToken(token);
                                 this.sesionSocial.conectarUsuario(conectado);
                                 // Guardamos en la sesión el EJB
                                 sesion.setAttribute("sesionSocial", this.sesionSocial);
@@ -97,6 +104,7 @@ public class Inicio extends HttpServlet {
                                 response.sendRedirect("./Social");   
                             break;
                             case ADMINISTRADOR:
+                                this.sesionAdministrador.setToken(token);
                                 this.sesionAdministrador.conectar(conectado);
                                 // Guardamos en la sesión el EJB de administrador
                                 sesion.setAttribute("sesionAdministrador", this.sesionAdministrador);
@@ -126,6 +134,12 @@ public class Inicio extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
+    private String validar(java.lang.String email, java.lang.String password) {
+        // Note that the injected javax.xml.ws.Service reference as well as port objects are not thread safe.
+        // If the calling of port operations may lead to race condition some synchronization is required.
+        com.eventual.webservices.cliente.IdentificadorWebService port = service.getIdentificadorWebServicePort();
+        return port.validar(email, password);
+    }
 
     
 }

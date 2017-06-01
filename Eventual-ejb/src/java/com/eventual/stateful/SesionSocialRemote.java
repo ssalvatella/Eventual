@@ -22,5 +22,7 @@ public interface SesionSocialRemote extends Serializable {
     public boolean esSocial();
     public Usuario getUsuario();
     public PerfilSocial getPerfil();
+    public void setToken(final String token);
+    public String getToken();
     
 }
