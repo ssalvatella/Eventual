@@ -5,6 +5,7 @@
  */
 package com.eventual.stateless.modelo;
 
+import java.io.Serializable;
 import javax.ejb.Remote;
 
 /**
@@ -12,7 +13,7 @@ import javax.ejb.Remote;
  * @author Samuel
  */
 @Remote
-public interface PerfilAdministradorRemote {
+public interface PerfilAdministradorRemote extends Serializable {
     
     public PerfilAdministrador devuelve(int id);
     

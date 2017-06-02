@@ -140,5 +140,18 @@ public class Administracion implements AdministracionLocal {
             }
         });
     }
+
+    @Override
+    public void notificarNuevoRegistro() {
+        JsonObject notificacion = new JsonObject();
+        administradores.values().forEach((u) -> {
+            try {
+                notificacion.addProperty("tipo", "NUEVO_REGISTRO");
+                u.getSesion().getBasicRemote().sendText(notificacion.toString());
+            } catch (IOException ex) {
+                Logger.getLogger(Administracion.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+    }
     
 }

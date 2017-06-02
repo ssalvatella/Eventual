@@ -112,6 +112,9 @@ function procesarMensaje(recibido) {
         case "NUMERO_POSTS":
             $('#numero_posts').text(parseInt($('#numero_posts').text()) + 1);
         break;
+        case "NUEVO_REGISTRO":
+            $('#numero_registros').text(parseInt($('#numero_registros').text()) + 1);
+        break;
         case "CONECTADO":
             //$('#tabla tr:last').after('<tr value="'+ recibido.id + '"><td>'+ recibido.id + '</td><td>'+ recibido.nombre +'</td><td><button class="btn btn-danger">Expulsar</button></td></tr>');
             var rowNode = tabla

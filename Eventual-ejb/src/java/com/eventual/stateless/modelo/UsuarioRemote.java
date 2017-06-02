@@ -5,6 +5,7 @@
  */
 package com.eventual.stateless.modelo;
 
+import java.io.Serializable;
 import java.util.List;
 import javax.ejb.Remote;
 
@@ -14,7 +15,7 @@ import javax.ejb.Remote;
  * @author Samuel
  */
 @Remote
-public interface UsuarioRemote {
+public interface UsuarioRemote extends Serializable {
     
 
     /**
@@ -76,6 +77,8 @@ public interface UsuarioRemote {
    public void registrarAmistad(int id, int usuario);
    
    public boolean sonAmigos(int id, int usuario);
+   
+   public int ultimosUsuarios();
 
     public int getId();
     

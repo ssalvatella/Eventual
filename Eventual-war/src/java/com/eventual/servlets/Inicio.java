@@ -112,6 +112,8 @@ public class Inicio extends HttpServlet {
                                     response.sendRedirect("./Social");                                      
                                 }
                             break;
+                            case ORGANIZACIÓN:
+                            break;
                             case ADMINISTRADOR:
                                 this.sesionAdministrador.setToken(token);
                                 this.sesionAdministrador.conectar(conectado);

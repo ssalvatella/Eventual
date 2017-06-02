@@ -26,6 +26,7 @@
         
         int numero_mensajes = Integer.parseInt(request.getAttribute("numero_mensajes") + "");
         int numero_posts = Integer.parseInt(request.getAttribute("numero_posts") + "");
+        int usuarios_nuevos = Integer.parseInt(request.getAttribute("usuarios_nuevos") + "");
         
         // Obtenemos la fecha de registro en un formato "amigable"
         LocalDateTime datetime = LocalDateTime.parse(usuario.getFechaRegistro(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S"));
@@ -111,7 +112,7 @@
 
                           <div class="info-box-content">
                             <span class="info-box-text">Usuarios nuevos</span>
-                            <span class="info-box-number">41,410</span>
+                            <span id="numero_registros" class="info-box-number"><% out.print(usuarios_nuevos + ""); %></span>
 
                             <div class="progress">
                               <div class="progress-bar" style="width: 70%"></div>
@@ -174,10 +175,11 @@
             <!-- /.content -->
 
           </div>
+            <%@ include file="../pie_pagina.jsp" %>
+            <%@ include file="menu_ajustes.jsp" %>
           <!-- /.content-wrapper -->
             </div>    
-                <%@ include file="../pie_pagina.jsp" %>
-                <%@ include file="menu_ajustes.jsp" %>
+
 
         </div>
         <% out.print(Plantilla.cargarJavaScripts()); %>

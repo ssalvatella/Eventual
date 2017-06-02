@@ -36,5 +36,7 @@ public interface AdministracionLocal {
     public void notificarNumeroMensajes();
     
     public void notificarNumeroPosts();
+    
+    public void notificarNuevoRegistro();
 
 }

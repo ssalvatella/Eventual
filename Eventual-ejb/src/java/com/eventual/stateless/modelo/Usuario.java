@@ -5,6 +5,7 @@
  */
 package com.eventual.stateless.modelo;
 
+import com.eventual.singleton.AdministracionLocal;
 import com.eventual.singleton.BaseDatosLocal;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -29,6 +30,7 @@ import javax.xml.bind.DatatypeConverter;
 @DependsOn(value="BaseDatosLocal")
 public class Usuario implements UsuarioRemote {
 
+
     public static enum TIPO {
         ADMINISTRADOR, SOCIAL, ORGANIZACIÓN
     }
@@ -36,6 +38,9 @@ public class Usuario implements UsuarioRemote {
     
     @EJB
     private BaseDatosLocal bd;
+    
+    @EJB
+    private AdministracionLocal admin;
     
     private int id;
     private String email;
@@ -143,6 +148,7 @@ public class Usuario implements UsuarioRemote {
             if (rs.next()) {
                 int id_usuario = rs.getInt("id_usuario");
                 consulta = "INSERT INTO perfil_social (usuario_perfil, nombre_perfil) VALUES (" + id_usuario + ", '" + nombre +"');";
+                this.admin.notificarNuevoRegistro();
                 return stm.execute(consulta);
             } else {
                 return false;
@@ -237,6 +243,7 @@ public class Usuario implements UsuarioRemote {
                 int id_usuario = rs.getInt("id_usuario");
                 consulta = "INSERT INTO perfil_organizacion (id_organizacion, nombre_organizacion, ciudad_organizacion, direccion_organizacion) "
                         + "VALUES (" + id_usuario + ", '" + nombre +"', '"+ ciudad + "', '" + direccion+ "');";
+                this.admin.notificarNuevoRegistro();
                 return stm.execute(consulta);
             } else {
                 return false;
@@ -279,6 +286,24 @@ public class Usuario implements UsuarioRemote {
         }
         return false;
     }
+    
+ 
+    @Override
+    public int ultimosUsuarios() {
+                try {
+            String consulta = "SELECT COUNT(id_usuario) as numero_usuarios FROM usuario "
+                    + "WHERE (TIMESTAMPDIFF(DAY, registro_usuario,  NOW())) <= 7;";
+            Statement stm = bd.getStatement();
+            ResultSet rs = stm.executeQuery(consulta);
+            if (rs.next()) {
+                return rs.getInt("numero_usuarios");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Usuario.class.getName()).log(Level.SEVERE, null, ex);
+            return -1;
+        } 
+        return -1;
+    }   
     
     public int getId() {
         return id;
