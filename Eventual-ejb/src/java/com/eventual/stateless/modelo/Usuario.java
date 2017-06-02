@@ -29,7 +29,6 @@ import javax.xml.bind.DatatypeConverter;
 @DependsOn(value="BaseDatosLocal")
 public class Usuario implements UsuarioRemote {
 
-
     public static enum TIPO {
         ADMINISTRADOR, SOCIAL, ORGANIZACIÓN
     }
@@ -247,7 +246,40 @@ public class Usuario implements UsuarioRemote {
             return false;
         } 
     }
+    
+    @Override
+    public void registrarAmistad(int id, int usuario) {
+        String consulta, consulta2;
+        try {
+            if (sonAmigos(id, usuario)) {
+                consulta = "DELETE FROM amigo WHERE (id_usuario=" + id + " AND id_amigo=" + usuario + ");";
+                consulta2 = "DELETE FROM amigo WHERE (id_usuario=" + usuario + " AND id_amigo=" + id + ");";      
+            } else {
+                consulta = "INSERT INTO amigo (id_usuario, id_amigo) VALUES (" + id + ", " + usuario + ");";
+                consulta2 = "INSERT INTO amigo (id_usuario, id_amigo) VALUES (" + usuario + ", " + id + ");";               
+            }
 
+            Statement stm = bd.getStatement();
+            stm.executeUpdate(consulta);
+            stm.executeUpdate(consulta2);
+        } catch (SQLException ex) {
+            Logger.getLogger(Usuario.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    @Override
+    public boolean sonAmigos(int id, int usuario) {
+        try {
+            String consulta = "SELECT * FROM amigo WHERE (id_usuario=" + id + " AND id_amigo=" + usuario + "); ";
+            Statement stm = bd.getStatement();
+            ResultSet rs = stm.executeQuery(consulta);
+            return rs.next();
+        } catch (SQLException ex) {
+            Logger.getLogger(Usuario.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+    
     public int getId() {
         return id;
     }

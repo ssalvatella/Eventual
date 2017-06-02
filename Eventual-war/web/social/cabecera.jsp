@@ -163,7 +163,7 @@
                 <img src="./assets/plugins/admin-lte/img/avatar5.png" class="img-circle" alt="<% out.print(perfil.getNombre()); %>">
 
                 <p>
-                  <% out.print(perfil.getNombre()); %> - Web Developer
+                  <% out.print(perfil.getNombre()); %> - <% out.print((perfil.getProfesion() != null) ? perfil.getProfesion() : ""); %>
                   <small>Miembro desde el <% out.print(fechaRegistro); %></small>
                 </p>
               </li>

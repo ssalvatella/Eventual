@@ -32,6 +32,7 @@ public class PerfilSocial extends Perfil implements PerfilSocialRemote {
     private String profesion;
     private String nacimiento;
     private String descripcion;
+    private int numeroAmigos;
     
     @EJB
     private BaseDatosLocal bd;
@@ -48,6 +49,17 @@ public class PerfilSocial extends Perfil implements PerfilSocialRemote {
         this.profesion = profesion;
         this.descripcion = descripcion;
     }
+
+    public PerfilSocial(int idUsuario, String nombre, String nacimiento, 
+            String ciudad, String estudios, String profesion, String descripcion, int numeroAmigos) {
+        super(idUsuario, nombre);
+        this.nacimiento = nacimiento;
+        this.ciudad = ciudad;
+        this.estudios = estudios;
+        this.profesion = profesion;
+        this.descripcion = descripcion;
+        this.numeroAmigos = numeroAmigos;
+    }
     
     /**
      * devuelve()
@@ -60,7 +72,9 @@ public class PerfilSocial extends Perfil implements PerfilSocialRemote {
     public PerfilSocial devuelve(int idUsuario) {
         
         try {
-            String consulta = "SELECT * FROM perfil_social WHERE usuario_perfil = '" + idUsuario + "';";
+            String consulta = "SELECT *, COUNT(id_amigo) as numero_amigos FROM perfil_social "
+                    + "LEFT JOIN amigo ON id_usuario=" + idUsuario + " "
+                    + "WHERE usuario_perfil = '" + idUsuario + "';";
             Statement stm = bd.getStatement();
             ResultSet rs = stm.executeQuery(consulta);
             if (rs.next()) {
@@ -70,7 +84,8 @@ public class PerfilSocial extends Perfil implements PerfilSocialRemote {
                 String estudios = rs.getString("estudios_perfil");
                 String profesion = rs.getString("profesion_perfil");
                 String descripcion = rs.getString("descripcion_perfil");
-                return new PerfilSocial(idUsuario, nombre, nacimiento, ciudad, estudios, profesion, descripcion);
+                int numeroAmigos = rs.getInt("numero_amigos");
+                return new PerfilSocial(idUsuario, nombre, nacimiento, ciudad, estudios, profesion, descripcion, numeroAmigos);
             } else {
                 return null;
             }
@@ -112,23 +127,42 @@ public class PerfilSocial extends Perfil implements PerfilSocialRemote {
         if (perfil == null) return -1;
         int camposCompletos = 0;
         
-        if (!perfil.getEstudios().equals("")) camposCompletos++;
-        if (!perfil.getCiudad().equals("")) camposCompletos++;
-        if (perfil.getNacimiento() != null) camposCompletos++;
-        if (!perfil.getDescripcion().equals("")) camposCompletos++;
-        if (!perfil.getProfesion().equals("")) camposCompletos++;
-        
+        if (perfil.getEstudios() != null) {
+            if (!perfil.getEstudios().equals("")) camposCompletos++;           
+        }
+        if (perfil.getCiudad() != null) {
+            if (!perfil.getCiudad().equals("")) camposCompletos++;           
+        }
+        if (perfil.getNacimiento() != null) {
+            if (perfil.getNacimiento() != null) camposCompletos++;           
+        }
+        if (perfil.getDescripcion() != null) {
+            if (!perfil.getDescripcion().equals("")) camposCompletos++;           
+        }
+        if (perfil.getProfesion() != null) {
+            if (!perfil.getProfesion().equals("")) camposCompletos++;           
+        }
         return (double) camposCompletos / NUMERO_CAMPOS;
     }
     
     public double devuelveCompletitud() {
         int camposCompletos = 0;
 
-        if (!this.getEstudios().equals("")) camposCompletos++;
-        if (!this.getCiudad().equals("")) camposCompletos++;
-        if (this.getNacimiento() != null) camposCompletos++;
-        if (!this.getDescripcion().equals("")) camposCompletos++;
-        if (!this.getProfesion().equals("")) camposCompletos++;
+        if (this.getEstudios() != null) {
+            if (!this.getEstudios().equals("")) camposCompletos++;           
+        }
+        if (this.getCiudad() != null) {
+            if (!this.getCiudad().equals("")) camposCompletos++;           
+        }
+        if (this.getNacimiento() != null) {
+            if (this.getNacimiento() != null) camposCompletos++;           
+        }
+        if (this.getDescripcion() != null) {
+            if (!this.getDescripcion().equals("")) camposCompletos++;           
+        }
+        if (this.getProfesion() != null) {
+            if (!this.getProfesion().equals("")) camposCompletos++;           
+        }
 
         return (double) camposCompletos / NUMERO_CAMPOS;        
     }
@@ -172,8 +206,9 @@ public class PerfilSocial extends Perfil implements PerfilSocialRemote {
         return descripcion;
     }
 
-    
-    
-    
+    public int getNumeroAmigos() {
+        return numeroAmigos;
+    }
+
     
 }

@@ -103,7 +103,7 @@
                                         out.print("<div class=\"user-block\">");
                                         out.print("<img class=\"img-circle img-bordered-sm\" src=\"./assets/plugins/admin-lte/img/avatar5.png\" alt=\"User Image\">");
                                         out.print("<span class=\"username\">");
-                                        out.print("<a href=\"#\">" + p.getNombreUsuario() + "</a>");
+                                        out.print("<a href=\"./PerfilUsuario?perfil="+ p.getIdUsuario() +"\">" + p.getNombreUsuario() + "</a>");
                                         out.print("");
                                         out.print("</span>");
                                         out.print("<span class=\"description\">" + p.getFecha() + "</span>");

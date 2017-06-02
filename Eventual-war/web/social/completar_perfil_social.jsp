@@ -57,27 +57,27 @@
                                   <div class="box-body">
                                     <div id="form_nacimiento" class="form-group has-feedback">
                                         <label>Fecha de nacimiento</label>
-                                      <input  value="<% out.print(perfil.getNacimiento()); %>" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask id="input_nacimiento" name="nacimiento" type="text" class="form-control" placeholder="¿Cúando naciste?">
+                                      <input  value="<% out.print((perfil.getNacimiento() != null) ? perfil.getNacimiento() : ""); %>" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask id="input_nacimiento" name="nacimiento" type="text" class="form-control" placeholder="¿Cúando naciste?">
                                       <span  class="glyphicon glyphicon-calendar form-control-feedback"></span>
                                     </div>
                                     <div class="form-group has-feedback">
                                       <label>Ciudad</label>
-                                      <input value="<% out.print(perfil.getCiudad()); %>" class="form-control" name="ciudad" id="input_ciudad" placeholder="¿De dónde eres?" type="text">
+                                      <input value="<% out.print((perfil.getCiudad() != null) ? perfil.getCiudad() : ""); %>" class="form-control" name="ciudad" id="input_ciudad" placeholder="¿De dónde eres?" type="text">
                                       <span  class="glyphicon glyphicon-map-marker form-control-feedback"></span>
                                     </div>
                                     <div class="form-group has-feedback">
                                       <label>Estudios</label>
-                                      <input value="<% out.print(perfil.getEstudios()); %>" class="form-control" name="estudios" id="input_estudios" placeholder="¿Qué has estudiado?" type="text">
+                                      <input value="<% out.print((perfil.getEstudios() != null) ? perfil.getEstudios() : ""); %>" class="form-control" name="estudios" id="input_estudios" placeholder="¿Qué has estudiado?" type="text">
                                       <span  class="fa fa-book form-control-feedback"></span>
                                     </div>
                                     <div class="form-group has-feedback">
                                       <label>Profesión</label>
-                                      <input value="<% out.print(perfil.getProfesion()); %>" class="form-control" name="profesion" id="input_profesion" placeholder="¿En qué trabajas?" type="text">
+                                      <input value="<% out.print((perfil.getProfesion() != null) ? perfil.getProfesion() : ""); %>" class="form-control" name="profesion" id="input_profesion" placeholder="¿En qué trabajas?" type="text">
                                       <span  class="fa fa-wrench form-control-feedback"></span>
                                     </div>
                                     <div class="form-group has-feedback">
                                       <label>Descripción</label>
-                                      <textarea style="resize: none" class="form-control" name="descripcion" id="input_profesion" placeholder="Habla sobre tí" type="text"><% out.print(perfil.getDescripcion()); %></textarea>
+                                      <textarea style="resize: none" class="form-control" name="descripcion" id="input_profesion" placeholder="Habla sobre tí" type="text"><% out.print((perfil.getDescripcion() != null) ? perfil.getDescripcion() : ""); %></textarea>
                                       <span  class="fa fa-sticky-note form-control-feedback"></span>
                                     </div>
                                   </div>

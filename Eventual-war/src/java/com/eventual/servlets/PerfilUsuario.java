@@ -65,7 +65,7 @@ public class PerfilUsuario extends HttpServlet {
                 request.setAttribute("usuario", this.sesionSocial.getUsuario());
                 int id = Integer.parseInt(request.getParameter("perfil"));
                 request.setAttribute("posts", this.posts.devuelvePostsUsuario(this.sesionSocial.getPerfil().getId(), id));
-
+                request.setAttribute("sonAmigos", this.usuario.sonAmigos(this.sesionSocial.getPerfil().getId(), id));
                 Usuario usr = this.usuario.devuelveUsuario(id);
                 switch (usr.getTipo()) {
                     case SOCIAL:
@@ -122,6 +122,16 @@ public class PerfilUsuario extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        String paramId = request.getParameter("id");
+        String paramUsuario = request.getParameter("perfil");
+        
+        if (paramId != null && paramUsuario != null) {
+            int id = Integer.parseInt(paramId);
+            int usuario = Integer.parseInt(paramUsuario);      
+            this.usuario.registrarAmistad(id, usuario);
+        }    
+        
         processRequest(request, response);
     }
 

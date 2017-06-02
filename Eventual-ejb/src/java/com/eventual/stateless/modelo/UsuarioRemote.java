@@ -72,6 +72,10 @@ public interface UsuarioRemote {
    public Usuario devuelveUsuario(int id);
    
    public List<Integer> devuelveIdsAmigos(int idUsuario) ;
+   
+   public void registrarAmistad(int id, int usuario);
+   
+   public boolean sonAmigos(int id, int usuario);
 
     public int getId();
     

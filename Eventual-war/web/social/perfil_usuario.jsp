@@ -30,13 +30,15 @@
         
         PerfilSocial usuarioSocial = (PerfilSocial) request.getAttribute("datos");
         
+        boolean sonAmigos = (Boolean) request.getAttribute("sonAmigos");
+        
         // Obtenemos la fecha de registro en un formato "amigable"
         LocalDateTime datetime = LocalDateTime.parse(usuario.getFechaRegistro(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S"));
         String fechaRegistro = datetime.format(DateTimeFormatter.ofPattern("d 'de' MMM"));
     %>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Eventual | <% out.print(perfil.getNombre()); %></title>
+        <title>Eventual | <% out.print(usuarioSocial.getNombre()); %></title>
         <% out.print(Plantilla.cargarHojasCSS()); %>
         <link href="./assets/plugins/bootstrap3-wysiwyg-master/dist/bootstrap3-wysihtml5.min.css" rel="stylesheet">
         <link href="./assets/plugins/awesomplete-gh-pages/awesomplete.css" rel="stylesheet">
@@ -70,12 +72,12 @@
                               <h3 class="profile-username text-center"> <% out.print(usuarioSocial.getNombre().split(" ", 2)[0]); %>
                                 <small></small> </h3>
 
-                              <p class="text-muted text-center"><% out.print(usuarioSocial.getId()); %>
+                              <p class="text-muted text-center"><% out.print((usuarioSocial.getProfesion() != null) ? usuarioSocial.getProfesion() : ""); %>
                                 <small></small> </p>
 
                               <ul class="list-group list-group-unbordered">
                                 <li class="list-group-item">
-                                  <b>Amigos</b> <a class="pull-right">1,322</a>
+                                  <b>Amigos</b> <a class="pull-right"><% out.print(usuarioSocial.getNumeroAmigos()); %></a>
                                 </li>
                                 <li class="list-group-item">
                                   <b>Organizaciones</b> <a class="pull-right">543</a>
@@ -84,48 +86,35 @@
                                   <b>Eventos</b> <a class="pull-right">13,287</a>
                                 </li>
                               </ul>
-                                <form type ="POST" action="./PerfilUsuario">
+                                <form method ="POST" action="./PerfilUsuario">
                                     <input name="id" type="hidden" value="<% out.print(perfil.getId()); %>">
-                                    <input name="usuario" type="hidden" value="<% out.print(usuarioSocial.getId()); %>">
-                                    <input  value="Añadir amigo" type="submit" class="btn btn-primary btn-block">
+                                    <input name="perfil" type="hidden" value="<% out.print(usuarioSocial.getId()); %>">
+                                    <input  value="<% out.print((sonAmigos) ? "Eliminar amigo" : "Añadir amigo"); %>" type="submit" class="btn <% out.print((sonAmigos) ? "btn-danger" : "btn-primary"); %> btn-block">
                                 </form>
                             </div>
                         </div>
                         <div class="box box-primary">
                             <div class="box-header with-border">
-                              <h3 class="box-title">Sobre mi</h3>
+                              <h3 class="box-title">Sobre mí</h3>
                             </div>
                             <!-- /.box-header -->
                             <div class="box-body">
                               <strong><i class="fa fa-book margin-r-5"></i> Estudios</strong>
 
                               <p class="text-muted">
-                                B.S. in Computer Science from the University of Tennessee at Knoxville
+                                <% out.print((usuarioSocial.getEstudios() != null) ? usuarioSocial.getEstudios() : ""); %>
                               </p>
 
                               <hr>
 
                               <strong><i class="fa fa-map-marker margin-r-5"></i> Ubicación</strong>
 
-                              <p class="text-muted">Malibu, California</p>
-
-                              <hr>
-
-                              <strong><i class="fa fa-pencil margin-r-5"></i> Habilidades</strong>
-
-                              <p>
-                                <span class="label label-danger">UI Design</span>
-                                <span class="label label-success">Coding</span>
-                                <span class="label label-info">Javascript</span>
-                                <span class="label label-warning">PHP</span>
-                                <span class="label label-primary">Node.js</span>
-                              </p>
+                              <p class="text-muted"><% out.print((usuarioSocial.getCiudad() != null) ? usuarioSocial.getCiudad() : ""); %></p>
 
                               <hr>
 
                               <strong><i class="fa fa-file-text-o margin-r-5"></i> Notas</strong>
-
-                              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam fermentum enim neque.</p>
+                              <p><% out.print((usuarioSocial.getDescripcion() != null) ? usuarioSocial.getDescripcion() : ""); %></p>
                             </div>
                             <!-- /.box-body -->
                           </div>
@@ -182,5 +171,6 @@
         <script src="./assets/plugins/awesomplete-gh-pages/awesomplete.min.js" async></script>
         <script src="./assets/js/cabecera.js" async> </script>
         <script src="./assets/js/chat.js" async> </script>
+        <script src="./assets/js/posts.js" async> </script>
     </body>
 </html>
