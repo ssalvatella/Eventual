@@ -36,4 +36,6 @@ public interface ChatLocal {
     
     public void notificarEliminacionMeGusta(int idPost);
     
+    public void expulsarUsuario(int id);
+    
 }

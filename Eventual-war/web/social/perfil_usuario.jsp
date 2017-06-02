@@ -118,6 +118,7 @@
                             </div>
                             <!-- /.box-body -->
                           </div>
+                        <%@ include file="chat.jsp" %>
                     </div>
                     <div class="col-md-9">     
                         <div class="box box-warning">

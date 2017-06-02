@@ -5,7 +5,7 @@
 --%>
 
 <!-- CHAT -->
-<div class="affix" style="width: 27%; height: 40%">
+
 <div id="caja_chat" class="box box-danger direct-chat direct-chat-danger">
     <div id="cargando" class="overlay"><i class="fa fa-refresh fa-spin"></i></div>
     <div class="box-header with-border">
@@ -53,4 +53,3 @@
     </div><!-- /.box-footer-->
   </div>
 <!-- FIN CHAT -->
-</div>

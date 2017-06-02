@@ -5,6 +5,7 @@
  */
 package com.eventual.singleton;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import java.io.IOException;
 import java.util.HashMap;
@@ -66,6 +67,23 @@ public class Administracion implements AdministracionLocal {
         }
         return -1;
     }
+    
+    @Override
+    public JsonObject devuelveConectados() {
+        JsonObject respuesta = new JsonObject();
+        respuesta.addProperty("tipo", "LISTA_CONECTADOS");
+        JsonArray conectados = new JsonArray();
+        this.chat.getConectados().values().stream().map((u) -> {
+            JsonObject elemento = new JsonObject();
+            elemento.addProperty("id", u.getIdUsuario());
+            elemento.addProperty("nombre", u.getNombre());
+            return elemento;
+        }).forEachOrdered((elemento) -> {
+            conectados.add(elemento);
+        });
+        respuesta.add("lista", conectados);
+        return respuesta;
+    }
 
     @Override
     public void notificarNumeroMensajes() {
@@ -92,7 +110,35 @@ public class Administracion implements AdministracionLocal {
             }
         });
     }
-    
-    
 
+    @Override
+    public void notificarNuevoUsuario(UsuarioConectado u) {
+        this.administradores.values().forEach((admin) -> {
+            try {
+                JsonObject notificacion = new JsonObject();
+                notificacion.addProperty("tipo", "CONECTADO");
+                notificacion.addProperty("id", u.getIdUsuario());
+                notificacion.addProperty("nombre", u.getNombre());
+                admin.getSesion().getBasicRemote().sendText(notificacion.toString());                
+            } catch (IOException ex) {
+                Logger.getLogger(Administracion.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+    }
+
+    @Override
+    public void notificarDesconexionUsuario(int desconectado) {
+        this.administradores.values().forEach((u) -> {
+            try {
+                JsonObject notificacion = new JsonObject();
+                notificacion.addProperty("tipo", "DESCONECTADO");
+                notificacion.addProperty("id", desconectado);
+                u.getSesion().getBasicRemote().sendText(notificacion.toString());
+                
+            } catch (IOException ex) {
+                Logger.getLogger(Administracion.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+    }
+    
 }

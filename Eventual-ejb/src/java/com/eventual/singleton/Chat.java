@@ -45,6 +45,7 @@ public class Chat implements ChatLocal {
     public void añadirConectado(UsuarioConectado usuario) {
         conectados.put(usuario.getIdUsuario(), usuario);
         admin.notificarNumeroUsuarios(); // Notificamos a los admins
+        admin.notificarNuevoUsuario(usuario);
     }
 
     @Override
@@ -74,6 +75,7 @@ public class Chat implements ChatLocal {
             if (u.getSesion().getId().equals(sesion.getId())) {
                 conectados.remove(u.getIdUsuario());
                 admin.notificarNumeroUsuarios(); // Notificamos a los admins
+                admin.notificarDesconexionUsuario(u.getIdUsuario());
                 return u.getIdUsuario();
             }
         }
@@ -140,6 +142,19 @@ public class Chat implements ChatLocal {
                 Logger.getLogger(Chat.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
+    }
+
+    @Override
+    public void expulsarUsuario(int id) {
+        UsuarioConectado u = this.conectados.get(id);
+        JsonObject elemento = new JsonObject();
+        elemento.addProperty("tipo", "EXPULSION");
+        elemento.addProperty("id", id);    
+        try {
+            u.getSesion().getBasicRemote().sendText(elemento.toString());
+        } catch (IOException ex) {
+            Logger.getLogger(Chat.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     

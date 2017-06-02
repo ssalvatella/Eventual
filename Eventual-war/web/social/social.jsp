@@ -124,7 +124,9 @@
                         </div>
                     </div>
                     <div class="col-md-4" >
-                      <%@ include file="chat.jsp" %>     
+                     <div class="affix" style="width: 27%; height: 40%">
+                      <%@ include file="chat.jsp" %>
+                     </div>
                     </div>
                 </div>
                 </section>

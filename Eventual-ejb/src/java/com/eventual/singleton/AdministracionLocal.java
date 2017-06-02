@@ -5,6 +5,7 @@
  */
 package com.eventual.singleton;
 
+import com.google.gson.JsonObject;
 import java.util.Map;
 import javax.ejb.Local;
 import javax.websocket.Session;
@@ -23,6 +24,12 @@ public interface AdministracionLocal {
     public void añadirConectado(UsuarioConectado usuario);
     
     public void notificarNumeroUsuarios();
+    
+    public void notificarNuevoUsuario(UsuarioConectado u);
+    
+    public void notificarDesconexionUsuario(int desconectado);
+    
+    public JsonObject devuelveConectados();
     
     public int eliminarConectado(Session sesion);
     

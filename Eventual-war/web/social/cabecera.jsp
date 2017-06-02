@@ -184,7 +184,7 @@
               <!-- Menu Footer-->
               <li class="user-footer">
                 <div class="pull-left">
-                  <a href="" class="btn btn-default btn-flat">Perfil</a>
+                  <a href="./PerfilUsuario?perfil=<% out.print(usuario.getId()); %>" class="btn btn-default btn-flat">Perfil</a>
                 </div>
                 <div class="pull-right">
                   <span id="salir" onclick="salir()" class="btn btn-default btn-flat">Salir</span>

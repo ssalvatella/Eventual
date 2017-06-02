@@ -87,6 +87,9 @@ function procesarMensaje(recibido) {
         case "QUITAR_ME_GUSTA":
             quitarMeGusta(recibido.POST);
             break;
+        case "EXPULSION":
+            window.location.href = "./";
+            break;
     }    
 }
 

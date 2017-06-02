@@ -18,6 +18,7 @@
         <title>Eventual | Inicio</title>
         <% out.print(Plantilla.cargarHojasCSS()); %>
         <link href="./assets/plugins/awesomplete-gh-pages/awesomplete.css" rel="stylesheet">
+        <link href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap.min.css" rel="stylesheet">
     </head>
     <%
         PerfilAdministrador perfil = (PerfilAdministrador) request.getAttribute("perfil");
@@ -142,8 +143,28 @@
                         </div>
                         <!-- /.info-box -->
                       </div>
+                
+                <div class="col-md-12">
+                    <div class="box">
+                        <div class="box-header">
+                            <i class="fa fa-users"></i>
+                            <h3 class="box-title">Conectados</h3>
+                        </div>
+                        <div class="box-body">
+                            <table id="tabla" class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                      <th>ID</th>
+                                      <th>Nombre</th>
+                                      <th></th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
                 </div>
-                  
+
+                </div>                          
                 
                 <!-- /.col -->
               </div>
@@ -164,6 +185,9 @@
         <script src="./assets/js/cabecera.js" async> </script>
         <script src="./assets/plugins/flot/jquery.flot.min.js"></script>
         <script src="./assets/plugins/flot/jquery.flot.resize.min.js"></script>
+        <script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap.min.js"></script>
         <script src="./assets/js/administrador.js"></script>
+
     </body>
 </html>

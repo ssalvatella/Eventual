@@ -40,7 +40,7 @@ public class ChatWS {
      * MENSAJES
      */
     public enum TipoMensaje {
-        CONEXION, CONECTADOS, MENSAJE, ADMINISTRADOR
+        CONEXION, CONECTADOS, MENSAJE, ADMINISTRADOR, EXPULSION
     }
 
     @OnMessage

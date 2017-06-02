@@ -46,7 +46,7 @@
                 
                 <section class="content">
                     <div class="row">
-                        <div class="col-md-offset-2 col-md-5">
+                        <div class="col-md-offset-2 col-md-5 animated bounceInUp">
                             <div class="box box-primary">
                                 <div class="box-header with-border">
                                   <h3 class="box-title">Perfil</h3>
@@ -90,7 +90,7 @@
                                 </form>
                           </div>                            
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-3 animated bounceInRight">
                             <div class="small-box bg-green">
                                 <div class="inner">
                                   <h3><% out.print((int) (perfil.devuelveCompletitud() * 100)); %><sup style="font-size: 20px">%</sup></h3>

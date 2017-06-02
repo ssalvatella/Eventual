@@ -56,13 +56,17 @@ public class AdministradorWS {
                 int idUsuario = json.get("idUsuario").getAsInt();
                 String nombre = json.get("nombre").getAsString();
                 UsuarioConectado usuario = this.admin.devuelveConectado(idUsuario, nombre, sesion);
-                
+                respuesta = this.admin.devuelveConectados();
                 // Añadimos el usuario a la lista de conectados
                 this.admin.añadirConectado(usuario);
             break;
             case ADMINISTRADOR:
                 respuesta.addProperty("tipo", "CONECTADOS");
                 respuesta.addProperty("conectados", this.chat.getConectados().size());
+            break;
+            case EXPULSION:
+                int id = json.get("id").getAsInt();
+                this.chat.expulsarUsuario(id);
             break;
         }
         return respuesta.toString();
