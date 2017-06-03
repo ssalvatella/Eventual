@@ -90,4 +90,26 @@ public class PerfilOrganizacion extends Perfil implements PerfilOrganizacionRemo
         }        
     }
 
+    public String getCiudad() {
+        return ciudad;
+    }
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public String getContacto() {
+        return contacto;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public String getCategoria() {
+        return categoria;
+    }
+    
+    
+
 }

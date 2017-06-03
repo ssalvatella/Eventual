@@ -5,6 +5,8 @@
  */
 package com.eventual.servlets;
 
+import com.eventual.stateful.SesionAdministradorRemote;
+import com.eventual.stateful.SesionOrganizacionRemote;
 import com.eventual.stateful.SesionSocialRemote;
 import com.eventual.stateless.modelo.PerfilOrganizacion;
 import com.eventual.stateless.modelo.PerfilOrganizacionRemote;
@@ -28,6 +30,10 @@ import javax.servlet.http.HttpSession;
 public class PerfilUsuario extends HttpServlet {
     
     private SesionSocialRemote sesionSocial;
+    
+    private SesionAdministradorRemote sesionAdministrador;
+    
+    private SesionOrganizacionRemote sesionOrganizacion;
     
     @EJB
     private PerfilSocialRemote social;
@@ -56,35 +62,93 @@ public class PerfilUsuario extends HttpServlet {
         boolean idIndicado = request.getParameter("perfil") != null;
 
         if(idIndicado){
-            try{
-                
+            try {               
                 // Obtenemos el EJB de nuestra sesión
                 HttpSession sesion = request.getSession();
-                this.sesionSocial = (SesionSocialRemote) sesion.getAttribute("sesionSocial");
-                request.setAttribute("perfil", this.sesionSocial.getPerfil());
-                request.setAttribute("usuario", this.sesionSocial.getUsuario());
+                Usuario usuario = (Usuario) sesion.getAttribute("usuario");
                 int id = Integer.parseInt(request.getParameter("perfil"));
-                request.setAttribute("posts", this.posts.devuelvePostsUsuario(this.sesionSocial.getPerfil().getId(), id));
-                request.setAttribute("sonAmigos", this.usuario.sonAmigos(this.sesionSocial.getPerfil().getId(), id));
                 Usuario usr = this.usuario.devuelveUsuario(id);
-                switch (usr.getTipo()) {
+                switch (usuario.getTipo()) {
                     case SOCIAL:
-                       PerfilSocial perfilUsuario = this.social.devuelve(id);
-                       if(perfilUsuario != null){
-                            request.setAttribute("datos", perfilUsuario);
-                            response.setContentType("text/html;charset=UTF-8");
-                            // Devolvemos como respuesta el .JSP para cargar la pantalla del perfil del usuario
-                            request.getRequestDispatcher("/social/perfil_usuario.jsp").forward(request, response);
-                       }
+                        this.sesionSocial = (SesionSocialRemote) sesion.getAttribute("sesionSocial");
+                        request.setAttribute("perfil", this.sesionSocial.getPerfil());
+                        request.setAttribute("usuario", this.sesionSocial.getUsuario());
+                        request.setAttribute("posts", this.posts.devuelvePostsUsuario(this.sesionSocial.getPerfil().getId(), id));
+                        request.setAttribute("sonAmigos", this.usuario.sonAmigos(this.sesionSocial.getPerfil().getId(), id));
+                        switch (usr.getTipo()) {
+                            case SOCIAL:
+                               PerfilSocial perfilUsuario = this.social.devuelve(id);
+                               if(perfilUsuario != null){
+                                    request.setAttribute("datos", perfilUsuario);
+                                    response.setContentType("text/html;charset=UTF-8");
+                                    // Devolvemos como respuesta el .JSP para cargar la pantalla del perfil del usuario
+                                    request.getRequestDispatcher("/social/perfil_usuario.jsp").forward(request, response);
+                               }
+                            break;
+                            case ORGANIZACIÓN:
+                               PerfilOrganizacion perfilOrganizacion = this.organizacion.devuelve(id);
+                               if(perfilOrganizacion != null){
+                                   request.setAttribute("datos", perfilOrganizacion);
+                                   response.setContentType("text/html;charset=UTF-8");
+                                   // Devolvemos como respuesta el .JSP para cargar la pantalla del perfil del usuario
+                                   request.getRequestDispatcher("/social/perfil_organizacion.jsp").forward(request, response);
+                               }
+                            break;
+                        }                        
+                    break;
+                    case ADMINISTRADOR:
+                        this.sesionAdministrador = (SesionAdministradorRemote) sesion.getAttribute("sesionAdministrador");
+                        request.setAttribute("perfil", this.sesionAdministrador.getPerfil());
+                        request.setAttribute("usuario", this.sesionAdministrador.getUsuario());
+                        request.setAttribute("posts", this.posts.devuelvePostsUsuario(this.sesionAdministrador.getPerfil().getId(), id));
+                        request.setAttribute("sonAmigos", this.usuario.sonAmigos(this.sesionAdministrador.getPerfil().getId(), id));
+                        switch (usr.getTipo()) {
+                            case SOCIAL:
+                               PerfilSocial perfilUsuario = this.social.devuelve(id);
+                               if(perfilUsuario != null){
+                                    request.setAttribute("datos", perfilUsuario);
+                                    response.setContentType("text/html;charset=UTF-8");
+                                    // Devolvemos como respuesta el .JSP para cargar la pantalla del perfil del usuario
+                                    request.getRequestDispatcher("/administrador/perfil_usuario.jsp").forward(request, response);
+                               }
+                            break;
+                            case ORGANIZACIÓN:
+                               PerfilOrganizacion perfilOrganizacion = this.organizacion.devuelve(id);
+                               if(perfilOrganizacion != null){
+                                   request.setAttribute("datos", perfilOrganizacion);
+                                   response.setContentType("text/html;charset=UTF-8");
+                                   // Devolvemos como respuesta el .JSP para cargar la pantalla del perfil del usuario
+                                   request.getRequestDispatcher("/administrador/perfil_organizacion.jsp").forward(request, response);
+                               }
+                            break;
+                        }                        
                     break;
                     case ORGANIZACIÓN:
-                       PerfilOrganizacion perfilOrganizacion = this.organizacion.devuelve(id);
-                       if(perfilOrganizacion != null){
-                           request.setAttribute("datos", perfilOrganizacion);
-                           response.setContentType("text/html;charset=UTF-8");
-                           // Devolvemos como respuesta el .JSP para cargar la pantalla del perfil del usuario
-                           request.getRequestDispatcher("/social/perfil_organizacion.jsp").forward(request, response);
-                       }
+                        this.sesionOrganizacion = (SesionOrganizacionRemote) sesion.getAttribute("sesionOrganizacion");
+                        request.setAttribute("perfil", this.sesionOrganizacion.getPerfil());
+                        request.setAttribute("usuario", this.sesionOrganizacion.getUsuario());
+                        request.setAttribute("posts", this.posts.devuelvePostsUsuario(this.sesionOrganizacion.getPerfil().getId(), id));
+                        request.setAttribute("sonAmigos", this.usuario.sonAmigos(this.sesionOrganizacion.getPerfil().getId(), id));
+                        switch (usr.getTipo()) {
+                            case SOCIAL:
+                               PerfilSocial perfilUsuario = this.social.devuelve(id);
+                               if(perfilUsuario != null){
+                                    request.setAttribute("datos", perfilUsuario);
+                                    response.setContentType("text/html;charset=UTF-8");
+                                    // Devolvemos como respuesta el .JSP para cargar la pantalla del perfil del usuario
+                                    request.getRequestDispatcher("/organizacion/perfil_usuario.jsp").forward(request, response);
+                               }
+                            break;
+                            case ORGANIZACIÓN:
+                               PerfilOrganizacion perfilOrganizacion = this.organizacion.devuelve(id);
+                               if(perfilOrganizacion != null){
+                                   request.setAttribute("datos", perfilOrganizacion);
+                                   response.setContentType("text/html;charset=UTF-8");
+                                   // Devolvemos como respuesta el .JSP para cargar la pantalla del perfil del usuario
+                                   request.getRequestDispatcher("/organizacion/perfil_organizacion.jsp").forward(request, response);
+                               }
+                            break;
+                        }                         
                     break;
                 }
             }

@@ -40,6 +40,10 @@
         <servlet-name>CompletarPerfilSocial</servlet-name>
         <servlet-class>com.eventual.servlets.CompletarPerfilSocial</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Organizacion</servlet-name>
+        <servlet-class>com.eventual.servlets.Organizacion</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>EjemploServlet</servlet-name>
         <url-pattern>/EjemploServlet</url-pattern>
@@ -79,6 +83,10 @@
     <servlet-mapping>
         <servlet-name>CompletarPerfilSocial</servlet-name>
         <url-pattern>/CompletarPerfilSocial</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Organizacion</servlet-name>
+        <url-pattern>/Organizacion</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

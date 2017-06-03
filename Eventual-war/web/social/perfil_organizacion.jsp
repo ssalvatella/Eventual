@@ -65,7 +65,7 @@
                     <div class="col-md-3">
                         <div class="box box-primary">
                             <div class="box-body box-profile">
-                              <img class="profile-user-img img-responsive img-circle" src="./assets/plugins/admin-lte/img/avatar5.png" alt="User profile picture">
+                              <img class="profile-user-img img-responsive img-circle" src="./assets/img/bar1.jpg" alt="User profile picture">
 
                               <h3 class="profile-username text-center"> <% out.print(perfilOrg.getNombre()); %>
                                 <small></small> </h3>

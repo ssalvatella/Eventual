@@ -6,6 +6,7 @@
 package com.eventual.servlets;
 
 import com.eventual.stateful.SesionAdministradorRemote;
+import com.eventual.stateful.SesionOrganizacionRemote;
 import com.eventual.stateful.SesionSocialRemote;
 import com.eventual.stateless.modelo.PerfilSocialRemote;
 import com.eventual.stateless.modelo.Usuario;
@@ -27,6 +28,9 @@ public class Inicio extends HttpServlet {
 
     @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_8080/Eventual-war/IdentificadorWebService.wsdl")
     private IdentificadorWebService_Service service;
+    
+    @EJB
+    private SesionOrganizacionRemote sesionOrganizacion;
 
     @EJB
     private UsuarioRemote usuario;
@@ -58,7 +62,6 @@ public class Inicio extends HttpServlet {
         request.getRequestDispatcher("/inicio.jsp").forward(request, response);
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -98,6 +101,7 @@ public class Inicio extends HttpServlet {
                 } else {
                     Usuario conectado = this.usuario.devuelveUsuario(email);
                     if (conectado != null) {
+                        sesion.setAttribute("usuario", conectado);
                         switch (conectado.getTipo()) {
                             case SOCIAL:
                                 this.sesionSocial.setToken(token);
@@ -113,6 +117,11 @@ public class Inicio extends HttpServlet {
                                 }
                             break;
                             case ORGANIZACIÓN:
+                                this.sesionOrganizacion.setToken(token);
+                                this.sesionOrganizacion.conectar(conectado);
+                                // Guardamos en la sesión el EJB
+                                sesion.setAttribute("sesionOrganizacion", this.sesionOrganizacion);
+                                response.sendRedirect("./Organizacion");
                             break;
                             case ADMINISTRADOR:
                                 this.sesionAdministrador.setToken(token);
