@@ -3,6 +3,7 @@
     Created on : 03-jun-2017, 11:05:25
     Author     : Samuel
 --%>
+<%@page import="com.eventual.stateless.modelo.Evento"%>
 <%@page import="com.eventual.stateless.modelo.PerfilOrganizacion"%>
 <%@page import="java.util.Date"%>
 <%@page import="java.text.SimpleDateFormat"%>
@@ -32,6 +33,7 @@
         Usuario usuario = (Usuario) request.getAttribute("usuario");
         
         List<Post> posts = (List<Post>) request.getAttribute("posts");
+        List<Evento> eventos = (List<Evento>) request.getAttribute("eventos");
         
         // Obtenemos la fecha de registro en un formato "amigable"
         LocalDateTime datetime = LocalDateTime.parse(usuario.getFechaRegistro(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S"));
@@ -118,7 +120,7 @@
                                         out.print(bloqueEscribirComentario);
                                         out.print("</div>");
                                     }
-                                %>
+                                %>  
                             </div>
                             <!-- /.box-body -->
                         </div>
@@ -130,6 +132,31 @@
                           <div class="box-body">
                               <a class="btn btn-lg btn-primary btn-block" data-toggle="modal" data-target="#crear_evento">Crear Evento</a>
                           </div>
+                      </div>
+                    <div class="box">
+                        <div class="box-header">
+                          <h3 class="box-title">Mis eventos</h3>
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body no-padding">
+                          <table class="table table-striped">
+                            <tr>
+                              <th style="width: 10px">#</th>
+                              <th>Nombre</th>
+                              <th>Fecha</th>
+                              <th>Invitados</th>
+                              <th></th>
+                            </tr>
+                            <%
+                                for (Evento e : eventos) {
+                                    if (e.getNombre() != null)
+                                    out.print("<tr><td>" + e.getId() + "</td><td>" + e.getNombre() + "</td><td>"+ e.getFecha() +"</td><td><span class=\"badge bg-green\">"+ e.getInvitados() +"</span></td><td><a href=\"./Evento?id=" + e.getId() + "\" class=\"btn btn-default\">Ver</a></td></tr>");
+                                }
+
+                                %>
+                          </table>
+                        </div>
+                        <!-- /.box-body -->
                       </div>
                      </div>
                     </div>

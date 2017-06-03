@@ -7,6 +7,7 @@ package com.eventual.servlets;
 
 import com.eventual.singleton.GestorIdentificacionesLocal;
 import com.eventual.stateful.SesionOrganizacionRemote;
+import com.eventual.stateless.modelo.Evento;
 import com.eventual.stateless.modelo.EventoRemote;
 import com.eventual.stateless.modelo.Post;
 import com.eventual.stateless.modelo.PostRemote;
@@ -58,6 +59,8 @@ public class Organizacion extends HttpServlet {
             request.setAttribute("usuario", this.sesionOrganizacion.getUsuario());
             List<Post> posts = this.posts.devuelve(this.sesionOrganizacion.getUsuario().getId(), 10, 0);
             request.setAttribute("posts", posts);
+            List<Evento> eventos = this.evento.devuelveEventosOrg(this.sesionOrganizacion.getUsuario().getId());
+            request.setAttribute("eventos", eventos);
             response.setContentType("text/html;charset=UTF-8");
             request.getRequestDispatcher("organizacion/organizacion.jsp").forward(request, response);
         } else { // En caso contrario redirigimos al inicio

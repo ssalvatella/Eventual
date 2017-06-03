@@ -6,6 +6,7 @@
 package com.eventual.stateless.modelo;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.ejb.Remote;
 
 /**
@@ -16,5 +17,7 @@ import javax.ejb.Remote;
 public interface EventoRemote extends Serializable {
     
     public void registrar(int organizacion, String fecha, String nombre, String descripcion);
+    
+    public List<Evento> devuelveEventosOrg(int id);
     
 }
