@@ -19,7 +19,7 @@ $('#input_mensaje').keypress(function(event){
 
 function conectar() {
     
-    var URL = "ws://localhost:8080/Eventual-war/chat";
+    var URL = "ws://155.210.68.154:8080/Eventual-war/chat";
     
     if ('WebSocket' in window) {
         ws = new WebSocket(URL);

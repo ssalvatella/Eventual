@@ -8,19 +8,16 @@ package com.eventual.stateful;
 import com.eventual.stateless.modelo.PerfilAdministrador;
 import com.eventual.stateless.modelo.PerfilAdministradorRemote;
 import com.eventual.stateless.modelo.Usuario;
-import java.util.concurrent.TimeUnit;
+import javax.ejb.DependsOn;
 import javax.ejb.EJB;
-import javax.ejb.Stateful;
-import javax.ejb.StatefulTimeout;
-import javax.enterprise.context.SessionScoped;
+import javax.ejb.Stateless;
 
 /**
  *
  * @author Samuel
  */
-@Stateful
-@SessionScoped
-@StatefulTimeout(unit = TimeUnit.MINUTES, value = 20)
+@Stateless
+@DependsOn(value="BaseDatosLocal")
 public class SesionAdministrador implements SesionAdministradorRemote {
     
     @EJB

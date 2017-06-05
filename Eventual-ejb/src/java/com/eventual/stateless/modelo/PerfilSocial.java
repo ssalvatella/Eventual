@@ -72,7 +72,7 @@ public class PerfilSocial extends Perfil implements PerfilSocialRemote {
     public PerfilSocial devuelve(int idUsuario) {
         
         try {
-            String consulta = "SELECT *, COUNT(id_amigo) as numero_amigos FROM perfil_social "
+            String consulta = "SELECT *, COUNT(id_amigo) as numero_amigos FROM eventual.perfil_social "
                     + "LEFT JOIN amigo ON id_usuario=" + idUsuario + " "
                     + "WHERE usuario_perfil = '" + idUsuario + "';";
             Statement stm = bd.getStatement();
@@ -99,7 +99,7 @@ public class PerfilSocial extends Perfil implements PerfilSocialRemote {
     @Override
     public List<Perfil> buscar(String campo) {
         try {
-            String consulta = "SELECT * FROM perfil_social "
+            String consulta = "SELECT * FROM eventual.perfil_social "
                     + "WHERE nombre_perfil LIKE '%" + campo + "%';";
             Statement stm = bd.getStatement();
             ResultSet rs = stm.executeQuery(consulta);
@@ -170,7 +170,7 @@ public class PerfilSocial extends Perfil implements PerfilSocialRemote {
     @Override
     public void actualizar(int id, String nacimiento, String ciudad, String estudios, String profesion, String descripcion) {
        if (nacimiento.equals("")) nacimiento = "NULL";
-       String consulta = "UPDATE perfil_social SET "
+       String consulta = "UPDATE eventual.perfil_social SET "
                + "nacimiento_perfil=" + nacimiento + ", "
                + "ciudad_perfil='" + ciudad + "', "
                + "estudios_perfil='" + estudios + "', "

@@ -20,4 +20,6 @@ public interface EventoRemote extends Serializable {
     
     public List<Evento> devuelveEventosOrg(int id);
     
+    public Evento devuelve(int id);
+    
 }

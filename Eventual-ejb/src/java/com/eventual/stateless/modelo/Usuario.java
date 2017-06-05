@@ -84,7 +84,7 @@ public class Usuario implements UsuarioRemote {
    public boolean valido(String email, String contraseña) {
        
         try {
-            String consulta = "SELECT * FROM usuario WHERE email_usuario = '" + email + "';";
+            String consulta = "SELECT * FROM eventual.usuario WHERE email_usuario = '" + email + "';";
             Statement stm = bd.getStatement();
             ResultSet rs = stm.executeQuery(consulta);
             if (rs.next()) { // El usuario existe
@@ -112,7 +112,7 @@ public class Usuario implements UsuarioRemote {
     */
    public boolean existeEmail(final String email) {
         try {
-            String consulta = "SELECT * FROM usuario WHERE email_usuario = '" + email + "';";
+            String consulta = "SELECT * FROM eventual.usuario WHERE email_usuario = '" + email + "';";
             Statement stm = bd.getStatement();
             ResultSet rs = stm.executeQuery(consulta);
             return rs.next(); // Devuelve existencia de email...
@@ -139,15 +139,15 @@ public class Usuario implements UsuarioRemote {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
             byte[] hashBytes = digest.digest(contraseña.getBytes(StandardCharsets.UTF_8));
             String hashString = DatatypeConverter.printHexBinary(hashBytes);
-            String consulta = "INSERT INTO usuario (email_usuario, contraseña_usuario, tipo_usuario) VALUES ('" + 
+            String consulta = "INSERT INTO eventual.usuario (email_usuario, contraseña_usuario, tipo_usuario) VALUES ('" + 
                     email + "', '" + hashString + "', '" + TIPO.SOCIAL.name() + "');";
             Statement stm = bd.getStatement();
             stm.executeUpdate(consulta);
-            String consulta_id = "SELECT * FROM usuario WHERE email_usuario = '" + email + "';";
+            String consulta_id = "SELECT * FROM eventual.usuario WHERE email_usuario = '" + email + "';";
             ResultSet rs = stm.executeQuery(consulta_id);
             if (rs.next()) {
                 int id_usuario = rs.getInt("id_usuario");
-                consulta = "INSERT INTO perfil_social (usuario_perfil, nombre_perfil) VALUES (" + id_usuario + ", '" + nombre +"');";
+                consulta = "INSERT INTO eventual.perfil_social (usuario_perfil, nombre_perfil) VALUES (" + id_usuario + ", '" + nombre +"');";
                 this.admin.notificarNuevoRegistro();
                 return stm.execute(consulta);
             } else {
@@ -169,7 +169,7 @@ public class Usuario implements UsuarioRemote {
     @Override
     public Usuario devuelveUsuario(String email) {
         try {
-             String consulta = "SELECT * FROM usuario WHERE email_usuario = '" + email + "';";
+             String consulta = "SELECT * FROM eventual.usuario WHERE email_usuario = '" + email + "';";
              Statement stm = bd.getStatement();
              ResultSet rs = stm.executeQuery(consulta);
              if (rs.next()) {
@@ -191,7 +191,7 @@ public class Usuario implements UsuarioRemote {
     @Override
     public Usuario devuelveUsuario(int id) {
        try {
-            String consulta = "SELECT * FROM usuario WHERE id_usuario = '" + id + "';";
+            String consulta = "SELECT * FROM eventual.usuario WHERE id_usuario = '" + id + "';";
             Statement stm = bd.getStatement();
             ResultSet rs = stm.executeQuery(consulta);
             if (rs.next()) {
@@ -214,7 +214,7 @@ public class Usuario implements UsuarioRemote {
     public List<Integer> devuelveIdsAmigos(int idUsuario) {
         try {
             List<Integer> amigos = new ArrayList<>();
-            String consulta = "SELECT id_amigo FROM amigo WHERE id_usuario = " + idUsuario + ";";
+            String consulta = "SELECT id_amigo FROM eventual.amigo WHERE id_usuario = " + idUsuario + ";";
             Statement stm = bd.getStatement();
             ResultSet rs = stm.executeQuery(consulta);
             while (rs.next()) {
@@ -233,15 +233,15 @@ public class Usuario implements UsuarioRemote {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
             byte[] hashBytes = digest.digest(contraseña.getBytes(StandardCharsets.UTF_8));
             String hashString = DatatypeConverter.printHexBinary(hashBytes);
-            String consulta = "INSERT INTO usuario (email_usuario, contraseña_usuario, tipo_usuario) VALUES ('" + 
+            String consulta = "INSERT INTO eventual.usuario (email_usuario, contraseña_usuario, tipo_usuario) VALUES ('" + 
                     email + "', '" + hashString + "', '" + TIPO.ORGANIZACIÓN.name() + "');";
             Statement stm = bd.getStatement();
             stm.executeUpdate(consulta);
-            String consulta_id = "SELECT * FROM usuario WHERE email_usuario = '" + email + "';";
+            String consulta_id = "SELECT * FROM eventual.usuario WHERE email_usuario = '" + email + "';";
             ResultSet rs = stm.executeQuery(consulta_id);
             if (rs.next()) {
                 int id_usuario = rs.getInt("id_usuario");
-                consulta = "INSERT INTO perfil_organizacion (id_organizacion, nombre_organizacion, ciudad_organizacion, direccion_organizacion) "
+                consulta = "INSERT INTO eventual.perfil_organizacion (id_organizacion, nombre_organizacion, ciudad_organizacion, direccion_organizacion) "
                         + "VALUES (" + id_usuario + ", '" + nombre +"', '"+ ciudad + "', '" + direccion+ "');";
                 this.admin.notificarNuevoRegistro();
                 return stm.execute(consulta);
@@ -259,11 +259,11 @@ public class Usuario implements UsuarioRemote {
         String consulta, consulta2;
         try {
             if (sonAmigos(id, usuario)) {
-                consulta = "DELETE FROM amigo WHERE (id_usuario=" + id + " AND id_amigo=" + usuario + ");";
-                consulta2 = "DELETE FROM amigo WHERE (id_usuario=" + usuario + " AND id_amigo=" + id + ");";      
+                consulta = "DELETE FROM eventual.amigo WHERE (id_usuario=" + id + " AND id_amigo=" + usuario + ");";
+                consulta2 = "DELETE FROM eventual.amigo WHERE (id_usuario=" + usuario + " AND id_amigo=" + id + ");";      
             } else {
-                consulta = "INSERT INTO amigo (id_usuario, id_amigo) VALUES (" + id + ", " + usuario + ");";
-                consulta2 = "INSERT INTO amigo (id_usuario, id_amigo) VALUES (" + usuario + ", " + id + ");";               
+                consulta = "INSERT INTO eventual.amigo (id_usuario, id_amigo) VALUES (" + id + ", " + usuario + ");";
+                consulta2 = "INSERT INTO eventual.amigo (id_usuario, id_amigo) VALUES (" + usuario + ", " + id + ");";               
             }
 
             Statement stm = bd.getStatement();
@@ -277,7 +277,7 @@ public class Usuario implements UsuarioRemote {
     @Override
     public boolean sonAmigos(int id, int usuario) {
         try {
-            String consulta = "SELECT * FROM amigo WHERE (id_usuario=" + id + " AND id_amigo=" + usuario + "); ";
+            String consulta = "SELECT * FROM eventual.amigo WHERE (id_usuario=" + id + " AND id_amigo=" + usuario + "); ";
             Statement stm = bd.getStatement();
             ResultSet rs = stm.executeQuery(consulta);
             return rs.next();
@@ -291,7 +291,7 @@ public class Usuario implements UsuarioRemote {
     @Override
     public int ultimosUsuarios() {
                 try {
-            String consulta = "SELECT COUNT(id_usuario) as numero_usuarios FROM usuario "
+            String consulta = "SELECT COUNT(id_usuario) as numero_usuarios FROM eventual.usuario "
                     + "WHERE (TIMESTAMPDIFF(DAY, registro_usuario,  NOW())) <= 7;";
             Statement stm = bd.getStatement();
             ResultSet rs = stm.executeQuery(consulta);

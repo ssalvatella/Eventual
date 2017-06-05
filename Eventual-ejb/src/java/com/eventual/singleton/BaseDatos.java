@@ -100,7 +100,6 @@ public class BaseDatos implements BaseDatosLocal {
 
         Context contexto = new InitialContext();
         this.fuenteDatos = (DataSource) contexto.lookup(JNDI_POOL);
-        
         // Conectamos
         this.conexion = this.fuenteDatos.getConnection();
         this.statement = this.conexion.createStatement();

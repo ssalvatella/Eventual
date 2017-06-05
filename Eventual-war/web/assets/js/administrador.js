@@ -53,7 +53,7 @@ grafico = $.plot("#interactive", [data], opciones);
 conectar();
 function conectar() {
     
-    var URL = "ws://localhost:8080/Eventual-war/administradorWS";
+    var URL = "ws://155.210.68.154:8080/Eventual-war/administradorWS";
     
     if ('WebSocket' in window) {
         ws = new WebSocket(URL);

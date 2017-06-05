@@ -8,6 +8,7 @@ package com.eventual.servlets;
 import com.eventual.stateful.SesionAdministradorRemote;
 import com.eventual.stateful.SesionOrganizacionRemote;
 import com.eventual.stateful.SesionSocialRemote;
+import com.eventual.stateless.modelo.PerfilOrganizacionRemote;
 import com.eventual.stateless.modelo.PerfilSocialRemote;
 import com.eventual.stateless.modelo.Usuario;
 import com.eventual.stateless.modelo.UsuarioRemote;
@@ -43,6 +44,9 @@ public class Inicio extends HttpServlet {
     
     @EJB
     private PerfilSocialRemote ps;
+    
+    @EJB
+    private PerfilOrganizacionRemote po;
    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -121,7 +125,12 @@ public class Inicio extends HttpServlet {
                                 this.sesionOrganizacion.conectar(conectado);
                                 // Guardamos en la sesión el EJB
                                 sesion.setAttribute("sesionOrganizacion", this.sesionOrganizacion);
-                                response.sendRedirect("./Organizacion");
+                                if (this.po.completitudPerfil(conectado.getId()) != 1) {
+                                    response.sendRedirect("./CompletarPerfilOrganizacion");     
+                                } else {
+                                    response.sendRedirect("./Organizacion");                                   
+                                }
+
                             break;
                             case ADMINISTRADOR:
                                 this.sesionAdministrador.setToken(token);

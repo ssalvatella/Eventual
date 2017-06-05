@@ -43,13 +43,15 @@ public class Evento implements EventoRemote {
     }
     
     private int id;
+    private int organizacion;
     private String nombre;
     private String fecha;
     private String descripcion;
     private int invitados;
     
-    public Evento(int id, String nombre, String fecha, String descripcion, int invitados) {
+    public Evento(int id, int organizacion, String nombre, String fecha, String descripcion, int invitados) {
         this.id = id;
+        this.organizacion = organizacion;
         this.nombre = nombre;
         this.fecha = fecha;
         this.descripcion = descripcion;
@@ -108,17 +110,41 @@ public class Evento implements EventoRemote {
             ResultSet rs = stm.executeQuery(consulta);
             while (rs.next()) {
                 int idevento = rs.getInt("id_evento");
+                int organizacion = rs.getInt("organizacion");
                 String nombre = rs.getString("nombre_evento");
                 String fecha = rs.getString("fecha_evento");
                 String descripcion = rs.getString("descripcion_evento");
                 int invitados = rs.getInt("invitados");
-                resultado.add(new Evento(idevento, nombre, fecha, descripcion, invitados));
+                resultado.add(new Evento(idevento, organizacion, nombre, fecha, descripcion, invitados));
             }
             
         } catch (SQLException ex) {
             Logger.getLogger(Evento.class.getName()).log(Level.SEVERE, null, ex);
         }
         return resultado;
+    }
+    
+    @Override
+    public Evento devuelve(int id) {
+        try {
+            String consulta = "SELECT *, COUNT(usuario_invitacion) as invitados FROM evento "
+                    + "LEFT JOIN invitacion_evento ON id_evento=evento_invitacion "
+                    + "WHERE id_evento=" + id + " GROUP BY id_evento ASC ORDER BY fecha_evento DESC;";
+            Statement stm = bd.getStatement();
+            ResultSet rs = stm.executeQuery(consulta);
+            if (rs.next()) {
+                int idevento = rs.getInt("id_evento");
+                int organizador = rs.getInt("organizacion");
+                String nombre = rs.getString("nombre_evento");
+                String fecha = rs.getString("fecha_evento");
+                String descripcion = rs.getString("descripcion_evento");
+                int invitados = rs.getInt("invitados");
+                return new Evento(idevento, organizador, nombre, fecha, descripcion, invitados);    
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Evento.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 
     public int getId() {
@@ -140,6 +166,12 @@ public class Evento implements EventoRemote {
     public int getInvitados() {
         return invitados;
     }
+
+    public int getOrganizacion() {
+        return organizacion;
+    }
+
+
 
     
 
