@@ -6,7 +6,7 @@
 package com.eventual.servlets;
 
 import com.eventual.singleton.GestorIdentificacionesLocal;
-import com.eventual.stateful.SesionSocialRemote;
+import com.eventual.stateful.SesionSocial;
 import com.eventual.stateless.modelo.PerfilSocialRemote;
 import java.io.IOException;
 import javax.ejb.EJB;
@@ -28,7 +28,7 @@ public class CompletarPerfilSocial extends HttpServlet {
     @EJB
     private PerfilSocialRemote ps;
     
-    private SesionSocialRemote sesionSocial;
+    private SesionSocial sesionSocial;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -42,9 +42,11 @@ public class CompletarPerfilSocial extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        
          // Obtenemos el EJB de nuestra sesión
-        HttpSession sesion = request.getSession();
-        this.sesionSocial = (SesionSocialRemote) sesion.getAttribute("sesionSocial");
+        HttpSession sesion = request.getSession(false);
+        this.sesionSocial = (SesionSocial) sesion.getAttribute("sesionSocial");
+       
         
          // Comprobamos el nivel del usuario y que este correctamente conectado
         if (sesionSocial.usuarioConectado() && 
@@ -87,7 +89,7 @@ public class CompletarPerfilSocial extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession sesion = request.getSession();
-        this.sesionSocial = (SesionSocialRemote) sesion.getAttribute("sesionSocial");        
+        //this.sesionSocial = (SesionSocialRemote) sesion.getAttribute("sesionSocial");        
         int id = this.sesionSocial.getPerfil().getId();
         String fechaNacimiento = request.getParameter("nacimiento");
         String ciudad = request.getParameter("ciudad");

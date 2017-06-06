@@ -6,7 +6,7 @@
 package com.eventual.servlets;
 
 import com.eventual.singleton.GestorIdentificacionesLocal;
-import com.eventual.stateful.SesionOrganizacionRemote;
+import com.eventual.stateful.SesionOrganizacion;
 import com.eventual.stateless.modelo.PerfilOrganizacionRemote;
 import java.io.IOException;
 import javax.ejb.EJB;
@@ -29,7 +29,7 @@ public class CompletarPerfilOrganizacion extends HttpServlet {
     @EJB
     private GestorIdentificacionesLocal gestorTokens;
     
-    private SesionOrganizacionRemote sesionOrganizacion;
+    private SesionOrganizacion sesionOrganizacion;
 
 
     /**
@@ -61,7 +61,7 @@ public class CompletarPerfilOrganizacion extends HttpServlet {
         
          // Obtenemos el EJB de nuestra sesión
         HttpSession sesion = request.getSession();
-        this.sesionOrganizacion = (SesionOrganizacionRemote) sesion.getAttribute("sesionOrganizacion");
+        this.sesionOrganizacion = (SesionOrganizacion) sesion.getAttribute("sesionOrganizacion");
         
          // Comprobamos el nivel del usuario y que este correctamente conectado
         if (sesionOrganizacion.conectado() && 
@@ -89,7 +89,7 @@ public class CompletarPerfilOrganizacion extends HttpServlet {
             throws ServletException, IOException {
         
         HttpSession sesion = request.getSession();
-        this.sesionOrganizacion = (SesionOrganizacionRemote) sesion.getAttribute("sesionOrganizacion");        
+        this.sesionOrganizacion = (SesionOrganizacion) sesion.getAttribute("sesionOrganizacion");        
         int id = this.sesionOrganizacion.getPerfil().getId();
         String contacto = request.getParameter("contacto");
         String descripcion = request.getParameter("descripcion");

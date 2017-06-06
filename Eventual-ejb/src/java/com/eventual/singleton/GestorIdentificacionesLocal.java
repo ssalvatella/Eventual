@@ -18,4 +18,5 @@ public interface GestorIdentificacionesLocal {
     
     public boolean validarToken(String token);
     
+    
 }

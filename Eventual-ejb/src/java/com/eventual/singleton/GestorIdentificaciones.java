@@ -19,7 +19,7 @@ public class GestorIdentificaciones implements GestorIdentificacionesLocal {
     // Los Tokens caducan despues de 2 horas
     private final int CADUCIDAD_TOKENS = 2;
 
-    private final HashMap<String, Date> identificados = new HashMap<>();
+    private HashMap<String, Date> identificados = new HashMap<>();
 
     @Override
     public void registrarToken(String token) {

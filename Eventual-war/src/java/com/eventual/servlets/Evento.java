@@ -5,8 +5,8 @@
  */
 package com.eventual.servlets;
 
-import com.eventual.stateful.SesionOrganizacionRemote;
-import com.eventual.stateful.SesionSocialRemote;
+import com.eventual.stateful.SesionOrganizacion;
+import com.eventual.stateful.SesionSocial;
 import com.eventual.stateless.modelo.EventoRemote;
 import com.eventual.stateless.modelo.PerfilOrganizacion;
 import com.eventual.stateless.modelo.PerfilOrganizacionRemote;
@@ -25,9 +25,9 @@ import javax.servlet.http.HttpSession;
  */
 public class Evento extends HttpServlet {
     
-    private SesionSocialRemote sesionSocial;    
+    private SesionSocial sesionSocial;    
     
-    private SesionOrganizacionRemote sesionOrganizacion;
+    private SesionOrganizacion sesionOrganizacion;
     
     @EJB
     private EventoRemote evento;
@@ -59,7 +59,7 @@ public class Evento extends HttpServlet {
                 Usuario usuario = (Usuario) sesion.getAttribute("usuario");
                 switch (usuario.getTipo()) {
                     case ORGANIZACIÓN:
-                        this.sesionOrganizacion = (SesionOrganizacionRemote) sesion.getAttribute("sesionOrganizacion");
+                        this.sesionOrganizacion = (SesionOrganizacion) sesion.getAttribute("sesionOrganizacion");
                         request.setAttribute("perfil", this.sesionOrganizacion.getPerfil());
                         request.setAttribute("usuario", this.sesionOrganizacion.getUsuario());
                         request.setAttribute("evento", e);
@@ -67,7 +67,7 @@ public class Evento extends HttpServlet {
                         request.getRequestDispatcher("/organizacion/evento.jsp").forward(request, response);
                     break;
                     case SOCIAL:
-                        this.sesionSocial = (SesionSocialRemote) sesion.getAttribute("sesionSocial");
+                        this.sesionSocial = (SesionSocial) sesion.getAttribute("sesionSocial");
                         request.setAttribute("perfil", this.sesionSocial.getPerfil());
                         request.setAttribute("usuario", this.sesionSocial.getUsuario());
                         request.setAttribute("evento", e);

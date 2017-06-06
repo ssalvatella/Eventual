@@ -5,7 +5,7 @@
  */
 package com.eventual.servlets;
 
-import com.eventual.stateful.SesionAdministradorRemote;
+import com.eventual.stateful.SesionAdministrador;
 import com.eventual.stateless.modelo.MensajeRemote;
 import com.eventual.stateless.modelo.PostRemote;
 import com.eventual.stateless.modelo.UsuarioRemote;
@@ -23,7 +23,7 @@ import javax.servlet.http.HttpSession;
  */
 public class Administrador extends HttpServlet {
     
-    private SesionAdministradorRemote sesionAdministrador;
+    private SesionAdministrador sesionAdministrador;
     
     @EJB
     private MensajeRemote mensajes;
@@ -46,8 +46,8 @@ public class Administrador extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         // Obtenemos el EJB de nuestra sesión
-        HttpSession sesion = request.getSession();
-        this.sesionAdministrador = (SesionAdministradorRemote) sesion.getAttribute("sesionAdministrador");
+        HttpSession sesion = request.getSession(false);
+        this.sesionAdministrador = (SesionAdministrador) sesion.getAttribute("sesionAdministrador");
 
         // Comprobamos el nivel del usuario y que este correctamente conectado
         if (sesionAdministrador.conectado()) {

@@ -5,15 +5,19 @@
  */
 package com.eventual.servlets;
 
-import com.eventual.stateful.SesionAdministradorRemote;
-import com.eventual.stateful.SesionOrganizacionRemote;
-import com.eventual.stateful.SesionSocialRemote;
+import com.eventual.singleton.GestorIdentificacionesLocal;
+import com.eventual.stateful.SesionAdministrador;
+import com.eventual.stateful.SesionOrganizacion;
+import com.eventual.stateful.SesionSocial;
+import com.eventual.stateless.modelo.PerfilAdministradorRemote;
 import com.eventual.stateless.modelo.PerfilOrganizacionRemote;
 import com.eventual.stateless.modelo.PerfilSocialRemote;
 import com.eventual.stateless.modelo.Usuario;
 import com.eventual.stateless.modelo.UsuarioRemote;
 import com.eventual.webservices.cliente.IdentificadorWebService_Service;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -29,21 +33,18 @@ public class Inicio extends HttpServlet {
 
     @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_8080/Eventual-war/IdentificadorWebService.wsdl")
     private IdentificadorWebService_Service service;
-    
-    @EJB
-    private SesionOrganizacionRemote sesionOrganizacion;
 
     @EJB
     private UsuarioRemote usuario;
     
     @EJB
-    private SesionSocialRemote sesionSocial;
-    
-    @EJB
-    private SesionAdministradorRemote sesionAdministrador;
-    
+    private GestorIdentificacionesLocal sesiones;
+
     @EJB
     private PerfilSocialRemote ps;
+    
+    @EJB
+    private PerfilAdministradorRemote pa;
     
     @EJB
     private PerfilOrganizacionRemote po;
@@ -97,21 +98,24 @@ public class Inicio extends HttpServlet {
         // Procesamos la petición en caso de que esten definidos los parámetros
         if (email != null && contraseña != null) {
             try {
-                HttpSession sesion = request.getSession();
+                HttpSession sesion = request.getSession(true);
                 String token = validar(email, contraseña);
                 if (token == null) {
                     request.setAttribute("validacion", false);
                     processRequest(request, response);                   
                 } else {
+                    request.setAttribute("token", token);
                     Usuario conectado = this.usuario.devuelveUsuario(email);
                     if (conectado != null) {
                         sesion.setAttribute("usuario", conectado);
                         switch (conectado.getTipo()) {
                             case SOCIAL:
-                                this.sesionSocial.setToken(token);
-                                this.sesionSocial.conectarUsuario(conectado);
+                                SesionSocial sesionSocial = new SesionSocial();
+                                sesionSocial.setPerfil(this.ps.devuelve(conectado.getId()));
+                                sesionSocial.setToken(token);
+                                sesionSocial.conectarUsuario(conectado);
                                 // Guardamos en la sesión el EJB
-                                sesion.setAttribute("sesionSocial", this.sesionSocial);
+                                sesion.setAttribute("sesionSocial", sesionSocial);
                                 // Si el perfil no esta completo cargamos la vista para hacerlo
                                 if (this.ps.completitudPerfil(conectado.getId()) != 1) {
                                     response.sendRedirect("./CompletarPerfilSocial");     
@@ -121,10 +125,12 @@ public class Inicio extends HttpServlet {
                                 }
                             break;
                             case ORGANIZACIÓN:
-                                this.sesionOrganizacion.setToken(token);
-                                this.sesionOrganizacion.conectar(conectado);
+                                SesionOrganizacion sesionOrganizacion = new SesionOrganizacion();
+                                sesionOrganizacion.setPerfil(this.po.devuelve(conectado.getId()));
+                                sesionOrganizacion.setToken(token);
+                                sesionOrganizacion.conectar(conectado);
                                 // Guardamos en la sesión el EJB
-                                sesion.setAttribute("sesionOrganizacion", this.sesionOrganizacion);
+                                sesion.setAttribute("sesionOrganizacion", sesionOrganizacion);
                                 if (this.po.completitudPerfil(conectado.getId()) != 1) {
                                     response.sendRedirect("./CompletarPerfilOrganizacion");     
                                 } else {
@@ -133,10 +139,12 @@ public class Inicio extends HttpServlet {
 
                             break;
                             case ADMINISTRADOR:
-                                this.sesionAdministrador.setToken(token);
-                                this.sesionAdministrador.conectar(conectado);
+                                SesionAdministrador sesionAdministrador = new SesionAdministrador();
+                                sesionAdministrador.setPerfil(this.pa.devuelve(conectado.getId()));
+                                sesionAdministrador.setToken(token);
+                                sesionAdministrador.conectar(conectado);
                                 // Guardamos en la sesión el EJB de administrador
-                                sesion.setAttribute("sesionAdministrador", this.sesionAdministrador);
+                                sesion.setAttribute("sesionAdministrador", sesionAdministrador);
                                 // Vamos al servlet "Administrador" para empezar la sesión
                                 response.sendRedirect("./Administrador"); 
                             break;
@@ -147,7 +155,7 @@ public class Inicio extends HttpServlet {
                     }
                 }
             } catch (Exception e) {
-                
+                Logger.getLogger(Inicio.class.getName()).log(Level.SEVERE, null, e);
             }
         }
 

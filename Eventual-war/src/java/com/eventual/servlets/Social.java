@@ -6,7 +6,7 @@
 package com.eventual.servlets;
 
 import com.eventual.singleton.GestorIdentificacionesLocal;
-import com.eventual.stateful.SesionSocialRemote;
+import com.eventual.stateful.SesionSocial;
 import com.eventual.stateless.modelo.Post;
 import com.eventual.stateless.modelo.PostRemote;
 import java.io.IOException;
@@ -30,7 +30,7 @@ public class Social extends HttpServlet {
     @EJB
     private GestorIdentificacionesLocal gestorTokens;
     
-    private SesionSocialRemote sesionSocial;
+    private SesionSocial sesionSocial;
     
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -45,7 +45,7 @@ public class Social extends HttpServlet {
             throws ServletException, IOException {
         // Obtenemos el EJB de nuestra sesión
         HttpSession sesion = request.getSession();
-        this.sesionSocial = (SesionSocialRemote) sesion.getAttribute("sesionSocial");
+        this.sesionSocial = (SesionSocial) sesion.getAttribute("sesionSocial");
 
         // Comprobamos el nivel del usuario y que este correctamente conectado
         if (sesionSocial.usuarioConectado() && 

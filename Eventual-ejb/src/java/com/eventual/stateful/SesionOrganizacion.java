@@ -8,17 +8,13 @@ package com.eventual.stateful;
 import com.eventual.stateless.modelo.PerfilOrganizacion;
 import com.eventual.stateless.modelo.PerfilOrganizacionRemote;
 import com.eventual.stateless.modelo.Usuario;
-import javax.ejb.DependsOn;
 import javax.ejb.EJB;
-import javax.ejb.Stateless;
 
 /**
  *
  * @author Samuel
  */
-@Stateless
-@DependsOn(value="BaseDatosLocal")
-public class SesionOrganizacion implements SesionOrganizacionRemote {
+public class SesionOrganizacion {
     
     @EJB
     private PerfilOrganizacionRemote po;
@@ -29,35 +25,33 @@ public class SesionOrganizacion implements SesionOrganizacionRemote {
     
     private String token;
     
-    @Override
     public void conectar(Usuario usuario) {
         this.usuario = usuario;
         this.perfil = po.devuelve(usuario.getId());
         if (perfil != null)
             this.conectado = true;  
     }
-
-    @Override
+    
+    public void setPerfil(PerfilOrganizacion perfil) {
+        this.perfil = perfil;
+    }
+    
     public boolean conectado() {
         return usuario != null && conectado;
     }
 
-    @Override
     public Usuario getUsuario() {
         return this.usuario;
     }
-
-    @Override
+    
     public PerfilOrganizacion getPerfil() {
         return this.perfil;
     }
 
-    @Override
     public void setToken(String token) {
         this.token = token;
     }
 
-    @Override
     public String getToken() {
         return this.token;
     }

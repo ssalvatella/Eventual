@@ -6,22 +6,14 @@
 package com.eventual.stateful;
 
 import com.eventual.stateless.modelo.PerfilSocial;
-import com.eventual.stateless.modelo.PerfilSocialRemote;
 import com.eventual.stateless.modelo.Usuario;
-import javax.ejb.DependsOn;
-import javax.ejb.EJB;
-import javax.ejb.Stateless;
 
 /**
  *
  * @author Samuel
  */
-@Stateless
-@DependsOn(value="BaseDatosLocal")
-public class SesionSocial implements SesionSocialRemote {
+public class SesionSocial {
     
-    @EJB
-    private PerfilSocialRemote ps;
     
     private Usuario usuario;
     private PerfilSocial perfil;
@@ -29,40 +21,36 @@ public class SesionSocial implements SesionSocialRemote {
     
     private String token;
 
-    @Override
     public void conectarUsuario(Usuario usuario) {
         this.usuario = usuario;
-        this.perfil = ps.devuelve(usuario.getId());
         if (perfil != null)
             this.conectado = true;        
     }
+    
+    public void setPerfil(PerfilSocial perfil) {
+        this.perfil = perfil;
+    }
 
-    @Override
     public boolean usuarioConectado() {
         return usuario != null && conectado;       
     }
 
-    @Override
     public boolean esSocial() {
         return usuario.getTipo() == Usuario.TIPO.SOCIAL;       
     }
 
-    @Override
     public Usuario getUsuario() {
         return this.usuario;
     }
 
-    @Override
     public PerfilSocial getPerfil() {
         return this.perfil;
     }
 
-    @Override
     public void setToken(String token) {
         this.token = token;
     }
     
-    @Override
     public String getToken() {
         return this.token;
     }

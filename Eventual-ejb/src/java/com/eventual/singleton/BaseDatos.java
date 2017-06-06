@@ -80,7 +80,20 @@ public class BaseDatos implements BaseDatosLocal {
 
     @Override
     public Statement getStatement() {
-        return this.statement;
+        try {
+            if (this.statement == null) {
+                return conectar();
+            } else if (this.statement.isClosed()) {
+                return conectar();
+            } else {
+                return this.statement;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(BaseDatos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NamingException ex) {
+            Logger.getLogger(BaseDatos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
     
     @Override
@@ -96,13 +109,16 @@ public class BaseDatos implements BaseDatosLocal {
      * de error lanza una SQLException.
      * @throws SQLException 
      */
-    private void conectar() throws SQLException, NamingException {
+    private Statement conectar() throws SQLException, NamingException {
 
         Context contexto = new InitialContext();
+        //ConnectionPoolDataSource cpds = (ConnectionPoolDataSource)contexto.lookup(JNDI_POOL);
+        //PooledConnection pc = cpds.getPooledConnection(); 
         this.fuenteDatos = (DataSource) contexto.lookup(JNDI_POOL);
         // Conectamos
-        this.conexion = this.fuenteDatos.getConnection();
+        this.conexion = fuenteDatos.getConnection(); 
         this.statement = this.conexion.createStatement();
+        return statement;
     }
     
     /**

@@ -8,17 +8,13 @@ package com.eventual.stateful;
 import com.eventual.stateless.modelo.PerfilAdministrador;
 import com.eventual.stateless.modelo.PerfilAdministradorRemote;
 import com.eventual.stateless.modelo.Usuario;
-import javax.ejb.DependsOn;
 import javax.ejb.EJB;
-import javax.ejb.Stateless;
 
 /**
  *
  * @author Samuel
  */
-@Stateless
-@DependsOn(value="BaseDatosLocal")
-public class SesionAdministrador implements SesionAdministradorRemote {
+public class SesionAdministrador {
     
     @EJB
     private PerfilAdministradorRemote pa;
@@ -29,7 +25,6 @@ public class SesionAdministrador implements SesionAdministradorRemote {
     
     private String token;
 
-    @Override
     public void conectar(Usuario usuario) {
         this.usuario = usuario;
         this.perfil = pa.devuelve(usuario.getId());
@@ -37,8 +32,11 @@ public class SesionAdministrador implements SesionAdministradorRemote {
             conectado = true;
         }
     }
-
-    @Override
+    
+    public void setPerfil(PerfilAdministrador perfil) {
+        this.perfil = perfil;
+    }
+    
     public boolean conectado() {
         return usuario != null && conectado;
     }
@@ -51,7 +49,6 @@ public class SesionAdministrador implements SesionAdministradorRemote {
         return perfil;
     }
     
-    @Override
     public void setToken(String token) {
         this.token = token;
     }

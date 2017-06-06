@@ -6,7 +6,7 @@
 package com.eventual.servlets;
 
 import com.eventual.singleton.GestorIdentificacionesLocal;
-import com.eventual.stateful.SesionOrganizacionRemote;
+import com.eventual.stateful.SesionOrganizacion;
 import com.eventual.stateless.modelo.Evento;
 import com.eventual.stateless.modelo.EventoRemote;
 import com.eventual.stateless.modelo.Post;
@@ -32,7 +32,7 @@ public class Organizacion extends HttpServlet {
     @EJB
     private EventoRemote evento;
 
-    private SesionOrganizacionRemote sesionOrganizacion;
+    private SesionOrganizacion sesionOrganizacion;
     
     @EJB
     private GestorIdentificacionesLocal gestorTokens;
@@ -51,7 +51,7 @@ public class Organizacion extends HttpServlet {
         
         // Obtenemos el EJB de nuestra sesión
         HttpSession sesion = request.getSession();
-        this.sesionOrganizacion = (SesionOrganizacionRemote) sesion.getAttribute("sesionOrganizacion");
+        this.sesionOrganizacion = (SesionOrganizacion) sesion.getAttribute("sesionOrganizacion");
         // Comprobamos el nivel del usuario y que este correctamente conectado
         if (sesionOrganizacion.conectado() && 
                 this.gestorTokens.validarToken(this.sesionOrganizacion.getToken())) {
@@ -102,7 +102,7 @@ public class Organizacion extends HttpServlet {
         String descripcion = request.getParameter("descripcion");
         if (fecha != null && nombre != null && descripcion != null) {
             HttpSession sesion = request.getSession();
-            this.sesionOrganizacion = (SesionOrganizacionRemote) sesion.getAttribute("sesionOrganizacion");
+            this.sesionOrganizacion = (SesionOrganizacion) sesion.getAttribute("sesionOrganizacion");
             int id_organizacion = this.sesionOrganizacion.getPerfil().getId();
             this.evento.registrar(id_organizacion, fecha, nombre, descripcion);
         }
